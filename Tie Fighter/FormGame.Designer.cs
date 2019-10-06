@@ -2,7 +2,7 @@
 
 namespace Tie_Fighter
 {
-    partial class Form1
+    partial class FormGame
     {
         /// <summary>
         /// Required designer variable.
@@ -43,7 +43,8 @@ namespace Tie_Fighter
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FormGame_MouseClick);
             this.ResumeLayout(false);
 
         }
