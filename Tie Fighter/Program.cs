@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using Tie_Fighter.GameObjects;
 
 namespace Tie_Fighter
 {
@@ -18,6 +19,7 @@ namespace Tie_Fighter
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+            
         }
 
         
