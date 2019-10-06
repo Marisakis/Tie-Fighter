@@ -8,6 +8,6 @@ namespace Tie_Fighter.GameObjects
 {
     public class Fighter<T> : GameObject<T>
     {
-        public T ttp { get; set; } // Time to pass, in milliseconds.
+        public T TTP { get; set; } // Time to pass, in milliseconds.
     }
 }
