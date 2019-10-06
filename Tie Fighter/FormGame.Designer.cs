@@ -32,16 +32,16 @@ namespace Tie_Fighter
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // FormGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::Tie_Fighter.Properties.Resources.ShooterBG;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(580, 313);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Name = "Form1";
+            this.ClientSize = new System.Drawing.Size(913, 545);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "FormGame";
             this.Text = "Form1";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FormGame_MouseClick);

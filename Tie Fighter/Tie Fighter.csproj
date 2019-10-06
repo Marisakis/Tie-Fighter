@@ -47,7 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\General.cs" />
+    <Compile Include="Controllers\GeneralController.cs" />
+    <Compile Include="Controllers\IActionInput.cs" />
     <Compile Include="Controllers\Keyboard.cs" />
     <Compile Include="Controllers\LeapMotion.cs" />
     <Compile Include="Controllers\Mouse.cs" />

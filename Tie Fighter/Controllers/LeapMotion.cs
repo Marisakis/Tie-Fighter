@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Tie_Fighter.Controllers
 {
-    class LeapMotion
+    public class LeapMotion<LeapMotionEvent> : GeneralController<LeapMotionEvent> // where LeapMotionEvent : [eventclass]
     {
+        public override void Action(LeapMotionEvent eventData)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
