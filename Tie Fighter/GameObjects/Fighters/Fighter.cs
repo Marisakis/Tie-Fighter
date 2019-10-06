@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace Tie_Fighter.GameObjects
 {
-    public class Fighter<T> : GameObject<T>
+    public abstract class Fighter<T> : GameObject<T>
     {
-        public T TTP { get; set; } // Time to pass, in milliseconds.
+        public virtual T TTP { get; set; } // Time to pass, in milliseconds.
+        public virtual void PlayFlySound()
+        {
+
+        }
     }
 }
