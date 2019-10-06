@@ -15,6 +15,8 @@ namespace Tie_Fighter
         public FormGame()
         {
             InitializeComponent();
+            DoubleBuffered = true;
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         private void FormGame_KeyDown(object sender, KeyEventArgs e)
