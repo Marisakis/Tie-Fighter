@@ -34,11 +34,14 @@ namespace Tie_Fighter
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = Color.Black;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "Tie Fighter";
+            this.BackColor = System.Drawing.Color.Black;
+            this.BackgroundImage = global::Tie_Fighter.Properties.Resources.ShooterBG;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(580, 313);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);

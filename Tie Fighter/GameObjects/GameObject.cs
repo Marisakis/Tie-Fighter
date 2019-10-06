@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Tie_Fighter.GameObjects
 {
-    public abstract class GameObject<T> : IDisposable where T : IConvertible
+    public abstract class GameObject<T> : IDisposable // where T : IConvertible --> Is probably not needed.
     {
         bool disposed = false;
         Bitmap bitmap;
