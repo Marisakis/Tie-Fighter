@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Tie_Fighter.GameObjects
 {
@@ -21,7 +16,7 @@ namespace Tie_Fighter.GameObjects
         {
             return new Tuple<T, T>(x, y);
         }
-        public virtual void Rescale(T width, T height) 
+        public virtual void Rescale(T width, T height)
         {
             this.bitmap = new Bitmap(this.bitmap, new Size(Convert.ToInt32(width), Convert.ToInt32(height)));
         }

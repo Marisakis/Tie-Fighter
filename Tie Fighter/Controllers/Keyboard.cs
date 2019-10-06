@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Tie_Fighter.Controllers
 {
-    public class Keyboard<KeyboardEvent, T> : GeneralController<KeyboardEvent, int> where KeyboardEvent : KeyEventArgs
+    public class Keyboard<KeyboardEvent> : GeneralController<KeyboardEvent, int> where KeyboardEvent : KeyEventArgs
     {
         private int _sensitivity = 1;
         private const int _maxValue = 50;
@@ -50,6 +45,9 @@ namespace Tie_Fighter.Controllers
                     break;
                 case Keys.OemMinus:
                     SensDown();
+                    break;
+                case Keys.Space:
+                    base.actionInput.Fire();
                     break;
             }
         }
