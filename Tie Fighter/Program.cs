@@ -19,13 +19,19 @@ namespace Tie_Fighter
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            //Code to test addition and displaying of a Tie Fighter with Object Manager
             FormGame formGame = new FormGame();
-            List<GameObject<double>> testList = new List<GameObject<double>>();
-            TieFighter<double> testFighter = new TieFighter<double>();
-            testFighter.x = 200; testFighter.y = 200;
+            List<GameObject<int>> testList = new List<GameObject<int>>();
+            TieFighter<int> testFighter = new TieFighter<int>(50,50,1,1,3);
+            //testFighter.x = 200; testFighter.y = 200;
             testList.Add(testFighter);
-            formGame.objectManager.gameObjects = testList;
+            ObjectManager manager = new ObjectManager(formGame);
+            manager.updateObjects(testList);
+            formGame.objectManager = manager;
             Application.Run(formGame);
+
+            //Application.Run(new FormGame);
             
         }
 
