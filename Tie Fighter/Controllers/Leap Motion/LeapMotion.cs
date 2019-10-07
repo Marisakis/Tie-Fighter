@@ -14,6 +14,7 @@ namespace Tie_Fighter.Controllers.Leap_Motion
         private Controller _controller;
         private LeapEventListener _listener;
         private FormGame _formGame;
+        private LeapEventArgs _leapEventArgs = new LeapEventArgs();
 
         public LeapMotion(FormGame formGame) // FormGame in constructor could become an interface later.
         {
@@ -72,14 +73,18 @@ namespace Tie_Fighter.Controllers.Leap_Motion
                         break;
                     case Gesture.GestureType.TYPE_KEY_TAP:
                         Console.WriteLine("Detected tap");
+                        _leapEventArgs.tapped = true;
                         break;
                     case Gesture.GestureType.TYPE_SWIPE:
                         Console.WriteLine("Detected swipe");
                         break;
                     case Gesture.GestureType.TYPE_SCREEN_TAP:
-                        //Console.WriteLine("Detected screen tap");
+                        Console.WriteLine("Detected screen tap");
+                        _leapEventArgs.tapped = false;
                         break;
                 }
+                _formGame.FormGame_LeapEvent(this._leapEventArgs);
+                _leapEventArgs.tapped = false;
             }
         }
 
@@ -141,7 +146,8 @@ namespace Tie_Fighter.Controllers.Leap_Motion
             float appX = normalizedPoint.x * appWidth;
             float appY = (1 - normalizedPoint.y) * appHeight;
             Console.WriteLine("X: "+appX+" Y: "+appY);
-           
+            _leapEventArgs.x = appX;
+            _leapEventArgs.y = appY;
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using Tie_Fighter.Others;
 
 namespace Tie_Fighter.GameObjects
 {
@@ -7,7 +8,12 @@ namespace Tie_Fighter.GameObjects
     {
         bool disposed = false;
         Bitmap bitmap;
+        protected Others.MediaPlayer mediaPlayer;
 
+        public GameObject(Others.MediaPlayer mediaPlayer)
+        {
+            this.mediaPlayer = mediaPlayer;
+        }
         public virtual T x { get; set; } // X-position.
         public virtual T y { get; set; } // Y-position.
         public virtual T width { get; set; } // Desired width of image.

@@ -21,6 +21,7 @@ namespace Tie_Fighter
             this.mediaPlayer = new Others.MediaPlayer();
             this._keyboard = new Keyboard<KeyEventArgs>(this);
             this._mouse = new Mouse<MouseEventArgs>(this);
+            this._leapMotion = new LeapMotionHandler<LeapEventArgs>(this);
             LeapMotion leapMotion = new LeapMotion(this);
         }
 
@@ -55,7 +56,7 @@ namespace Tie_Fighter
 
         public void FormGame_LeapEvent(LeapEventArgs e)
         {
-
+            _leapMotion.Action(e);
         }
     }
 }
