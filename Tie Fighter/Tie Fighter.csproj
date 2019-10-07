@@ -59,6 +59,8 @@
     <Compile Include="Controllers\IActionInput.cs" />
     <Compile Include="Controllers\Keyboard.cs" />
     <Compile Include="Controllers\Leap Motion\ILeapEventDelegate.cs" />
+    <Compile Include="Controllers\Leap Motion\ILeapMotionEvent.cs" />
+    <Compile Include="Controllers\Leap Motion\LeapEventArgs.cs" />
     <Compile Include="Controllers\Leap Motion\LeapEventListener.cs" />
     <Compile Include="Controllers\Leap Motion\LeapMotionHandler.cs" />
     <Compile Include="Controllers\Leap Motion\LeapMotion.cs" />
