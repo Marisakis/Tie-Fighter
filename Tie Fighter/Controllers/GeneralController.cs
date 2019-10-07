@@ -11,7 +11,7 @@
         public GeneralController(IActionInput<T> actionInput)
         {
             this.actionInput = actionInput;
-        }   // Should implement interface later, to bind actions to specific input.
+        }
 
         public abstract void Action(Event eventData);
     }
