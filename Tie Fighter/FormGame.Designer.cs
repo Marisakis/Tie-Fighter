@@ -38,7 +38,7 @@ namespace Tie_Fighter
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Black;
-            this.BackgroundImage = global::Tie_Fighter.Properties.Resources.ShooterBG;
+            this.BackgroundImage = global::Tie_Fighter.Properties.Resources.ShooterBG2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(784, 460);
             this.Margin = new System.Windows.Forms.Padding(2);
