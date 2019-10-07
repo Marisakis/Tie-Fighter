@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Tie_Fighter.Controllers;
 using Leap;
 using Tie_Fighter.Controllers.Leap_Motion;
+using System.Drawing;
 
 namespace Tie_Fighter
 {
@@ -23,6 +24,22 @@ namespace Tie_Fighter
             this._mouse = new Mouse<MouseEventArgs>(this);
             this._leapMotion = new LeapMotionHandler<LeapEventArgs>(this);
             LeapMotion leapMotion = new LeapMotion(this);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics graphics = e.Graphics;
+            DrawCockpit(graphics);
+            base.OnPaint(e);
+        }
+
+        public void DrawCockpit(Graphics graphics)
+        {
+            Bitmap backgroundImage = Properties.Resources.Cockpit;
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+            var rc = new Rectangle(0, 0, Width, Height);
+            graphics.DrawImage(backgroundImage, rc);
         }
 
         public void Fire()
@@ -57,6 +74,11 @@ namespace Tie_Fighter
         public void FormGame_LeapEvent(LeapEventArgs e)
         {
             _leapMotion.Action(e);
+        }
+
+        private void FormGame_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

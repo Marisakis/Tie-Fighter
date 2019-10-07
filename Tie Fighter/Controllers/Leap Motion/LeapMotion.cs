@@ -80,7 +80,7 @@ namespace Tie_Fighter.Controllers.Leap_Motion
                         break;
                     case Gesture.GestureType.TYPE_SCREEN_TAP:
                         Console.WriteLine("Detected screen tap");
-                        _leapEventArgs.tapped = false;
+                        _leapEventArgs.tapped = true;
                         break;
                 }
                 _formGame.FormGame_LeapEvent(this._leapEventArgs);
