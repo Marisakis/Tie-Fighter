@@ -4,7 +4,7 @@ namespace Tie_Fighter.GameObjects
 {
     public abstract class Fighter<T> : GameObject<T>
     {
-        public Fighter(Others.MediaPlayer mediaPlayer) : base(mediaPlayer)
+        public Fighter(Others.MediaPlayer mediaPlayer, T xPercentage, T yPercentage, T widthPercentage, T heightPercentage) : base(mediaPlayer, xPercentage, yPercentage, widthPercentage, heightPercentage)
         {
         }
 

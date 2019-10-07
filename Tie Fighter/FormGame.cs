@@ -4,6 +4,7 @@ using Tie_Fighter.Controllers;
 using Leap;
 using Tie_Fighter.Controllers.Leap_Motion;
 using System.Drawing;
+using Tie_Fighter.GameObjects.HUD;
 
 namespace Tie_Fighter
 {
@@ -13,6 +14,7 @@ namespace Tie_Fighter
         private Keyboard<KeyEventArgs> _keyboard;
         private Mouse<MouseEventArgs> _mouse;
         private LeapMotionHandler<LeapEventArgs> _leapMotion;
+        private Cockpit<int> cockpit;
 
         public FormGame()
         {
@@ -24,6 +26,7 @@ namespace Tie_Fighter
             this._mouse = new Mouse<MouseEventArgs>(this);
             this._leapMotion = new LeapMotionHandler<LeapEventArgs>(this);
             LeapMotion leapMotion = new LeapMotion(this);
+            this.cockpit = new Cockpit<int>(this.mediaPlayer, 0, 0, 100, 100);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -35,11 +38,13 @@ namespace Tie_Fighter
 
         public void DrawCockpit(Graphics graphics)
         {
-            Bitmap backgroundImage = Properties.Resources.Cockpit;
-            this.DoubleBuffered = true;
-            this.SetStyle(ControlStyles.ResizeRedraw, true);
-            var rc = new Rectangle(0, 0, Width, Height);
-            graphics.DrawImage(backgroundImage, rc);
+            //Bitmap backgroundImage = Properties.Resources.Cockpit;
+            //this.DoubleBuffered = true;
+            //this.SetStyle(ControlStyles.ResizeRedraw, true);
+            //var rc = new Rectangle(0, 0, Width, Height);
+            //graphics.DrawImage(backgroundImage, rc);
+            this.cockpit.Draw(graphics, Width, Height);
+
         }
 
         public void Fire()
