@@ -29,12 +29,20 @@ namespace Tie_Fighter
             ObjectManager manager = new ObjectManager(formGame);
             manager.updateObjects(testList);
             formGame.objectManager = manager;
+
+            Tuple<double, double> coord1 = new Tuple<double, double>(1, 1);
+            Tuple<double, double> coord2 = new Tuple<double, double>(25, 75);
+            Tuple<double, double>[] list = new Tuple<double, double>[2];
+            list[1] = coord1; list[0] = coord2;
+            manager.receiveNewTieFighterList(list);
+
             Application.Run(formGame);
 
-            //Application.Run(new FormGame);
             
+            //Application.Run(new FormGame);
+
         }
 
-        
+
     }
 }

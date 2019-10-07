@@ -31,6 +31,7 @@ namespace Tie_Fighter
         
         protected override void OnPaint(PaintEventArgs e)
         {
+            //System.Diagnostics.Debug.WriteLine("Painting window");
             base.OnPaint(e);
             /*Brush brush = new SolidBrush(Color.Red);
             Rectangle rect = new Rectangle(50, 50, 100, 100);
@@ -44,7 +45,7 @@ namespace Tie_Fighter
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
-            base.Size = new Size(base.Size.Width, base.Size.Width / 3);
+            //base.Size = new Size(base.Size.Width, base.Size.Width / 3); //allows for fixing of window proportions
             if (objectManager != null)
             objectManager.onResize(this, e);
         }

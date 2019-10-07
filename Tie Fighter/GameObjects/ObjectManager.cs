@@ -17,9 +17,9 @@ namespace Tie_Fighter.GameObjects
     {
         private List<GameObject<int>> gameObjects { get; set; }
         private Crosshair<double> crosshair { get; set; }
-        private Form form;
+        private FormGame form;
 
-        public ObjectManager(Form form)
+        public ObjectManager(FormGame form)
         {
             this.gameObjects = new List<GameObject<int>>();
             this.form = form;
@@ -48,8 +48,18 @@ namespace Tie_Fighter.GameObjects
         /// <param name="list"></param>
         public void receiveNewTieFighterList(Tuple<double, double>[] list)
         {
+            System.Diagnostics.Debug.WriteLine("Receiving new Tie Fighter List, converting to pixels");
             this.gameObjects = new List<GameObject<int>>();
-            
+            foreach (Tuple<double, double> tuple in list)
+            {
+                Tuple<int, int> coordinates = form.getPixelCoordinates(tuple);
+                Tuple<int, int> scaling = new Tuple<int, int>(form.Size.Width / 20, form.Size.Height / 20);
+                TieFighter<int> newFighter = new TieFighter<int>(coordinates.Item1, coordinates.Item2, scaling.Item1, scaling.Item2, 3);
+                System.Diagnostics.Debug.WriteLine("New TieFighter at coordinates: " + newFighter.x + ", " + newFighter.y);
+                this.gameObjects.Add(newFighter);
+            }
+
+              
         }
 
         internal void onResize(FormGame formGame, EventArgs e)
