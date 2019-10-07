@@ -61,6 +61,7 @@
     <Compile Include="GameObjects\Crosshairs\Crosshair.cs" />
     <Compile Include="GameObjects\Explosions\Explosion.cs" />
     <Compile Include="GameObjects\Fighters\Fighter.cs" />
+    <Compile Include="GameObjects\Fighters\TieFighter.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,6 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ShooterBG.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\smallfighter.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

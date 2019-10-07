@@ -1,4 +1,8 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+using Tie_Fighter.GameObjects;
 
 namespace Tie_Fighter
 {
@@ -8,6 +12,7 @@ namespace Tie_Fighter
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private ObjectManager objectManager;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -20,6 +25,21 @@ namespace Tie_Fighter
                 components.Dispose();
             }
             base.Dispose(disposing);
+        }
+        
+        
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            /*Brush brush = new SolidBrush(Color.Red);
+            Rectangle rect = new Rectangle(50, 50, 100, 100);
+            e.Graphics.FillRectangle(brush, rect);*/
+            foreach(GameObject<double> g in objectManager.gameObjects)
+            {
+                g.Draw(e.Graphics);
+            }
+            
+
         }
 
         #region Windows Form Designer generated code

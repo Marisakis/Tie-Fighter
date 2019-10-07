@@ -11,7 +11,7 @@ namespace Tie_Fighter.GameObjects
     public abstract class GameObject<T> : IDisposable // where T : IConvertible --> Is probably not needed.
     {
         bool disposed = false;
-        Bitmap bitmap;
+        public Bitmap bitmap { get; set; }
 
         public virtual T x { get; set; } // X-position.
         public virtual T y { get; set; } // Y-position.
