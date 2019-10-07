@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Tie_Fighter.Controllers;
 using Leap;
+using Tie_Fighter.Controllers.Leap_Motion;
 
 namespace Tie_Fighter
 {
@@ -23,9 +24,8 @@ namespace Tie_Fighter
             this.mediaPlayer = new Others.MediaPlayer();
             this._keyboard = new Keyboard<KeyEventArgs>(this);
             this._mouse = new Mouse<MouseEventArgs>(this);
-
-            Leap leap = new Leap();
-
+            LeapMotion leapMotion = new LeapMotion(this);
+           
 
             //this.controller = new Controller();
             //this.listener = new LeapEventListener(this);

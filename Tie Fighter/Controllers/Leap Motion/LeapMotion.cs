@@ -15,10 +15,10 @@ namespace Tie_Fighter.Controllers.Leap_Motion
 
         public LeapMotion(FormGame formGame) // FormGame in constructor could become an interface later.
         {
+            this._formGame = formGame;
             this._controller = new Controller();
             this._listener = new LeapEventListener(this);
             this._controller.AddListener(_listener);
-            this._formGame = formGame;
         }
         delegate void LeapEventDelegate(string EventName);
         public void LeapEventNotification(string EventName)
