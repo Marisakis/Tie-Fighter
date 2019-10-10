@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tie_Fighter.GameObjects.Fighters
 {
-    class TieFighter<T> : Fighter<T>
+    public class TieFighter<T> : Fighter<T>
     {
         public TieFighter(T x, T y, T height, T width, T ttp)
         {
