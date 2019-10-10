@@ -1,4 +1,9 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+using Tie_Fighter.GameObjects;
 
 namespace Tie_Fighter
 {
@@ -8,6 +13,7 @@ namespace Tie_Fighter
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        public ObjectManager objectManager;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -21,7 +27,28 @@ namespace Tie_Fighter
             }
             base.Dispose(disposing);
         }
+        
+        
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine("Painting window");
+            base.OnPaint(e);
+            /*Brush brush = new SolidBrush(Color.Red);
+            Rectangle rect = new Rectangle(50, 50, 100, 100);
+            e.Graphics.FillRectangle(brush, rect);*/
+            objectManager.PaintObjects(e.Graphics);
+            
+            
 
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            //base.Size = new Size(base.Size.Width, base.Size.Width / 3); //allows for fixing of window proportions
+            if (objectManager != null)
+            objectManager.onResize(this, e);
+        }
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -46,7 +73,6 @@ namespace Tie_Fighter
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FormGame_MouseClick);
             this.ResumeLayout(false);
-
         }
 
         #endregion

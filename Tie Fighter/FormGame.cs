@@ -85,5 +85,20 @@ namespace Tie_Fighter
         {
 
         }
+        public Tuple<int,int> getPixelCoordinates(Tuple<double, double> percentageCoordinates)
+        {
+            int x = (int)Math.Round( this.Size.Width * (percentageCoordinates.Item1 / 100));
+            int y = (int)Math.Round(this.Size.Height * (percentageCoordinates.Item2 / 100));
+            return new Tuple<int, int>(x,y);
+
+        }
+
+        public Tuple<double, double> getPercentageCoordinates(Tuple<int, int> pixelCoordinates)
+        {
+            double x = ((double)pixelCoordinates.Item1) / this.Size.Width * 100;
+            double y = ((double)pixelCoordinates.Item2) / this.Size.Height * 100;
+            return new Tuple<double, double>(x, y);
+        }
+
     }
 }

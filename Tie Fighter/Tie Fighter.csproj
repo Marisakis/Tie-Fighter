@@ -74,9 +74,11 @@
     <Compile Include="GameObjects\Crosshairs\Crosshair.cs" />
     <Compile Include="GameObjects\Explosions\Explosion.cs" />
     <Compile Include="GameObjects\Fighters\Fighter.cs" />
+    <Compile Include="GameObjects\Fighters\TieFighter.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\HUD\Cockpit.cs" />
     <Compile Include="Others\MediaPlayer.cs" />
+    <Compile Include="GameObjects\ObjectManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormGame.resx">
@@ -181,6 +183,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Cockpit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\smallfighter.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
