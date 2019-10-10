@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Leap;
 using static Leap.Bone;
 using static Leap.Finger;
@@ -13,10 +14,10 @@ namespace Tie_Fighter.Controllers.Leap_Motion
     {
         private Controller _controller;
         private LeapEventListener _listener;
-        private FormGame _formGame;
+        private FormGamePictureBox _formGame;
         private LeapEventArgs _leapEventArgs = new LeapEventArgs();
 
-        public LeapMotion(FormGame formGame) // FormGame in constructor could become an interface later.
+        public LeapMotion(FormGamePictureBox formGame) // FormGame in constructor could become an interface later.
         {
             this._formGame = formGame;
             this._controller = new Controller();

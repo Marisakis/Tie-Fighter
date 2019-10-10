@@ -13,7 +13,10 @@ namespace Tie_Fighter.Controllers
             int mousePosX = eventData.X;
             int mousePosY = eventData.Y;
             base.actionInput.MoveTo(mousePosX, mousePosY);
+            if (eventData.Button==MouseButtons.Left)
             base.actionInput.Fire();
         }
+
+        
     }
 }

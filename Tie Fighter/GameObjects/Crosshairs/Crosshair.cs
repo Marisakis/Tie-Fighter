@@ -1,15 +1,19 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Drawing;
+using System.Windows.Media;
 using Tie_Fighter.Others;
 
 namespace Tie_Fighter.GameObjects.Crosshairs
 {
-    public class Crosshair<T> : GameObject<T>
+    public class Crosshair : GameObject
     {
-        private Color _crosshairColor;
+        private System.Drawing.Color _crosshairColor;
+        private System.Drawing.Pen pen;
+        private RectangleF rectangleF;
 
-        public Crosshair(Others.MediaPlayer mediaPlayer, Color crosshairColor, T xPercentage, T yPercentage, T widthPercentage, T heightPercentage) : base(mediaPlayer, xPercentage, yPercentage, widthPercentage, heightPercentage)
+        public Crosshair(Others.MediaPlayer mediaPlayer, System.Drawing.Color crosshairColor, int x, int y, int width, int height) : base(mediaPlayer, x, y, width, height)
         {
-            this._crosshairColor = crosshairColor;
+            bitmap = Properties.Resources.Cockpit;
         }
     }
 }
