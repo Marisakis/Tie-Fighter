@@ -1,0 +1,104 @@
+﻿using System;
+using System.Windows.Forms;
+using Tie_Fighter.Controllers;
+using Leap;
+using Tie_Fighter.Controllers.Leap_Motion;
+using System.Drawing;
+using Tie_Fighter.GameObjects.HUD;
+
+namespace Tie_Fighter
+{
+    public partial class FormGame : Form, IActionInput<int>//, ILeapEventDelegate
+    {
+        private Tie_Fighter.Others.MediaPlayer mediaPlayer;
+        private Keyboard<KeyEventArgs> _keyboard;
+        private Mouse<MouseEventArgs> _mouse;
+        private LeapMotionHandler<LeapEventArgs> _leapMotion;
+        private Cockpit<int> cockpit;
+
+        public FormGame()
+        {
+            InitializeComponent();
+            DoubleBuffered = true;
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.mediaPlayer = new Others.MediaPlayer();
+            this._keyboard = new Keyboard<KeyEventArgs>(this);
+            this._mouse = new Mouse<MouseEventArgs>(this);
+            this._leapMotion = new LeapMotionHandler<LeapEventArgs>(this);
+            LeapMotion leapMotion = new LeapMotion(this);
+            this.cockpit = new Cockpit<int>(this.mediaPlayer, 0, 0, 100, 100);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics graphics = e.Graphics;
+            DrawCockpit(graphics);
+            base.OnPaint(e);
+        }
+
+        public void DrawCockpit(Graphics graphics)
+        {
+            //Bitmap backgroundImage = Properties.Resources.Cockpit;
+            //this.DoubleBuffered = true;
+            //this.SetStyle(ControlStyles.ResizeRedraw, true);
+            //var rc = new Rectangle(0, 0, Width, Height);
+            //graphics.DrawImage(backgroundImage, rc);
+            this.cockpit.Draw(graphics, Width, Height);
+
+        }
+
+        public void Fire()
+        {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string path2 = $@"{Application.StartupPath}\TieFighterShooterMP3\TieFighter\tie_fire.mp3";
+            //  Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
+            //  string pathToFile = $@"{path}\TieFighterShooterMP3\TieFighter\tie_fire.mp3";
+            this.mediaPlayer.PlayFile(path2);
+        }
+
+        public void MoveTo(int x, int y)
+        {
+        }
+
+        public void UpdatePosition(int x, int y)
+        {
+        }
+
+        private void FormGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            _keyboard.Action(e);
+        }
+
+        private void FormGame_MouseClick(object sender, MouseEventArgs e)
+        {
+            _mouse.Action(e);
+
+            // Console.WriteLine("You Clicked");
+        }
+
+        public void FormGame_LeapEvent(LeapEventArgs e)
+        {
+            _leapMotion.Action(e);
+        }
+
+        private void FormGame_Load(object sender, EventArgs e)
+        {
+
+        }
+        public Tuple<int,int> getPixelCoordinates(Tuple<double, double> percentageCoordinates)
+        {
+            int x = (int)Math.Round( this.Size.Width * (percentageCoordinates.Item1 / 100));
+            int y = (int)Math.Round(this.Size.Height * (percentageCoordinates.Item2 / 100));
+            return new Tuple<int, int>(x,y);
+
+        }
+
+        public Tuple<double, double> getPercentageCoordinates(Tuple<int, int> pixelCoordinates)
+        {
+            double x = ((double)pixelCoordinates.Item1) / this.Size.Width * 100;
+            double y = ((double)pixelCoordinates.Item2) / this.Size.Height * 100;
+            return new Tuple<double, double>(x, y);
+        }
+
+    }
+}
