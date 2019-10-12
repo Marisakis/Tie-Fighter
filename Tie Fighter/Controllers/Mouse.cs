@@ -4,6 +4,7 @@ namespace Tie_Fighter.Controllers
 {
     public class Mouse<MouseEvent> : GeneralController<MouseEvent, int> where MouseEvent : MouseEventArgs
     {
+        bool fired;
         public Mouse(IActionInput<int> actionInput) : base(actionInput)
         {
         }
@@ -13,7 +14,19 @@ namespace Tie_Fighter.Controllers
             int mousePosX = eventData.X;
             int mousePosY = eventData.Y;
             base.actionInput.MoveTo(mousePosX, mousePosY);
-            base.actionInput.Fire();
+            if (eventData.Button == MouseButtons.Left && !fired)
+            {
+                base.actionInput.Fire();
+                fired = true;
+            }else
+            {
+                if (eventData.Button != MouseButtons.Left)
+                {
+                    fired = false;
+                }
+            }
         }
+
+
     }
 }

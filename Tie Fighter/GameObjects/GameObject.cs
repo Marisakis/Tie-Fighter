@@ -4,63 +4,64 @@ using Tie_Fighter.Others;
 
 namespace Tie_Fighter.GameObjects
 {
-    public abstract class GameObject<T> : IDisposable // where T : IConvertible --> Is probably not needed.
+    public abstract class GameObject : IDisposable 
     {
         public bool disposed = false;
         protected Bitmap bitmap;
-        protected Others.MediaPlayer mediaPlayer;
+        protected Others.MediaPlayerHandler mediaPlayer;
+        private Rectangle rectangle;
 
-        public GameObject(Others.MediaPlayer mediaPlayer, T xPercentage, T yPercentage, T widthPercentage, T heightPercentage)
+        public GameObject(Others.MediaPlayerHandler mediaPlayer, int percentageX, int percentageY, int percentageWidth, int percentageHeight)
         {
             this.mediaPlayer = mediaPlayer;
-            this.xPercentage = xPercentage;
-            this.yPercentage = yPercentage;
-            this.widthPercentage = widthPercentage;
-            this.heightPercentage = heightPercentage;
+            this.percentageX = percentageX;
+            this.percentageY = percentageY;
+            this.percentageWidth = percentageWidth;
+            this.percentageHeight = percentageHeight;
+            this.rectangle = new Rectangle();
+        }
+        public virtual int percentageX { get; set; } // X-position.
+        public virtual int percentageY { get; set; } // Y-position.
+        public virtual int percentageWidth { get; set; } // Desired width of image.
+        public virtual int percentageHeight { get; set; } // Desired height of image.
+        public virtual Tuple<int, int> GetPosition()
+        {
+            return new Tuple<int, int>(percentageX, percentageY);
         }
 
-        public GameObject(Others.MediaPlayer mediaPlayer)
+        public virtual void SetXY(int pixelsX, int pixelsY, int pixelsWidth, int pixelsHeight)
         {
+            this.percentageX = PixelsToPercentage(pixelsX, pixelsWidth);
+            this.percentageY = PixelsToPercentage(pixelsY, pixelsHeight);
         }
 
-        public void SetXYWH(T xPercentage, T yPercentage, T widthPercentage, T heightPercentage)
-        {
-            this.xPercentage = xPercentage;
-            this.yPercentage = yPercentage;
-            this.widthPercentage = widthPercentage;
-            this.heightPercentage = heightPercentage;
-        }
+        public virtual void Draw(Graphics graphics, int pixelsWidth, int pixelsHeight, bool centerImage = false)
+        { 
+            int x = PercentageToPixels(this.percentageX, pixelsWidth);
+            int y = PercentageToPixels(this.percentageY, pixelsHeight);
+            int width = PercentageToPixels(this.percentageWidth, pixelsWidth);
+            int height = PercentageToPixels(this.percentageHeight, pixelsHeight);
 
-        public virtual T xPercentage { get; set; } // X-position.
-        public virtual T yPercentage { get; set; } // Y-position.
-        public virtual T widthPercentage { get; set; } // Desired width of image.
-        public virtual T heightPercentage { get; set; } // Desired height of image.
-        public virtual Tuple<T, T> GetPosition()
-        {
-            return new Tuple<T, T>(xPercentage, yPercentage);
-        }
-        public virtual void Rescale(T width, T height)
-        {
-            this.widthPercentage = width;
-            this.heightPercentage = height;
-        }
-        public virtual void Draw(Graphics graphics, int screenWidthPixels, int screenHeightPixels)
-        {
-            //graphics.DrawImage(bitmap, Convert.ToSingle(x), Convert.ToSingle(y));
-            int x, y, width, height;
-            x = (int)PercentageToPixels(this.xPercentage, screenWidthPixels);
-            y = (int)PercentageToPixels(this.yPercentage, screenHeightPixels);
-            width = (int)PercentageToPixels(this.widthPercentage, screenWidthPixels);
-            height = (int)PercentageToPixels(this.heightPercentage, screenHeightPixels);
-            Rectangle rectangle = new Rectangle(x, y, width, height);
+            if (centerImage)
+            {
+                x -= width / 2;
+                y -= height / 2;
+            }
+            rectangle.X = x;
+            rectangle.Y = y;
+            rectangle.Width = width;
+            rectangle.Height = height;
             graphics.DrawImage(bitmap, rectangle);
         }
 
-        public double PercentageToPixels(T percentage, int totalPixels)
+        public int PercentageToPixels(int percentage, int totalPixels)
         {
-            if (Convert.ToInt32(percentage) != 0)
-                return (totalPixels / (100.0 / Convert.ToDouble(percentage)));
-            else return 0;
+            return (int)(percentage*(totalPixels/100.0));
+        }
+
+        public int PixelsToPercentage(int pixels, int totalPixels)
+        {
+            return (int)(((pixels+0.0) / totalPixels) * 100.0);
         }
 
         public void Dispose()

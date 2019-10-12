@@ -8,9 +8,9 @@ using Tie_Fighter.Others;
 
 namespace Tie_Fighter.GameObjects.HUD
 {
-    public class Cockpit<T> : GameObject<T>
+    public class Cockpit : GameObject
     {
-        public Cockpit(Others.MediaPlayer mediaPlayer, T xPercentage, T yPercentage, T widthPercentage, T heightPercentage) : base(mediaPlayer, xPercentage, yPercentage, widthPercentage, heightPercentage)
+        public Cockpit(Others.MediaPlayerHandler mediaPlayer, int x, int y, int width, int height) : base(mediaPlayer, x, y, width, height)
         {
             bitmap = Properties.Resources.Cockpit;
         }

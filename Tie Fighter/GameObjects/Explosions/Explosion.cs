@@ -2,17 +2,17 @@
 
 namespace Tie_Fighter.GameObjects.Explosions
 {
-    public class Explosion<T> : GameObject<T>
+    public class Explosion : GameObject
     {
-        public Explosion(Others.MediaPlayer mediaPlayer, T xPercentage, T yPercentage, T widthPercentage, T heightPercentage) : base(mediaPlayer, xPercentage, yPercentage, widthPercentage, heightPercentage)
+        public Explosion(Others.MediaPlayerHandler mediaPlayer, int x, int y, int width, int height) : base(mediaPlayer, x, y, width, height)
         {
         }
 
-        public T TTL { get; set; } // In milliseconds
+        public int TTL { get; set; } // In milliseconds
 
-        public virtual void PlayFlySound(string URL)
+        public virtual void PlayExplosionSound(string URL)
         {
-            mediaPlayer.PlayFile(URL);
+            mediaPlayer.PlayFile(URL, TTL);
         }
     }
 }
