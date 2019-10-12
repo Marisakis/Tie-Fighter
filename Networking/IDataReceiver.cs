@@ -2,6 +2,6 @@
 {
     public interface IDataReceiver
     {
-        void handlePacket(string[] data);
+        void handlePacket(string[] data, Client sender);
     }
 }

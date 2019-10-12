@@ -22,11 +22,22 @@ namespace Tie_Fighter
             InitializeComponent();
             DoubleBuffered = true;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            client = new Client(new TcpClient("localhost", 80), this);
-            client.Write("It me <EOF>");
+            connectToGameServer("Sebas", "localhost");
         }
+        
+        private void connectToGameServer(string name, string ip)
+        {
+            client = new Client(new TcpClient(ip, 80), this);
+            client.Write("<login>," + name + "<EOF>");
+            client.Write("<crosshair>,236,630," + Boolean.TrueString + "<EoF>");
 
-        public void handlePacket(string[] data)
+            client.Write("<login>,nooby,<EOF>");
+            client.Write("<crosshair>, 236, 630, true,<EoF>");
+
+
+
+        }
+        public void handlePacket(string[] data, Client sender)
         {
             throw new NotImplementedException();
         }
@@ -66,8 +77,6 @@ namespace Tie_Fighter
             double x = ((double)pixelCoordinates.Item1) / this.Size.Width * 100;
             double y = ((double)pixelCoordinates.Item2) / this.Size.Height * 100;
             return new Tuple<double, double>(x, y);
-        }
-
-        
+        }     
     }
 }

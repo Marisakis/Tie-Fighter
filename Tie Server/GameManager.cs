@@ -7,6 +7,7 @@ using System.Timers;
 using Tie_Fighter.GameObjects.Fighters;
 using Tie_Fighter.GameObjects.Explosions;
 using Tie_Fighter.GameObjects.Crosshairs;
+using System.Diagnostics;
 
 namespace Tie_Server
 {
@@ -34,10 +35,14 @@ namespace Tie_Server
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            UpdateTieFighters();
-            UpdateExplosions();
-            CreateNewFighters();
-            CheckCrosshairHits();
+            Debug.WriteLine("Processing game data");
+            lock (this)
+            {
+                UpdateTieFighters();
+                UpdateExplosions();
+                CreateNewFighters();
+                CheckCrosshairHits();
+            }
         }
 
         /// <summary>
@@ -45,6 +50,7 @@ namespace Tie_Server
         /// </summary>
         private void UpdateTieFighters()
         {
+            Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
             var toRemove = new List<TieFighter<double>>();
             foreach (TieFighter<double> t in tieFighters)
             {

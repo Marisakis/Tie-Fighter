@@ -32,8 +32,8 @@ namespace Networking
                 string packet = totalBuffer.Substring(0, totalBuffer.IndexOf("<EOF>"));
                 totalBuffer = totalBuffer.Substring(totalBuffer.IndexOf("<EOF>") + 5);
 
-                string[] data = Regex.Split(packet, "<EOF>");
-                dataReceiver.handlePacket(data);
+                string[] data = Regex.Split(packet, ",");
+                dataReceiver.handlePacket(data, this);
             }
 
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
