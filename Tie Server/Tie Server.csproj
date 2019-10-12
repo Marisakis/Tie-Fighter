@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,6 +51,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Networking\Networking.csproj">
+      <Project>{ef6908b3-b869-478e-a07e-e12bdc11ca2a}</Project>
+      <Name>Networking</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tie Fighter\Tie Fighter.csproj">
       <Project>{c041e8c8-4423-443a-ab1f-8938d5454ee3}</Project>
       <Name>Tie Fighter</Name>

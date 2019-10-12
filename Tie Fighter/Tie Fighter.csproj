@@ -101,5 +101,11 @@
   <ItemGroup>
     <Content Include="Resources\smallfighter.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Networking\Networking.csproj">
+      <Project>{ef6908b3-b869-478e-a07e-e12bdc11ca2a}</Project>
+      <Name>Networking</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

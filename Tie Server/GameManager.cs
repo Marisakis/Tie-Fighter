@@ -45,7 +45,17 @@ namespace Tie_Server
         /// </summary>
         private void UpdateTieFighters()
         {
-
+            var toRemove = new List<TieFighter<double>>();
+            foreach (TieFighter<double> t in tieFighters)
+            {
+                t.x += (20 / 1000) * 100 * t.TTP;
+                if (t.x > 100)
+                    toRemove.Add(t);
+            }
+            foreach(TieFighter<double> t in toRemove)
+            {
+                tieFighters.Remove(t);
+            }
         }
 
         /// <summary>
@@ -53,7 +63,17 @@ namespace Tie_Server
         /// </summary>
         private void UpdateExplosions()
         {
-
+            var toRemove = new List<Explosion<double>>();
+            foreach(Explosion<double> x in explosions)
+            {
+                x.TTL -= 20;
+                if (x.TTL < 0)
+                    toRemove.Add(x);
+            }
+            foreach (Explosion<double> x in toRemove)
+            {
+                explosions.Remove(x);
+            }
         }
 
         /// <summary>
@@ -61,7 +81,10 @@ namespace Tie_Server
         /// </summary>
         private void CreateNewFighters()
         {
-
+            if (tieFighters.Count < 10)
+            {
+                tieFighters.Add(new TieFighter<double>(0, 100, 50, 50, 3));
+            }
         }
 
         /// <summary>

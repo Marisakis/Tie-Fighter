@@ -4,22 +4,33 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Networking;
 
 namespace Tie_Fighter
 {
-    public partial class FormGame : Form
+    public partial class FormGame : Form, IDataReceiver
     {
-
+        Client client;
 
         public FormGame()
         {
             InitializeComponent();
             DoubleBuffered = true;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            client = new Client(new TcpClient("localhost", 80), this);
+            client.Write("It me <EOF>");
         }
+
+        public void handlePacket(string[] data)
+        {
+            throw new NotImplementedException();
+        }
+
 
         private void FormGame_KeyDown(object sender, KeyEventArgs e)
         {
@@ -57,5 +68,6 @@ namespace Tie_Fighter
             return new Tuple<double, double>(x, y);
         }
 
+        
     }
 }

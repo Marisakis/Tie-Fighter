@@ -2,20 +2,20 @@
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 
-namespace Tie_Server
+namespace Networking
 {
-    internal class Client
+    public class Client
     {
         private TcpClient newTcpClient;
-        private Program program;
+        private IDataReceiver dataReceiver;
         private NetworkStream stream;
         private byte[] buffer = new byte[1024];
         string totalBuffer = "";
 
-        public Client(TcpClient newTcpClient, Program program)
+        public Client(TcpClient newTcpClient, IDataReceiver dataReceiver)
         {
             this.newTcpClient = newTcpClient;
-            this.program = program;
+            this.dataReceiver = dataReceiver;
             this.stream = newTcpClient.GetStream();
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
             
@@ -33,19 +33,14 @@ namespace Tie_Server
                 totalBuffer = totalBuffer.Substring(totalBuffer.IndexOf("<EOF>") + 5);
 
                 string[] data = Regex.Split(packet, "<EOF>");
-                handlePacket(data);
+                dataReceiver.handlePacket(data);
             }
 
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
 
         }
 
-        private void handlePacket(string[] data)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Write(string data)
+        public void Write(string data)
         {
             Console.WriteLine("Sending message: " + data);
             stream.Write(System.Text.Encoding.ASCII.GetBytes(data), 0, data.Length);

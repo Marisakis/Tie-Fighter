@@ -9,7 +9,7 @@ using Networking;
 
 namespace Tie_Server
 {
-    class Program
+    class Program: IDataReceiver
     {
         static void Main(string[] args)
         {
@@ -36,9 +36,14 @@ namespace Tie_Server
         private void OnConnect(IAsyncResult ar)
         {
             var newTcpClient = listener.EndAcceptTcpClient(ar);
-            Console.WriteLine("New client connected, Clients: " + clients.Count);
             clients.Add(new Client(newTcpClient, this));
+            Console.WriteLine("New client connected, Clients: " + clients.Count);
             listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), null);
+        }
+
+        public void handlePacket(string[] data)
+        {
+            Console.WriteLine(data);
         }
     }
 }

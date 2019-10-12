@@ -1,6 +1,7 @@
-﻿namespace Tie_Server
+﻿namespace Networking
 {
-    internal interface IDataReceiver
+    public interface IDataReceiver
     {
+        void handlePacket(string[] data);
     }
 }
