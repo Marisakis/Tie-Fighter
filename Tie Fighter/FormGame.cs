@@ -12,6 +12,8 @@ namespace Tie_Fighter
 {
     public partial class FormGame : Form
     {
+
+
         public FormGame()
         {
             InitializeComponent();
