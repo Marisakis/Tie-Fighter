@@ -44,6 +44,9 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,7 +62,6 @@
     <Compile Include="Controllers\IActionInput.cs" />
     <Compile Include="Controllers\Keyboard.cs" />
     <Compile Include="Controllers\Leap Motion\ILeapEventDelegate.cs" />
-    <Compile Include="Controllers\Leap Motion\ILeapMotionEvent.cs" />
     <Compile Include="Controllers\Leap Motion\LeapEventArgs.cs" />
     <Compile Include="Controllers\Leap Motion\LeapEventListener.cs" />
     <Compile Include="Controllers\Leap Motion\LeapMotionHandler.cs" />
@@ -71,22 +73,46 @@
     <Compile Include="FormGame.Designer.cs">
       <DependentUpon>FormGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormQueue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormQueue.Designer.cs">
+      <DependentUpon>FormQueue.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameObjects\Crosshairs\Crosshair.cs" />
     <Compile Include="GameObjects\Explosions\Explosion.cs" />
     <Compile Include="GameObjects\Fighters\Fighter.cs" />
+    <Compile Include="GameObjects\Fighters\TieFighter.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\HUD\Cockpit.cs" />
+    <Compile Include="GameObjects\HUD\Wallpaper.cs" />
+    <Compile Include="Others\DirectoryManager.cs" />
     <Compile Include="Others\MediaPlayer.cs" />
+    <Compile Include="Others\MediaPlayerHandler.cs" />
+    <Compile Include="Players\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormGame.resx">
       <DependentUpon>FormGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormQueue.resx">
+      <DependentUpon>FormQueue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -106,12 +132,20 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Players\" />
+    <None Include="Resources\tiefighter.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ShooterBG.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="AxWMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="MediaPlayer">
       <Guid>{22D6F304-B0F6-11D0-94AB-0080C74C7E95}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -182,9 +216,18 @@
   <ItemGroup>
     <None Include="Resources\Cockpit.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tieinterceptor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\splashscreen.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tiefighterxwing.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /yr "C:\Users\Dustin\Downloads\Leap_Motion_SDK_Windows_2.3.1\LeapDeveloperKit_2.3.1+31549_win\LeapSDK\lib\x64\Leap.dll" "$(TargetDir)"
-xcopy /yr "C:\Users\Dustin\Downloads\Leap_Motion_SDK_Windows_2.3.1\LeapDeveloperKit_2.3.1+31549_win\LeapSDK\lib\x64\LeapCSharp.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>xcopy /yr "C:\Users\Dustin\Desktop\DocumentsFolderTieFighterShooter\Leap\Leap.dll" "$(TargetDir)"
+xcopy /yr "C:\Users\Dustin\Desktop\DocumentsFolderTieFighterShooter\Leap\LeapCSharp.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

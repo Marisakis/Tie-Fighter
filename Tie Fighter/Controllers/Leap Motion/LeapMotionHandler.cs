@@ -13,9 +13,7 @@ namespace Tie_Fighter.Controllers
 
         public override void Action(LeapMotionEvent eventData)
         {
-            Console.WriteLine("Handling input");
             base.actionInput.MoveTo((int)eventData.x, (int)eventData.y);
-            base.actionInput.Fire();
             if (eventData.tapped)
             {
                 base.actionInput.Fire();

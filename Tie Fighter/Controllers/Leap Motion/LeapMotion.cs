@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Leap;
 using static Leap.Bone;
 using static Leap.Finger;
@@ -28,6 +29,7 @@ namespace Tie_Fighter.Controllers.Leap_Motion
         {
             if (!_formGame.InvokeRequired)
             {
+
                 switch (EventName)
                 {
                     case "onInit":
@@ -70,6 +72,7 @@ namespace Tie_Fighter.Controllers.Leap_Motion
                 {
                     case Gesture.GestureType.TYPE_CIRCLE:
                         Console.WriteLine("Detected circle");
+                        _leapEventArgs.tapped = true;
                         break;
                     case Gesture.GestureType.TYPE_KEY_TAP:
                         Console.WriteLine("Detected tap");
@@ -77,6 +80,7 @@ namespace Tie_Fighter.Controllers.Leap_Motion
                         break;
                     case Gesture.GestureType.TYPE_SWIPE:
                         Console.WriteLine("Detected swipe");
+                        _leapEventArgs.tapped = true;
                         break;
                     case Gesture.GestureType.TYPE_SCREEN_TAP:
                         Console.WriteLine("Detected screen tap");
@@ -106,7 +110,6 @@ namespace Tie_Fighter.Controllers.Leap_Motion
                 int intDegrees = (int)degreesRoll;
 
                 float grab = hand.GrabStrength;
-
             }
         }
 
@@ -137,17 +140,16 @@ namespace Tie_Fighter.Controllers.Leap_Motion
         {
             int appWidth = this._formGame.Width;
             int appHeight = this._formGame.Height;
-            //InteractionBox iBox = frame.InteractionBox;
             InteractionBox iBox = this._controller.Frame().InteractionBox;
-            //Pointable pointable = frame.Pointables.Frontmost;
             Pointable pointable = this._controller.Frame().Pointables.Frontmost;
             Vector leapPoint = pointable.StabilizedTipPosition;
             Vector normalizedPoint = iBox.NormalizePoint(leapPoint, false);
             float appX = normalizedPoint.x * appWidth;
             float appY = (1 - normalizedPoint.y) * appHeight;
             Console.WriteLine("X: "+appX+" Y: "+appY);
-            _leapEventArgs.x = appX;
-            _leapEventArgs.y = appY;
+            _leapEventArgs.x = appX; //(int)appX;
+            _leapEventArgs.y = appY; //(int)appY;
+            _formGame.FormGame_LeapEvent(this._leapEventArgs);
         }
 
     }

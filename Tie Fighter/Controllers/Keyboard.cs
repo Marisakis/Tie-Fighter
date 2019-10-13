@@ -4,8 +4,9 @@ namespace Tie_Fighter.Controllers
 {
     public class Keyboard<KeyboardEvent> : GeneralController<KeyboardEvent, int> where KeyboardEvent : KeyEventArgs
     {
-        private int _sensitivity = 1;
-        private const int _maxValue = 50;
+        private int _minSensitivity = 3;
+        private int _sensitivity = 5;
+        private const int _maxSensitivity = 50;
 
         public Keyboard(IActionInput<int> actionInput) : base(actionInput)
         {
@@ -54,12 +55,12 @@ namespace Tie_Fighter.Controllers
 
         public void Up()
         {
-            base.actionInput.UpdatePosition(0, 1 * _sensitivity);
+            base.actionInput.UpdatePosition(0, -1 * _sensitivity);
         }
 
         public void Down()
         {
-            base.actionInput.UpdatePosition(0, -1 * _sensitivity);
+            base.actionInput.UpdatePosition(0, 1 * _sensitivity);
         }
 
         public void Left()
@@ -74,13 +75,13 @@ namespace Tie_Fighter.Controllers
 
         public void SensUp()
         {
-            if (_sensitivity * 2 < _maxValue)
+            if (_sensitivity * 2 < _maxSensitivity)
                 _sensitivity *= 2;
         }
 
         public void SensDown()
         {
-            if (_sensitivity / 2 > 1)
+            if (_sensitivity / 2 > _minSensitivity)
                 _sensitivity /= 2;
         }
     }

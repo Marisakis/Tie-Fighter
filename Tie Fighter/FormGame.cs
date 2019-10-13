@@ -5,75 +5,123 @@ using Leap;
 using Tie_Fighter.Controllers.Leap_Motion;
 using System.Drawing;
 using Tie_Fighter.GameObjects.HUD;
+using Tie_Fighter.GameObjects.Crosshairs;
+using System.Threading;
+using Tie_Fighter.Others;
+using System.Diagnostics;
+using Tie_Fighter.GameObjects;
+using System.Collections.Generic;
 
 namespace Tie_Fighter
 {
     public partial class FormGame : Form, IActionInput<int>//, ILeapEventDelegate
     {
-        private Tie_Fighter.Others.MediaPlayer mediaPlayer;
+        //Media player
+        private Others.MediaPlayerHandler _mediaPlayerHandler;
+
+        //Event classes
         private Keyboard<KeyEventArgs> _keyboard;
         private Mouse<MouseEventArgs> _mouse;
         private LeapMotionHandler<LeapEventArgs> _leapMotion;
-        private Cockpit<int> cockpit;
+        //Leap
+        private LeapMotion _leap;
+        private Cockpit cockpit;
+
+        //Static elements
+        private Wallpaper _wallpaper;
+        private Crosshair _crosshair;
+        private DirectoryManager _directoryManager;
+        private List<GameObject> _gameObjects;
 
         public FormGame()
         {
+            //Init - standard forms method
             InitializeComponent();
+
+            //Double buffering is needed to prevent flickering.
             DoubleBuffered = true;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            this.mediaPlayer = new Others.MediaPlayer();
+
+            //Create directory manager and media player.
+            this._directoryManager = new DirectoryManager();
+            this._mediaPlayerHandler = new Others.MediaPlayerHandler();
+
+            //Events
             this._keyboard = new Keyboard<KeyEventArgs>(this);
             this._mouse = new Mouse<MouseEventArgs>(this);
             this._leapMotion = new LeapMotionHandler<LeapEventArgs>(this);
-            LeapMotion leapMotion = new LeapMotion(this);
-            this.cockpit = new Cockpit<int>(this.mediaPlayer, 0, 0, 100, 100);
+
+            //Leap
+            this._leap = new LeapMotion(this);
+
+            //GameObjects
+            this.cockpit = new Cockpit(this._mediaPlayerHandler, 0, 0, 100, 100);
+            this._wallpaper = new Wallpaper(this._mediaPlayerHandler, 0, 0, 100, 100);
+            this._crosshair = new Crosshair(this._mediaPlayerHandler, Color.Red, 0, 0, 10, 10);
+
+            this._gameObjects = new List<GameObject>();
+
+
+            //Create game loop
+            CreateTimer();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics graphics = e.Graphics;
+            DrawPlayerCrosshair(graphics);
             DrawCockpit(graphics);
+
+            //Draw each Tie Fighter / Explosion / Crosshair.
+            foreach (GameObject gameObject in _gameObjects)
+                gameObject.Draw(graphics, Width, Height, true);
+
+
             base.OnPaint(e);
+        }
+
+        public void CreateTimer()
+        {
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+            timer.Interval = (5); // in ms
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Start();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            this.Invalidate();
+        }
+
+        public void DrawBG(Graphics graphics)
+        {
+            this._wallpaper.Draw(graphics, Width, Height);
         }
 
         public void DrawCockpit(Graphics graphics)
         {
-            //Bitmap backgroundImage = Properties.Resources.Cockpit;
-            //this.DoubleBuffered = true;
-            //this.SetStyle(ControlStyles.ResizeRedraw, true);
-            //var rc = new Rectangle(0, 0, Width, Height);
-            //graphics.DrawImage(backgroundImage, rc);
-            this.cockpit.Draw(graphics, Width, Height);
+             this.cockpit.Draw(graphics, Width, Height);
+        }
 
+        public void DrawPlayerCrosshair(Graphics graphics)
+        {
+            this._crosshair.Draw(graphics, Width, Height, true);
         }
 
         public void Fire()
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string path2 = $@"{Application.StartupPath}\TieFighterShooterMP3\TieFighter\tie_fire.mp3";
-            //  Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
-            //  string pathToFile = $@"{path}\TieFighterShooterMP3\TieFighter\tie_fire.mp3";
-            this.mediaPlayer.PlayFile(path2);
+            this._mediaPlayerHandler.PlayFile(_directoryManager.FireSound, null);
         }
 
         public void MoveTo(int x, int y)
         {
+            this._crosshair.SetXY(x, y, Width, Height);
         }
 
         public void UpdatePosition(int x, int y)
         {
-        }
-
-        private void FormGame_KeyDown(object sender, KeyEventArgs e)
-        {
-            _keyboard.Action(e);
-        }
-
-        private void FormGame_MouseClick(object sender, MouseEventArgs e)
-        {
-            _mouse.Action(e);
-
-            // Console.WriteLine("You Clicked");
+            this._crosshair.percentageX += x;
+            this._crosshair.percentageY += y;
         }
 
         public void FormGame_LeapEvent(LeapEventArgs e)
@@ -81,9 +129,24 @@ namespace Tie_Fighter
             _leapMotion.Action(e);
         }
 
-        private void FormGame_Load(object sender, EventArgs e)
+        private void FormGamePictureBox_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void FormGamePictureBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            _mouse.Action(e);
+        }
+
+        private void FormGamePictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            _mouse.Action(e);
+        }
+
+        private void FormGamePictureBox_KeyDown(object sender, KeyEventArgs e)
+        {
+           _keyboard.Action(e);
         }
     }
 }

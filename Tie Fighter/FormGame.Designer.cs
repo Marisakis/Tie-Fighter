@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace Tie_Fighter
+﻿namespace Tie_Fighter
 {
     partial class FormGame
     {
@@ -35,16 +33,19 @@ namespace Tie_Fighter
             // 
             // FormGame
             // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackgroundImage = global::Tie_Fighter.Properties.Resources.ShooterBG2;
+            resources.ApplyResources(this, "$this");
+            this.Cursor = System.Windows.Forms.Cursors.Cross;
             this.DoubleBuffered = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormGame";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.FormGame_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGame_KeyDown);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FormGame_MouseClick);
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.Load += new System.EventHandler(this.FormGamePictureBox_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormGamePictureBox_KeyDown);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FormGamePictureBox_MouseClick);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormGamePictureBox_MouseMove);
             this.ResumeLayout(false);
 
         }
@@ -52,4 +53,3 @@ namespace Tie_Fighter
         #endregion
     }
 }
-
