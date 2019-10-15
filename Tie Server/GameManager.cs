@@ -7,12 +7,16 @@ using System.Timers;
 
 using System.Diagnostics;
 using Tie_Server.GameObjects;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Tie_Server
 {
 
     class GameManager
     {
+        const int timerPeriod = 1000;
         private Timer updateTimer;
         private List<Target> tieFighters;
         private List<Explosion> explosions;
@@ -23,16 +27,41 @@ namespace Tie_Server
         {
             tieFighters = new List<Target>();
             explosions = new List<Explosion>();
-            //crosshairs = new Dictionary<int, Crosshair>();
             players = new List<Player>();
 
-            var timerDelegate = new System.Timers.Timer(20); // 
+            var timerDelegate = new System.Timers.Timer(timerPeriod); // 
             timerDelegate.Elapsed += OnTimedEvent;
             timerDelegate.AutoReset = true;
             timerDelegate.Enabled = true;
 
         }
 
+        public dynamic getGameData()
+        {
+            lock (this)
+            {
+                JArray jFighters = JArray.FromObject(tieFighters);
+                JArray jExplosions = JArray.FromObject(explosions);
+                JArray jPlayers = JArray.FromObject(players);
+                dynamic data = new JObject();
+                data.fighters = jFighters;
+                data.explosions = jExplosions;
+                data.player = jPlayers;
+
+
+                var jsonString = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() });
+                Console.WriteLine(jsonString);
+                return data;
+            }
+        }
+
+        public dynamic GetDynamicTieFighter(Target target)
+        {
+            dynamic dynamicTarget = new JObject();
+            dynamicTarget = JObject.FromObject(target);
+            Console.WriteLine(dynamicTarget);
+            return dynamicTarget;
+        }
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -44,6 +73,7 @@ namespace Tie_Server
                 CreateNewFighters();
                 CheckCrosshairHits();
             }
+            getGameData();
         }
 
         /// <summary>
@@ -55,11 +85,11 @@ namespace Tie_Server
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
-                t.x += (int) ((20 / 1000.0) * 100 * t.TTP);
+                t.x += (int)( t.TTP / timerPeriod);
                 if (t.x > 100)
                     toRemove.Add(t);
             }
-            foreach(Target t in toRemove)
+            foreach (Target t in toRemove)
             {
                 tieFighters.Remove(t);
             }
@@ -71,7 +101,7 @@ namespace Tie_Server
         private void UpdateExplosions()
         {
             var toRemove = new List<Explosion>();
-            foreach(Explosion x in explosions)
+            foreach (Explosion x in explosions)
             {
                 x.TTL -= 20;
                 if (x.TTL < 0)
@@ -88,9 +118,9 @@ namespace Tie_Server
         /// </summary>
         private void CreateNewFighters()
         {
-            if (tieFighters.Count < 10)
+            if (tieFighters.Count < 1)
             {
-                tieFighters.Add(new Target(3, 16, 0, 100, 50, 50)); // id management not in yet
+                tieFighters.Add(new Target(5000, 16, 0, 50, 10, 10)); // id management not in yet
             }
         }
 

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D9A6623E-27EA-40B1-81DC-98BDF5BFC870}</ProjectGuid>
+    <ProjectGuid>{72DB2357-DAB7-49EF-8977-5A99225343FA}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Tie_Server</RootNamespace>
-    <AssemblyName>Tie Server</AssemblyName>
+    <RootNamespace>Networking</RootNamespace>
+    <AssemblyName>Networking</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -46,24 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameManager.cs" />
-    <Compile Include="GameObjects\Crosshair.cs" />
-    <Compile Include="GameObjects\Explosion.cs" />
-    <Compile Include="GameObjects\GameObject.cs" />
-    <Compile Include="GameObjects\Target.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="IDataReceiver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Networking2\Networking.csproj">
-      <Project>{72DB2357-DAB7-49EF-8977-5A99225343FA}</Project>
-      <Name>Networking</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

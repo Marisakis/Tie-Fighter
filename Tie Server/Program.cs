@@ -10,21 +10,28 @@ using Networking;
 
 namespace Tie_Server
 {
-    class Program: IDataReceiver
+    public class Program: IDataReceiver
     {
         static void Main(string[] args)
         {
             new Program();
+
         }
 
         TcpListener listener;
         private List<Client> clients = new List<Client>();
         private Dictionary<String, Client> namedClients = new Dictionary<string, Client>();
 
-        Program()
+        private Program()
         {
             Console.WriteLine("Starting server");
+            Console.WriteLine("Json test");
+            GameManager newManager = new GameManager();
+            newManager.getGameData();
             StartAcceptingClientConnections();
+            
+
+
         }
 
         private void StartAcceptingClientConnections()
@@ -43,6 +50,12 @@ namespace Tie_Server
             listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), null);
         }
 
+        public void handlePacket(dynamic data, Client sender)
+        {
+
+        }
+
+        [Obsolete]
         public void handlePacket(string[] data, Client sender)
         {
             int i = 0;

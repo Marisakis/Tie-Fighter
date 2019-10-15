@@ -228,6 +228,12 @@
   <ItemGroup>
     <None Include="Resources\tiefighterxwing.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Networking2\Networking.csproj">
+      <Project>{72db2357-dab7-49ef-8977-5a99225343fa}</Project>
+      <Name>Networking</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /yr "C:\Users\Sebco\OneDrive\Documenten\TieFighter\Leap\Leap.dll" "$(TargetDir)"
