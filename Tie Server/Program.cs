@@ -22,6 +22,7 @@ namespace Tie_Server
         TcpListener listener;
         private List<Client> clients = new List<Client>();
         private Dictionary<String, Client> namedClients = new Dictionary<string, Client>();
+        private int clientCounter = 0;
 
         private Program()
         {
@@ -35,7 +36,7 @@ namespace Tie_Server
             while(true)
             {
                 Console.ReadKey();
-                namedClients["newName"].Write(gameManager.GetGameData());
+                namedClients["seb"].Write(gameManager.GetGameData());
             }
         }
 
@@ -56,10 +57,26 @@ namespace Tie_Server
 
         public void handlePacket(dynamic data, Client sender)
         {
-            Console.WriteLine("received a message in program");
-            namedClients.Add("newName", sender);
-            this.gameManager.players.Add(new Player("newName"));
-            Console.WriteLine("client identified");
+            //Console.WriteLine("received a message in program");
+            Console.WriteLine("Data type: " + data.type);
+            switch ((string)data.type)
+            {
+                case "login":
+                    namedClients.Add((string)data.name, sender);
+                    //Console.WriteLine("x");
+                    //Console.WriteLine("Added client: " + (string)data.name + " to dictionary");
+                    Player newPlayer = new Player((string)data.name);
+                    newPlayer.id = clientCounter++;
+                    this.gameManager.players.Add(newPlayer);
+                    break;
+                case "crosshair":
+                    this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
+                    break;
+                 default:
+                    Console.WriteLine("Data type not recognised");
+                    break;
+                 
+            }
         }
 
      

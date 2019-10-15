@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tie_Server.GameObjects
 {
-    abstract class GameObject
+    public abstract class GameObject
     {
        
         public int id { get; set; }

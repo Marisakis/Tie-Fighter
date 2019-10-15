@@ -21,6 +21,7 @@ namespace Tie_Server
         private List<Explosion> explosions;
         //private Dictionary<int, Crosshair> crosshairs;
         public List<Player> players;
+        private int targetCounter = 0
 
         public GameManager()
         {
@@ -76,6 +77,27 @@ namespace Tie_Server
 
         }
 
+        internal void UpdatePlayerCrosshair(dynamic clientID, dynamic crosshair)
+        {
+            int playerID = clientID;
+            int x = crosshair.x;
+            int y = crosshair.y;
+            bool isFiring = crosshair.isFiring;
+
+            Player player = FindPlayerByID(playerID);
+            if (player != null)
+                player.UpdateCrosshair(x, y, isFiring);
+        }
+
+        public Player FindPlayerByID(int playerID)
+        {
+            foreach (Player player in players)
+                if (player.id == playerID)
+                    return player;
+            return null;
+        }
+
+
         /// <summary>
         /// This method moves all existing TieFighters over the screen. It also checks for fighters that have exceeded screen boundaries
         /// </summary>
@@ -85,7 +107,7 @@ namespace Tie_Server
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
-                
+
                 t.x += (100.0 / (t.TTP / timerPeriod));
                 if (t.x > 100)
                     toRemove.Add(t);
@@ -121,7 +143,7 @@ namespace Tie_Server
         {
             if (tieFighters.Count < 1)
             {
-                tieFighters.Add(new Target(5000, 16, 0, 50, 10, 10)); // id management not in yet
+                tieFighters.Add(new Target(5000, targetCounter++, 0, 50, 10, 10)); // id management not in yet
             }
         }
 

@@ -60,6 +60,7 @@ namespace Tie_Fighter
                 if (client.GetIsConnected())
                 {
                     dynamic login = new JObject();
+                    login.type = "login";
                     login.name = name;
                     client.Write(login);
                     return true;

@@ -15,14 +15,20 @@ namespace Tie_Server
             this.name = name;
             this.id = 500;
             this.score = 0;
-            this.crosshair = new Crosshair();
+            this.crosshair = new Crosshair(0,-10,-10,10,10);
         }
 
-        int id { get; set; }
-        string name { get; set; }
-        int score { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public int score { get; set; }
 
         Crosshair crosshair { get; set; }
 
+        internal void UpdateCrosshair(int x, int y, bool isFiring)
+        {
+            this.crosshair.x = (double)x;
+            this.crosshair.y = (double)y;
+            this.crosshair.isFiring = isFiring;
+        }
     }
 }
