@@ -17,11 +17,10 @@ namespace Tie_Server
     class GameManager
     {
         const int timerPeriod = 1000;
-        private Timer updateTimer;
         private List<Target> tieFighters;
         private List<Explosion> explosions;
         //private Dictionary<int, Crosshair> crosshairs;
-        private List<Player> players;
+        public List<Player> players;
 
         public GameManager()
         {
@@ -36,7 +35,7 @@ namespace Tie_Server
 
         }
 
-        public dynamic getGameData()
+        public dynamic GetGameData()
         {
             lock (this)
             {
@@ -49,19 +48,19 @@ namespace Tie_Server
                 data.player = jPlayers;
 
 
-                var jsonString = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() });
-                Console.WriteLine(jsonString);
+                //var jsonString = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() });
+                //Console.WriteLine(jsonString);
                 return data;
             }
         }
 
-        public dynamic GetDynamicTieFighter(Target target)
+        /*public dynamic GetDynamicTieFighter(Target target)
         {
             dynamic dynamicTarget = new JObject();
             dynamicTarget = JObject.FromObject(target);
             Console.WriteLine(dynamicTarget);
             return dynamicTarget;
-        }
+        }*/
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -73,7 +72,8 @@ namespace Tie_Server
                 CreateNewFighters();
                 CheckCrosshairHits();
             }
-            getGameData();
+            GetGameData(); // send to clients
+
         }
 
         /// <summary>
@@ -85,7 +85,8 @@ namespace Tie_Server
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
-                t.x += (int)( t.TTP / timerPeriod);
+                
+                t.x += (100.0 / (t.TTP / timerPeriod));
                 if (t.x > 100)
                     toRemove.Add(t);
             }

@@ -8,7 +8,7 @@ namespace Tie_Server.GameObjects
 {
     class Explosion: GameObject
     {
-        public Explosion(int TTL, int id, int x, int y, int width, int height) : base(id, x, y, width, height)
+        public Explosion(int TTL, int id, double x, double y, int width, int height) : base(id, x, y, width, height)
         {
             this.TTL = TTL;
         }

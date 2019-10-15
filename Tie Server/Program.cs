@@ -18,6 +18,7 @@ namespace Tie_Server
 
         }
 
+        GameManager gameManager;
         TcpListener listener;
         private List<Client> clients = new List<Client>();
         private Dictionary<String, Client> namedClients = new Dictionary<string, Client>();
@@ -25,21 +26,24 @@ namespace Tie_Server
         private Program()
         {
             Console.WriteLine("Starting server");
-            Console.WriteLine("Json test");
-            GameManager newManager = new GameManager();
-            newManager.getGameData();
+            this.gameManager  = new GameManager();
+
+            /*Console.WriteLine("Json test");
+            gameManager.GetGameData();
+*/
             StartAcceptingClientConnections();
-            
-
-
+            while(true)
+            {
+                Console.ReadKey();
+                namedClients["newName"].Write(gameManager.GetGameData());
+            }
         }
 
         private void StartAcceptingClientConnections()
         {
             listener = new TcpListener(IPAddress.Any, 80);
             listener.Start();
-            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), null);
-            Console.ReadKey();
+            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
         }
 
         private void OnConnect(IAsyncResult ar)
@@ -47,49 +51,17 @@ namespace Tie_Server
             var newTcpClient = listener.EndAcceptTcpClient(ar);
             clients.Add(new Client(newTcpClient, this));
             Console.WriteLine("New client connected, Clients: " + clients.Count);
-            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), null);
+            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
         }
 
         public void handlePacket(dynamic data, Client sender)
         {
-
+            Console.WriteLine("received a message in program");
+            namedClients.Add("newName", sender);
+            this.gameManager.players.Add(new Player("newName"));
+            Console.WriteLine("client identified");
         }
 
-        [Obsolete]
-        public void handlePacket(string[] data, Client sender)
-        {
-            int i = 0;
-            while (data.Length > i)
-            {
-                switch (data[i])
-                {
-                    case "<login>":
-                        {
-                            Debug.WriteLine("Handling player login");
-                            Console.WriteLine("Player is called: " + data[i+1]);
-                            i += 2;
-                            //Todo: actually handle player login
-                            break;
-                        }
-                    case "<crosshair>":
-                        {
-                            Debug.WriteLine("Handling crosshair position");
-                            double x = Convert.ToDouble(data[i + 1]);
-                            double y = Convert.ToDouble(data[i + 2]);
-                            Boolean firing = Boolean.Parse(data[i + 3]);
-                            i += 3;
-                            Console.WriteLine("Fired at "+ x + "," + y + " " + firing);
-                            //todo actually handle crosshair data
-                            break;
-                        }
-                    case "":
-                        {
-                            Debug.WriteLine("Empty data string");
-                            i++;
-                            break;
-                        }
-                }
-            }
-        }
+     
     }
 }

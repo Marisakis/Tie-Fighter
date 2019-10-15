@@ -8,7 +8,7 @@ namespace Tie_Server.GameObjects
 {
     class Target: GameObject
     {
-        public Target(int TTP, int id, int x, int y, int width, int height) : base(id, x, y, width, height)
+        public Target(int TTP, int id, double x, double y, int width, int height) : base(id, x, y, width, height)
         {
             this.TTP = TTP;
         }

@@ -11,11 +11,18 @@ using Tie_Fighter.Others;
 using System.Diagnostics;
 using Tie_Fighter.GameObjects;
 using System.Collections.Generic;
+using Networking;
+using Newtonsoft.Json.Linq;
+using Tie_Fighter.Players;
+using Newtonsoft.Json;
 
 namespace Tie_Fighter
 {
-    public partial class FormGame : Form, IActionInput<int>//, ILeapEventDelegate
+    public partial class FormGame : Form, IActionInput<int>, IDataReceiver //, ILeapEventDelegate
     {
+        //Networking
+        private Client client;
+
         //Media player
         private Others.MediaPlayerHandler _mediaPlayerHandler;
 
@@ -33,8 +40,11 @@ namespace Tie_Fighter
         private DirectoryManager _directoryManager;
         private List<GameObject> _gameObjects;
 
-        public FormGame()
+        public FormGame(Client client)
         {
+            this.client = client;
+            client.SetDataReceiver(this);
+
             //Init - standard forms method
             InitializeComponent();
 
@@ -152,6 +162,27 @@ namespace Tie_Fighter
         private void FormGamePictureBox_KeyDown(object sender, KeyEventArgs e)
         {
            _keyboard.Action(e);
+        }
+
+        public void handlePacket(dynamic data, Client sender)
+        {
+            Console.WriteLine(data);
+            lock(_gameObjects)
+            {
+
+                JArray jFighters = data.fighters;
+                JArray jExplosions = data.explosions;
+                JArray jPlayers = data.players;
+
+                for (int i = 0; i < jPlayers.Count; i++)
+                {
+                    dynamic jPlayer = jPlayers[i];
+                    Console.WriteLine($"Name: {jPlayer.name}, Score: {jPlayer.score}");
+                }
+                /*List<Player> players = jPlayers.ToObject<List<Player>>();
+                List<Player> players = JArray.ToObject<List<Player>>(jPlayers);*/
+
+            }
         }
     }
 }

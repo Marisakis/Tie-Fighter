@@ -10,12 +10,12 @@ namespace Tie_Server.GameObjects
     {
        
         public int id { get; set; }
-        public int x { get; set; }
-        public int y { get; set; }
+        public double x { get; set; }
+        public double y { get; set; }
         public int width { get; set; }
         public int height { get; set; }
 
-        protected GameObject(int id, int x, int y, int width, int height)
+        protected GameObject(int id, double x, double y, int width, int height)
         {
             this.id = id;
             this.x = x;
