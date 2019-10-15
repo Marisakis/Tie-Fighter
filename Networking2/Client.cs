@@ -20,9 +20,13 @@ namespace Networking
         {
             this.newTcpClient = newTcpClient;
             this.dataReceiver = dataReceiver;
+            Connect();
+        }
+
+        public void Connect()
+        {
             this.stream = newTcpClient.GetStream();
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
-            
         }
 
         public void SetDataReceiver(IDataReceiver dataReceiver)

@@ -36,7 +36,11 @@ namespace Tie_Server
             while(true)
             {
                 Console.ReadKey();
-                namedClients["seb"].Write(gameManager.GetGameData());
+                foreach (Client client in clients)
+                {
+                    client.Write(gameManager.GetGameData());
+
+                }
             }
         }
 

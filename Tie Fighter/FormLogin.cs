@@ -30,8 +30,10 @@ namespace Tie_Fighter
         private void LoginBtn_Click(object sender, EventArgs e)
         {
             string name = userNameField.Text;
-            string IPAddr = ipAddressField.Text;
-            if (AttemptConnect(name, IPAddr))
+            string ipAddress = ipAddressField.Text;
+            int serverPortNumber = Int32.Parse(serverPortField.Text);
+
+            if (AttemptConnect(name, ipAddress, serverPortNumber))
             {
                 // this.Hide();
                 FormQueue formQueue = new FormQueue(this.client);
@@ -39,34 +41,39 @@ namespace Tie_Fighter
             }
         }
 
-        public bool AttemptConnect(string name, string IP)
+        public bool AttemptConnect(string name, string IP, int serverPortNumber)
         {
-            bool succeed = Connect(name, IP);
+            bool succeed = Connect(name, IP, serverPortNumber);
             if (!succeed)
             {
-                DialogResult result = MessageBox.Show($"Server on IP-address: \"{IP}\" was not found, retry?", "Connection error",
-                    MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (result == DialogResult.OK)
-                    succeed = AttemptConnect(name, IP);
+                    DialogResult result = MessageBox.Show($"Server on IP-address: \"{IP}\" with port: \"{serverPortNumber}\" was not found. Retry?", "IP / port not accepting - error",
+                        MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    if (result == DialogResult.OK)
+                        succeed = AttemptConnect(name, IP, serverPortNumber);
             }
             return succeed;
         }
 
-        public bool Connect(string name, string IP)
+        public bool Connect(string name, string ip, int serverPortNumber)
         {
-            this.client = new Client(new TcpClient(IP, 1717), this);
-            for (int i = 0; i < 1001; i++)
+            try
             {
-                if (client.GetIsConnected())
+                this.client = new Client(new TcpClient(ip, serverPortNumber), this);
+                int maxConnectTimeMillis = 1000;
+                for (int i = 0; i < maxConnectTimeMillis; i++)
                 {
-                    dynamic login = new JObject();
-                    login.type = "login";
-                    login.name = name;
-                    client.Write(login);
-                    return true;
+                    if (client.GetIsConnected())
+                    {
+                        dynamic login = new JObject();
+                        login.type = "login";
+                        login.name = name;
+                        client.Write(login);
+                        return true;
+                    }
+                    System.Threading.Thread.Sleep(1);
                 }
-                System.Threading.Thread.Sleep(1);
             }
+            catch {}
             return false;
         }
 

@@ -16,6 +16,7 @@ using Networking;
 using Newtonsoft.Json.Linq;
 using Tie_Fighter.Players;
 using Newtonsoft.Json;
+using Tie_Fighter.GameObjects.Explosions;
 
 namespace Tie_Fighter
 {
@@ -39,8 +40,15 @@ namespace Tie_Fighter
         private Wallpaper _wallpaper;
         private Crosshair _crosshair;
         private DirectoryManager _directoryManager;
+
+        //Game objects
         private List<GameObject> _gameObjects;
+        private List<TieFighter> _tieFighters;
+        private List<Explosion> _explosions;
+        private List<Crosshair> _crosshairs;
+
         private List<Player> players;
+        private bool addingNow = false;
 
         public FormGame(Client client)
         {
@@ -73,7 +81,12 @@ namespace Tie_Fighter
             string crosshairURL = _directoryManager.Crosshair(0);
             this._crosshair = new Crosshair(this._mediaPlayerHandler, crosshairURL, 0, 0, 10, 10);
 
+            //GameObjects
             this._gameObjects = new List<GameObject>();
+            this._tieFighters = new List<TieFighter>();
+            this._explosions = new List<Explosion>();
+            this._crosshairs = new List<Crosshair>();
+
             this.players = new List<Player>();
 
 
@@ -91,9 +104,12 @@ namespace Tie_Fighter
             DrawCockpit(graphics);
 
             //Draw each Tie Fighter / Explosion / Crosshair.
-            foreach (GameObject gameObject in _gameObjects)
-                gameObject.Draw(graphics, Width, Height, true);
-
+            foreach (TieFighter tieFighter in _tieFighters)
+                tieFighter.Draw(graphics, Width, Height, false);
+            foreach (Explosion explosion in _explosions)
+                explosion.Draw(graphics, Width, Height, false);
+            foreach (Crosshair crosshair in _crosshairs)
+                crosshair.Draw(graphics, Width, Height, true);
 
             base.OnPaint(e);
         }
@@ -101,7 +117,7 @@ namespace Tie_Fighter
         public void CreateTimer()
         {
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = (5); // in ms
+            timer.Interval = (15); // in ms
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
         }
@@ -118,7 +134,7 @@ namespace Tie_Fighter
 
         public void DrawCockpit(Graphics graphics)
         {
-             this.cockpit.Draw(graphics, Width, Height);
+            this.cockpit.Draw(graphics, Width, Height);
         }
 
         public void DrawPlayerCrosshair(Graphics graphics)
@@ -164,7 +180,7 @@ namespace Tie_Fighter
 
         private void FormGamePictureBox_KeyDown(object sender, KeyEventArgs e)
         {
-           _keyboard.Action(e);
+            _keyboard.Action(e);
         }
 
         public Player FindPlayerByID(int playerID)
@@ -178,7 +194,7 @@ namespace Tie_Fighter
         public TieFighter FindFighterByID(int fighterID)
         {
             foreach (TieFighter fighter in _gameObjects)
-         
+
                 if (fighter.id == fighterID)
                     return fighter;
             return null;
@@ -187,44 +203,11 @@ namespace Tie_Fighter
         public void handlePacket(dynamic data, Client sender)
         {
             Console.WriteLine(data);
-            lock(_gameObjects)
-            {
-
-                JArray jFighters = data.fighters;
-                JArray jExplosions = data.explosions;
-                JArray jPlayers = data.players;
-
-                /*for (int i = 0; i < jPlayers.Count; i++)
-                {
-                    dynamic jPlayer = jPlayers[i];
-                    Player player = FindPlayerByID(jPlayer.id);
-                    player.UpdateScore((int)jPlayer.score);
-                    //update Crosshairs here!
-                    Console.WriteLine($"Name: {jPlayer.name}, Score: {jPlayer.score}");
-                }
-*/
-                for ( int i = 0; i < jFighters.Count; i++)
-                {
-                    dynamic jFighter = jFighters[i];
-                    TieFighter fighter = FindFighterByID((int)jFighter.id);
-                    if (fighter != null)
-                    {
-                        fighter.percentageX = (int)jFighter.x;
-                        fighter.percentageY = (int)jFighter.y;
-                    }
-                    else
-                    {
-                        TieFighter newFighter = new TieFighter(this._mediaPlayerHandler, (int)jFighter.x, (int)jFighter.y, (int)jFighter.width, (int)jFighter.height);
-                        _gameObjects.Add(newFighter);
-                    }
-                    //if fighter is known by client but not by server, remove it
-                    
-
-                }
-                /*List<Player> players = jPlayers.ToObject<List<Player>>();
-                List<Player> players = JArray.ToObject<List<Player>>(jPlayers);*/
-
-            }
+            addingNow = true;
+            JArray jFighters = data.fighters;
+            JArray jExplosions = data.explosions;
+            JArray jPlayers = data.players;
+            Console.WriteLine(data);
         }
     }
 }
