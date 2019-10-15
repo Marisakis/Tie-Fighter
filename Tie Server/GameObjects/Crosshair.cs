@@ -8,5 +8,6 @@ namespace Tie_Server.GameObjects
 {
     class Crosshair
     {
+        public Boolean isFiring { get; set; }
     }
 }

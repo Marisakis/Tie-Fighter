@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace Tie_Server.GameObjects
 {
-    class Target
+    class Target: GameObject
     {
+        public Target(int TTP, int id, int x, int y, int width, int height) : base(id, x, y, width, height)
+        {
+            this.TTP = TTP;
+        }
+
+        public int TTP { get; set; }
+
+        
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using Newtonsoft;
+using Newtonsoft.Json;
 
 namespace Networking
 {
@@ -32,7 +34,7 @@ namespace Networking
                 string packet = totalBuffer.Substring(0, totalBuffer.IndexOf("<EOF>"));
                 totalBuffer = totalBuffer.Substring(totalBuffer.IndexOf("<EOF>") + 5);
 
-                string[] data = Regex.Split(packet, ",");
+                dynamic data = JsonConvert.DeserializeObject(packet);
                 dataReceiver.handlePacket(data, this);
             }
 
