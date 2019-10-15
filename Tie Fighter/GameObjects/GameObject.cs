@@ -10,6 +10,7 @@ namespace Tie_Fighter.GameObjects
         protected Bitmap bitmap;
         protected Others.MediaPlayerHandler mediaPlayer;
         private Rectangle rectangle;
+        public int id;
 
         public GameObject(Others.MediaPlayerHandler mediaPlayerHandler, int percentageX, int percentageY, int percentageWidth, int percentageHeight)
         {

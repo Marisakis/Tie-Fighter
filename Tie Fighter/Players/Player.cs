@@ -9,9 +9,15 @@ namespace Tie_Fighter.Players
 {
     public class Player
     {
+        public int id;
+
         public string name { get; set; }
         public int score { get; set; }
         public Crosshair crosshair { get; set; }
-        
+
+        internal void UpdateScore(int score)
+        {
+            this.score = score;
+        }
     }
 }

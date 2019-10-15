@@ -42,7 +42,7 @@ namespace Tie_Server
 
         private void StartAcceptingClientConnections()
         {
-            listener = new TcpListener(IPAddress.Any, 80);
+            listener = new TcpListener(IPAddress.Any, 1717);
             listener.Start();
             listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
         }

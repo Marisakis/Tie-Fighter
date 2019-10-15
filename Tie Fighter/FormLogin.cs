@@ -54,7 +54,7 @@ namespace Tie_Fighter
 
         public bool Connect(string name, string IP)
         {
-            this.client = new Client(new TcpClient(IP, 80), this);
+            this.client = new Client(new TcpClient(IP, 1717), this);
             for (int i = 0; i < 1001; i++)
             {
                 if (client.GetIsConnected())

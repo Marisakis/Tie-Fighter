@@ -10,6 +10,7 @@ using System.Threading;
 using Tie_Fighter.Others;
 using System.Diagnostics;
 using Tie_Fighter.GameObjects;
+using Tie_Fighter.GameObjects.Fighters;
 using System.Collections.Generic;
 using Networking;
 using Newtonsoft.Json.Linq;
@@ -39,6 +40,7 @@ namespace Tie_Fighter
         private Crosshair _crosshair;
         private DirectoryManager _directoryManager;
         private List<GameObject> _gameObjects;
+        private List<Player> players;
 
         public FormGame(Client client)
         {
@@ -72,6 +74,7 @@ namespace Tie_Fighter
             this._crosshair = new Crosshair(this._mediaPlayerHandler, crosshairURL, 0, 0, 10, 10);
 
             this._gameObjects = new List<GameObject>();
+            this.players = new List<Player>();
 
 
             //Create game loop
@@ -164,6 +167,23 @@ namespace Tie_Fighter
            _keyboard.Action(e);
         }
 
+        public Player FindPlayerByID(int playerID)
+        {
+            foreach (Player player in players)
+                if (player.id == playerID)
+                    return player;
+            return null;
+        }
+
+        public TieFighter FindFighterByID(int fighterID)
+        {
+            foreach (TieFighter fighter in _gameObjects)
+         
+                if (fighter.id == fighterID)
+                    return fighter;
+            return null;
+        }
+
         public void handlePacket(dynamic data, Client sender)
         {
             Console.WriteLine(data);
@@ -174,10 +194,32 @@ namespace Tie_Fighter
                 JArray jExplosions = data.explosions;
                 JArray jPlayers = data.players;
 
-                for (int i = 0; i < jPlayers.Count; i++)
+                /*for (int i = 0; i < jPlayers.Count; i++)
                 {
                     dynamic jPlayer = jPlayers[i];
+                    Player player = FindPlayerByID(jPlayer.id);
+                    player.UpdateScore((int)jPlayer.score);
+                    //update Crosshairs here!
                     Console.WriteLine($"Name: {jPlayer.name}, Score: {jPlayer.score}");
+                }
+*/
+                for ( int i = 0; i < jFighters.Count; i++)
+                {
+                    dynamic jFighter = jFighters[i];
+                    TieFighter fighter = FindFighterByID((int)jFighter.id);
+                    if (fighter != null)
+                    {
+                        fighter.percentageX = (int)jFighter.x;
+                        fighter.percentageY = (int)jFighter.y;
+                    }
+                    else
+                    {
+                        TieFighter newFighter = new TieFighter(this._mediaPlayerHandler, (int)jFighter.x, (int)jFighter.y, (int)jFighter.width, (int)jFighter.height);
+                        _gameObjects.Add(newFighter);
+                    }
+                    //if fighter is known by client but not by server, remove it
+                    
+
                 }
                 /*List<Player> players = jPlayers.ToObject<List<Player>>();
                 List<Player> players = JArray.ToObject<List<Player>>(jPlayers);*/

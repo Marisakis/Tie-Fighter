@@ -21,7 +21,7 @@ namespace Tie_Server
         private List<Explosion> explosions;
         //private Dictionary<int, Crosshair> crosshairs;
         public List<Player> players;
-        private int targetCounter = 0
+        private int targetCounter = 0;
 
         public GameManager()
         {
@@ -153,7 +153,8 @@ namespace Tie_Server
         /// </summary>
         private void CheckCrosshairHits()
         {
-
+            //Check each crosshair with each tie fighter
+            // if hit, remove fighter, increase score, add new explosion with targetcounter id
         }
 
     }
