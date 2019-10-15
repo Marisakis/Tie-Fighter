@@ -22,7 +22,16 @@ namespace Tie_Fighter.Others
 
         //Video files.
         public string IntroVideo { get; }
-        
+
+        //Image files.
+        public string ImageDir { get; }
+        public string CrosshairDir { get; }
+
+        //Get crosshair url.
+        public string Crosshair(byte number)
+        {
+            return $"{CrosshairDir}/crosshair{number}.png";
+        }
 
         public DirectoryManager()
         {
@@ -48,6 +57,10 @@ namespace Tie_Fighter.Others
                 //Video
                 this.VideoDir = $"{tieFighterPath}/Videos";
                 this.IntroVideo = $"{VideoDir}/GameVideos/intro.mp4";
+
+                //Images
+                this.ImageDir = $"{tieFighterPath}/Images";
+                this.CrosshairDir = $"{ImageDir}/Crosshairs";
             }
         }
     }

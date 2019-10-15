@@ -42,8 +42,8 @@ namespace Tie_Fighter.Controllers.Leap_Motion
                     case "onFrame":
                        // Console.WriteLine("Received frame Leap Motion");
                         DetectGesture(this._controller.Frame());
-                        DetectHandPosition(this._controller.Frame());
-                        DetectFingers(this._controller.Frame());
+                       // DetectHandPosition(this._controller.Frame());
+                       // DetectFingers(this._controller.Frame());
                         DetectCoordinates(this._controller.Frame());
                         break;
                 }
@@ -56,9 +56,9 @@ namespace Tie_Fighter.Controllers.Leap_Motion
 
         public void ConnectHandler()
         {
-            this._controller.EnableGesture(Gesture.GestureType.TYPE_CIRCLE);
+           // this._controller.EnableGesture(Gesture.GestureType.TYPE_CIRCLE);
             this._controller.EnableGesture(Gesture.GestureType.TYPE_KEY_TAP);
-            this._controller.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
+            //this._controller.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
             this._controller.EnableGesture(Gesture.GestureType.TYPE_SCREEN_TAP);
         }
 

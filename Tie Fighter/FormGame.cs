@@ -57,13 +57,18 @@ namespace Tie_Fighter
             //GameObjects
             this.cockpit = new Cockpit(this._mediaPlayerHandler, 0, 0, 100, 100);
             this._wallpaper = new Wallpaper(this._mediaPlayerHandler, 0, 0, 100, 100);
-            this._crosshair = new Crosshair(this._mediaPlayerHandler, Color.Red, 0, 0, 10, 10);
+
+            string crosshairURL = _directoryManager.Crosshair(0);
+            this._crosshair = new Crosshair(this._mediaPlayerHandler, crosshairURL, 0, 0, 10, 10);
 
             this._gameObjects = new List<GameObject>();
 
 
             //Create game loop
             CreateTimer();
+
+            //Hide cursor
+            Cursor.Dispose();
         }
 
         protected override void OnPaint(PaintEventArgs e)

@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackgroundImage = global::Tie_Fighter.Properties.Resources.ShooterBG2;
             resources.ApplyResources(this, "$this");
-            this.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DoubleBuffered = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;

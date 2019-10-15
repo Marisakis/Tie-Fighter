@@ -29,7 +29,7 @@ namespace Tie_Fighter
             string IPAddr = ipAddressField.Text;
             if (AttemptConnect(name, IPAddr))
             {
-                this.Hide();
+               // this.Hide();
                 FormQueue formQueue = new FormQueue();
                 formQueue.Show();
             } 

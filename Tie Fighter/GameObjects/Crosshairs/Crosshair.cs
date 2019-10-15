@@ -7,13 +7,9 @@ namespace Tie_Fighter.GameObjects.Crosshairs
 {
     public class Crosshair : GameObject
     {
-        private System.Drawing.Color _crosshairColor;
-        private System.Drawing.Pen pen;
-        private RectangleF rectangleF;
-
-        public Crosshair(Others.MediaPlayerHandler mediaPlayer, System.Drawing.Color crosshairColor, int x, int y, int width, int height) : base(mediaPlayer, x, y, width, height)
+        public Crosshair(Others.MediaPlayerHandler mediaPlayer, string crosshairURL, int x, int y, int width, int height) : base(mediaPlayer, x, y, width, height)
         {
-            bitmap = Properties.Resources.Cockpit;
+            bitmap =new Bitmap(crosshairURL);
         }
     }
 }
