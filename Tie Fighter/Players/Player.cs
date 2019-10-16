@@ -15,6 +15,9 @@ namespace Tie_Fighter.Players
         public int score { get; set; }
         public Crosshair crosshair { get; set; }
 
+        public Player() { }
+        public Player(string name, int score) { this.name = name; this.score = score; }
+        public Player(string name, int score, Crosshair crosshair) { this.name = name; this.score = score; this.crosshair = crosshair; }
         internal void UpdateScore(int score)
         {
             this.score = score;

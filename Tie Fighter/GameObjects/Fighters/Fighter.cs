@@ -13,15 +13,5 @@ namespace Tie_Fighter.GameObjects
         {
             mediaPlayer.PlayFile(URL, TTP);
         }
-
-        public override bool Equals(object obj)
-        {
-            if(obj.GetType().Equals( this.GetType()))
-            {
-                Fighter f = (Fighter)obj;
-                return (f.id == this.id);
-            }
-            return base.Equals(obj);
-        }
     }
 }

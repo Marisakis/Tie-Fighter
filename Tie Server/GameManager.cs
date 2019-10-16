@@ -48,7 +48,6 @@ namespace Tie_Server
                 data.explosions = jExplosions;
                 data.player = jPlayers;
 
-
                 //var jsonString = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() });
                 //Console.WriteLine(jsonString);
                 return data;

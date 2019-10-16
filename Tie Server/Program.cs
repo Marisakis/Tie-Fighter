@@ -29,9 +29,6 @@ namespace Tie_Server
             Console.WriteLine("Starting server");
             this.gameManager  = new GameManager();
 
-            /*Console.WriteLine("Json test");
-            gameManager.GetGameData();
-*/
             StartAcceptingClientConnections();
             while(true)
             {
