@@ -14,7 +14,7 @@ namespace Networking
         private IDataReceiver dataReceiver;
         private NetworkStream stream;
         private byte[] buffer = new byte[1024];
-        string totalBuffer = "";
+        string totalBuffer = String.Empty;
 
         public Client(TcpClient newTcpClient, IDataReceiver dataReceiver)
         {
@@ -41,10 +41,10 @@ namespace Networking
 
         private void OnRead(IAsyncResult ar)
         {
-            Console.WriteLine("Received a message");
+            //Console.WriteLine("Received a message");
             int receivedBytes = stream.EndRead(ar);
-            totalBuffer += System.Text.Encoding.ASCII.GetString(buffer, 0, receivedBytes);
-            Console.WriteLine(totalBuffer);
+            totalBuffer += Encoding.ASCII.GetString(buffer, 0, receivedBytes);
+            //Console.WriteLine(totalBuffer);
 
             while (totalBuffer.Contains("<EOF>"))
             {

@@ -43,7 +43,7 @@ namespace Tie_Fighter
 
         //Game objects
         private List<GameObject> _gameObjects;
-        private List<TieFighter> _tieFighters;
+        private List<Fighter> _tieFighters;
         private List<Explosion> _explosions;
         private List<Crosshair> _crosshairs;
 
@@ -86,7 +86,7 @@ namespace Tie_Fighter
 
             //GameObjects
             this._gameObjects = new List<GameObject>();
-            this._tieFighters = new List<TieFighter>();
+            this._tieFighters = new List<Fighter>();
             this._explosions = new List<Explosion>();
             this._crosshairs = new List<Crosshair>();
 
@@ -107,11 +107,9 @@ namespace Tie_Fighter
             {
                 System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
                 Graphics graphics = e.Graphics;
-                DrawPlayerCrosshair(graphics);
-                DrawCockpit(graphics);
+                
 
                 //Draw each Tie Fighter / Explosion / Crosshair.
-                //Console.WriteLine("Drawing right now");
                 foreach (TieFighter tieFighter in _tieFighters)
                     tieFighter.Draw(graphics, Width, Height, false);
                 foreach (Explosion explosion in _explosions)
@@ -119,6 +117,8 @@ namespace Tie_Fighter
                 foreach (Crosshair crosshair in _crosshairs)
                     crosshair.Draw(graphics, Width, Height, true);
 
+                DrawPlayerCrosshair(graphics);
+                DrawCockpit(graphics);
                 base.OnPaint(e);
             }
             finally
@@ -214,25 +214,23 @@ namespace Tie_Fighter
 
         public void handlePacket(dynamic data, Client sender)
         {
-            Console.WriteLine(data);
-            Console.Read();
-            JArray jFighters = data.fighters;
-            JArray jExplosions = data.explosions;
-            JArray jPlayers = data.players;
+                JArray jFighters = data.fighters;
+                JArray jExplosions = data.explosions;
+                JArray jPlayers = data.players;
 
-            Fighter[] fighters = GetFighters(jFighters);
-            Explosion[] explosions = GetExplosions(jExplosions);
-            Player[] players = GetPlayers(jPlayers);
-
-
+                Fighter[] fighters = GetFighters(jFighters);
+                Explosion[] explosions = GetExplosions(jExplosions);
+                Player[] players = GetPlayers(jPlayers);
+                HandleFighters(fighters);
         }
 
         public void HandleFighters(Fighter[] fighters)
         {
-            HandleGameObjects(fighters, this._tieFighters);
+            if (_tieFighters!=null)
+            HandleGameObjects(fighters, _tieFighters);
         }
 
-        public void HandleGameObjects(GameObject[] toAddObjects, List<GameObject> existingObjects) 
+        public void HandleGameObjects(Fighter[] toAddObjects, List<Fighter> existingObjects)
         {
             // If id is not in toAddObjects, but is in existingObjects, remove new GameObject.
             for (int i = 0; i < existingObjects.Count; i++)
@@ -249,19 +247,27 @@ namespace Tie_Fighter
                     existingObjects.Remove(existingObjects[i]);
 
             // If id is not in existingObjects, but is in toAddObjects, create new GameObject.
-            List<GameObject> toAdd = new List<GameObject>();
+            List<Fighter> toAdd = new List<Fighter>();
             for (int i = 0; i < toAddObjects.Length; i++)
             {
                 bool found = false;
                 for (int j = 0; j < existingObjects.Count; j++)
                     if (toAddObjects[i].id == existingObjects[j].id)
+                    {
                         found = true;
+                        existingObjects[j].percentageX = toAddObjects[i].percentageX;
+                        existingObjects[j].percentageY = toAddObjects[j].percentageY;
+                        existingObjects[j].TTP = toAddObjects[j].TTP;
+                    }
                 if (!found)
                     toAdd.Add(toAddObjects[i]);
             }
-            foreach (GameObject gameObject in toAdd)
+            foreach (Fighter gameObject in toAdd)
+            {
                 existingObjects.Add(gameObject);
-        } 
+                gameObject.PlayFlySound(_directoryManager.TieFighterFlyBy);
+            }
+        }
 
         public void HandleExplosions(Explosion[] explosions)
         {

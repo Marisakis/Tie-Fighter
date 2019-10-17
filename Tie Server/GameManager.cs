@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-
 using System.Diagnostics;
 using Tie_Server.GameObjects;
 using Newtonsoft.Json.Linq;
@@ -16,12 +15,13 @@ namespace Tie_Server
 
     class GameManager
     {
-        const int timerPeriod = 1000;
+        const int timerPeriod = 50;
         private List<Target> tieFighters;
         private List<Explosion> explosions;
         //private Dictionary<int, Crosshair> crosshairs;
         public List<Player> players;
         private int targetCounter = 0;
+        private bool doFighter = true;
 
         public GameManager()
         {
@@ -69,11 +69,14 @@ namespace Tie_Server
             {
                 UpdateTieFighters();
                 UpdateExplosions();
-                CreateNewFighters();
+                if (doFighter)
+                {
+                    CreateNewFighters();
+                    doFighter = false;
+                }
                 CheckCrosshairHits();
             }
-            GetGameData(); // send to clients
-
+           // GetGameData(); // send to clients
         }
 
         internal void UpdatePlayerCrosshair(dynamic clientID, dynamic crosshair)
@@ -142,7 +145,7 @@ namespace Tie_Server
         {
             if (tieFighters.Count < 1)
             {
-                tieFighters.Add(new Target(5000, targetCounter++, 0, 50, 10, 10)); // id management not in yet
+                tieFighters.Add(new Target(1000, targetCounter++, 0, 50, 10, 10)); // id management not in yet
             }
         }
 
