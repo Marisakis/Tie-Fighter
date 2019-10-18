@@ -69,14 +69,13 @@ namespace Tie_Server
             {
                 UpdateTieFighters();
                 UpdateExplosions();
-                if (doFighter)
-                {
+                /*if (doFighter)
+                {*/
                     CreateNewFighters();
-                    doFighter = false;
-                }
+                 /*   doFighter = false;
+                }*/
                 CheckCrosshairHits();
             }
-           // GetGameData(); // send to clients
         }
 
         internal void UpdatePlayerCrosshair(dynamic clientID, dynamic crosshair)
@@ -139,13 +138,13 @@ namespace Tie_Server
         }
 
         /// <summary>
-        /// This method checks if the amount of fighters is beneath a certain trehshold and adds new ones if needed
+        /// This method checks if the amount of fighters is beneath a certain trehshold and adds one if needed
         /// </summary>
         private void CreateNewFighters()
         {
-            if (tieFighters.Count < 1)
+            if (tieFighters.Count < 10)
             {
-                tieFighters.Add(new Target(1000, targetCounter++, 0, 50, 10, 10)); // id management not in yet
+                tieFighters.Add(new Target(1000, targetCounter++, 0, 50, 10, 10)); 
             }
         }
 

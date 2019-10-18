@@ -25,6 +25,10 @@ namespace Tie_Server
         private int clientCounter = 0;
         private Object _lockObj = new object();
 
+        private void StartNewGame()
+        {
+
+        }
         private Program()
         {
             Console.WriteLine("Starting server");
