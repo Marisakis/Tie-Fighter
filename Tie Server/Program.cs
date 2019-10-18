@@ -20,33 +20,32 @@ namespace Tie_Server
 
         }
 
-        GameManager gameManager;
         TcpListener listener;
         private List<Client> clients = new List<Client>();
         private Dictionary<String, Client> namedClients = new Dictionary<string, Client>();
         private int clientCounter = 0;
         private Object _lockObj = new object();
-
-        private void StartNewGame()
-        {
-
-        }
+        private List<Game> games = new List<Game>();
+ 
         private Program()
         {
             Console.WriteLine("Starting server");
-            this.gameManager = new GameManager();
-
             StartAcceptingClientConnections();
+            games.Add(new Game());
             while (true)
             {
                 bool lockWasTaken = false;
                 try
                 {
                     System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
-                    foreach (Client client in clients)
+                    foreach(Game game in games)
                     {
-                        client.Write(gameManager.GetGameData());
+                        if(game.gameStatus == GameStatus.Running)
+                        {
+                            game.Tick();
+                        }
                     }
+
                 }
                 finally
                 {
@@ -78,6 +77,18 @@ namespace Tie_Server
             }
         }
 
+        public static void handleHighscoreRequest ( Client sender)
+        {
+            List<HighScore> highscores = Game.GetHighScoresFromFile();
+            dynamic reply = new JObject();
+            reply.type = "highscores";
+            JArray array = new JArray();
+            foreach (HighScore h in highscores)
+                array.Add(JsonConvert.SerializeObject(h));
+            reply.data = array;
+            sender.Write(reply);
+        }
+
         public void handlePacket(dynamic data, Client sender)
         {
             //Console.WriteLine("received a message in program");
@@ -88,20 +99,14 @@ namespace Tie_Server
                     namedClients.Add((string)data.name, sender);
                     Player newPlayer = new Player((string)data.name);
                     newPlayer.id = clientCounter++;
-                    this.gameManager.players.Add(newPlayer);
-                    break;
-                case "crosshair":
-                    this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
+                    newPlayer.client = sender;
+                    Game currentLobby = games.Last<Game>();
+                    if (currentLobby.gameStatus != GameStatus.Lobby)
+                        games.Add(new Game());
+                    games.Last<Game>().AddPlayer(newPlayer);
                     break;
                 case "highscorerequest":
-                    List<HighScore> highscores = Game.GetHighScoresFromFile();
-                    dynamic reply = new JObject();
-                    reply.type = "highscores";
-                    JArray array = new JArray();
-                    foreach(HighScore h in highscores)
-                        array.Add(JsonConvert.SerializeObject(h));
-                    reply.data = array;
-                    sender.Write(reply);
+                    handleHighscoreRequest(sender);
                     break;
                 default:
                     Console.WriteLine("Data type not recognised");
@@ -109,7 +114,5 @@ namespace Tie_Server
 
             }
         }
-
-
     }
 }

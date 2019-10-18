@@ -92,33 +92,8 @@ namespace Tie_Fighter
             {
                 case "loginAccept":
                     break;
-                case "highscores":
-                    
-                    StringBuilder builder = new StringBuilder();
-                    List<HighScore> highscores = new List<HighScore>();
-                    if (data.data != null)
-                    {
-                        dynamic scores = data.data;
-                        for (int i = 0; i < scores.Count; i++)
-                        {
-                            dynamic value = scores[i];
-                            value = value.Value;
-                            HighScore highScore = JsonConvert.DeserializeObject<HighScore>(value.ToString());
-                            //HighScore highScore = new HighScore((string)value.Value<string>("name"),(int)value.Value<int>("score"));
-                            //HighScore highScore = new HighScore((string)value.getValue("name"), (int)value.getValue("score"));
-                            highscores.Add(highScore);
-
-                        }
-
-                    }
-                       
-                    foreach(HighScore h in highscores)
-                    {
-                        builder.Append(h.ToString() + "\r\n");
-                    }
-                    MessageBox.Show(builder.ToString(), "highscores", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                default:
                     break;
-
 
             }
 

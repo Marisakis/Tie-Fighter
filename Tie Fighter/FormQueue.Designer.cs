@@ -20,6 +20,19 @@
             base.Dispose(disposing);
         }
 
+        private void UpdateChat(string chat)
+        {
+            if (lobbyPlayersLabel.InvokeRequired)
+            {
+                var d = new SafeCallDelegate(UpdateChat);
+                lobbyPlayersLabel.Invoke(d, new object[] { lobbyPlayersLabel.Text += "/r/n" + chat });
+            }
+            else
+            {
+                lobbyPlayersLabel.Text += "/r/n" + chat;
+            }
+        }
+
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -61,7 +74,7 @@
             this.StartBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.11881F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartBtn.ForeColor = System.Drawing.Color.White;
             this.StartBtn.Location = new System.Drawing.Point(4, 486);
-            this.StartBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StartBtn.Margin = new System.Windows.Forms.Padding(4);
             this.StartBtn.Name = "StartBtn";
             this.StartBtn.Size = new System.Drawing.Size(792, 64);
             this.StartBtn.TabIndex = 2;
@@ -74,11 +87,12 @@
             this.chatBox.BackColor = System.Drawing.SystemColors.Info;
             this.chatBox.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.chatBox.Location = new System.Drawing.Point(4, 487);
-            this.chatBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chatBox.Margin = new System.Windows.Forms.Padding(4);
             this.chatBox.Name = "chatBox";
             this.chatBox.Size = new System.Drawing.Size(259, 63);
             this.chatBox.TabIndex = 3;
             this.chatBox.Text = "Message";
+            this.chatBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ChatBox_KeyDown);
             // 
             // groupBox1
             // 
@@ -86,9 +100,9 @@
             this.groupBox1.Controls.Add(this.lobbyPlayersLabel);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
             this.groupBox1.Location = new System.Drawing.Point(800, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(267, 554);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
@@ -101,9 +115,9 @@
             this.groupBox2.Controls.Add(this.StartBtn);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(800, 554);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
@@ -151,7 +165,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormQueue";

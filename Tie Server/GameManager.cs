@@ -13,9 +13,9 @@ using Newtonsoft.Json.Converters;
 namespace Tie_Server
 {
 
-    class GameManager
+    public class GameManager
     {
-        const int timerPeriod = 50;
+        const int timerPeriod = 50; //Time in millisecond between each internal update
         private List<Target> tieFighters;
         private List<Explosion> explosions;
         public List<Player> players;
@@ -28,7 +28,7 @@ namespace Tie_Server
             explosions = new List<Explosion>();
             players = new List<Player>();
 
-            var timerDelegate = new System.Timers.Timer(timerPeriod); // 
+            var timerDelegate = new System.Timers.Timer(timerPeriod); 
             timerDelegate.Elapsed += OnTimedEvent;
             timerDelegate.AutoReset = true;
             timerDelegate.Enabled = true;
@@ -63,7 +63,7 @@ namespace Tie_Server
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            Debug.WriteLine("Processing game data");
+            //Debug.WriteLine("Processing game data");
             lock (this)
             {
                 UpdateTieFighters();
@@ -103,7 +103,7 @@ namespace Tie_Server
         /// </summary>
         private void UpdateTieFighters()
         {
-            Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
+            //Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {

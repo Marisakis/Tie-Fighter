@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Networking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +17,10 @@ namespace Tie_Server
             this.id = 500;
             this.score = 0;
             this.crosshair = new Crosshair(0,-10,-10,10,10);
+            
         }
 
+        public Client client { get; set; }
         public int id { get; set; }
         public string name { get; set; }
         public int score { get; set; }

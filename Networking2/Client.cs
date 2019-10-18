@@ -10,22 +10,22 @@ namespace Networking
 {
     public class Client
     {
-        private TcpClient newTcpClient;
-        private IDataReceiver dataReceiver;
+        private TcpClient TcpClient;
+        private IDataReceiver dataReceiver { get;  set; }
         private NetworkStream stream;
         private byte[] buffer = new byte[1024];
         string totalBuffer = String.Empty;
 
         public Client(TcpClient newTcpClient, IDataReceiver dataReceiver)
         {
-            this.newTcpClient = newTcpClient;
+            this.TcpClient = newTcpClient;
             this.dataReceiver = dataReceiver;
             Connect();
         }
 
         public void Connect()
         {
-            this.stream = newTcpClient.GetStream();
+            this.stream = TcpClient.GetStream();
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
         }
 
@@ -36,7 +36,7 @@ namespace Networking
 
         public bool GetIsConnected()
         {
-            return this.newTcpClient.Connected;
+            return this.TcpClient.Connected;
         }
 
         private void OnRead(IAsyncResult ar)
@@ -79,6 +79,12 @@ namespace Networking
         {
             Console.WriteLine("Writing dynamic object");
             Write(JsonConvert.SerializeObject(message));
+        }
+
+        public void Disconnect()
+        {
+            this.dataReceiver = null;
+            this.TcpClient.Close();
         }
     }
 }
