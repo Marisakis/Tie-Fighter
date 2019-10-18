@@ -1,4 +1,5 @@
 ﻿using Networking;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +29,11 @@ namespace Tie_Server
         {
             newPlayer.client.SetDataReceiver(this);
             gameManager.players.Add(newPlayer);
+            dynamic data = new JObject();
+            data.type = "chatmessage";
+            data.data = "Player " + newPlayer.name + " has joined the lobby";
+            foreach (Player player in gameManager.players)
+                player.client.Write(data);
             //this.Start();
         }
 

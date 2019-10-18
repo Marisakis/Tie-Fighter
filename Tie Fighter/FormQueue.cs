@@ -103,9 +103,22 @@ namespace Tie_Fighter
             }
 
         }
+        private void UpdateChat(string chat)
+        {
+            if (lobbyPlayersLabel.InvokeRequired)
+            {
+                var d = new SafeCallDelegate(UpdateChat);
+                lobbyPlayersLabel.Invoke(d, new object[] {  chat });
+            }
+            else
+            {
+                lobbyPlayersLabel.Text += "\r\n" + chat;
+            }
+        }
 
-        
 
-        
+
+
+
     }
 }
