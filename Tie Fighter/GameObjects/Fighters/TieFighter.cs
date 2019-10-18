@@ -13,10 +13,5 @@ namespace Tie_Fighter.GameObjects.Fighters
         {
             bitmap = Properties.Resources.TieFighter;
         }
-
-        public void MakeTieInterceptor()
-        {
-            bitmap = Properties.Resources.TieInterceptor;
-        }
     }
 }

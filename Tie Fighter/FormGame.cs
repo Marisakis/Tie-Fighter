@@ -110,7 +110,7 @@ namespace Tie_Fighter
 
 
                 //Draw each Tie Fighter / Explosion / Crosshair.
-                foreach (TieFighter tieFighter in _tieFighters)
+                foreach (Fighter tieFighter in _tieFighters)
                     tieFighter.Draw(graphics, Width, Height, false);
                 foreach (Explosion explosion in _explosions)
                     explosion.Draw(graphics, Width, Height, false);
@@ -234,11 +234,7 @@ namespace Tie_Fighter
             }
         }
 
-        public void HandleFighters(Fighter[] fighters)
-        {
-            if (_tieFighters != null)
-                HandleGameObjects(fighters, _tieFighters);
-        }
+        
 
         public void HandleGameObjects(Fighter[] toAddObjects, List<Fighter> existingObjects)
         {
@@ -279,7 +275,12 @@ namespace Tie_Fighter
                 if (existingObjects[existingObjects.Count - 1].TTP < 3000) existingObjects[existingObjects.Count - 1].MakeTieInterceptor();
                 if (existingObjects[existingObjects.Count - 1].TTP > 6000) existingObjects[existingObjects.Count - 1].MakeTieBomber();
             }
+        }
 
+        public void HandleFighters(Fighter[] fighters)
+        {
+            if (_tieFighters != null)
+                HandleGameObjects(fighters, _tieFighters);
         }
 
         public void HandleExplosions(Explosion[] explosions)
