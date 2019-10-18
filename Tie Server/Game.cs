@@ -34,7 +34,7 @@ namespace Tie_Server
             data.data = "Player " + newPlayer.name + " has joined the lobby";
             foreach (Player player in gameManager.players)
                 player.client.Write(data);
-            //this.Start();
+            this.Start();
         }
 
         public void handlePacket(dynamic data, Client sender)
@@ -84,15 +84,21 @@ namespace Tie_Server
 
         private void Finish()
         {
-
+            List<HighScore> scores = GetHighScoresFromFile();
+            scores.Add(GetHighestScore());
+            scores.Sort();
+            scores.RemoveRange(10, scores.Count - 10); // trim so only 10 remain
+            writeHighscoresToFile(scores);
         }
 
 
-        public HighScore GetHighestScore(List<Player> players)
+        public HighScore GetHighestScore()
         {
-            //PLACEHOLDER CODE, REPLACE LATER
-            //Player highestScore = null;
-            return new HighScore();
+            List<HighScore> scores = new List<HighScore>();
+            foreach (Player player in gameManager.players)
+                scores.Add(new HighScore(player.name, player.score));
+            scores.Sort();
+            return (scores[0]);
         }
 
         public static List<HighScore> GetHighScoresFromFile()
@@ -102,7 +108,7 @@ namespace Tie_Server
             List<HighScore> highscores = new List<HighScore>();
             if (!File.Exists(path))
             {
-                highscores.Add(new HighScore("testscore", 100));
+                //highscores.Add(new HighScore("testscore", 100));
                 return highscores;
             }
             else
@@ -112,7 +118,7 @@ namespace Tie_Server
                     var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     highscores = (List<HighScore>)binaryFormatter.Deserialize(fileStream);
                 }
-                highscores.Add(new HighScore("testscore", 100));
+                //highscores.Add(new HighScore("testscore", 100));
                 return highscores;
             }
         }
