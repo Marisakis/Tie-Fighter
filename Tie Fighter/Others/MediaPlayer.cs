@@ -28,8 +28,12 @@ namespace Tie_Fighter.Others
             player.URL = url;
             if (timeToPlay != null || timeToPlay==-1)
             {
-                double duration = player.newMedia(url).duration;
-                player.settings.rate = (duration / (double)timeToPlay);
+                try
+                {
+                    double duration = player.newMedia(url).duration;
+                    player.settings.rate = (duration / (double)timeToPlay);
+                }
+                catch (Exception e) { }
             }
             player.controls.play();
         }

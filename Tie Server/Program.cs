@@ -41,6 +41,7 @@ namespace Tie_Server
                     {
                         client.Write(gameManager.GetGameData());
                     }
+                    System.Threading.Thread.Sleep(gameManager.timerPeriod/5);
                 }
                 finally
                 {
@@ -64,7 +65,6 @@ namespace Tie_Server
                 System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
                 var newTcpClient = listener.EndAcceptTcpClient(ar);
                 clients.Add(new Client(newTcpClient, this));
-                //Console.WriteLine("New client connected, Clients: " + clients.Count);
                 listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
             } finally
             {

@@ -1,27 +1,24 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Diagnostics;
+using System.Timers;
 using Tie_Server.GameObjects;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Tie_Server
 {
 
-    class GameManager
+    public class GameManager
     {
-        const int timerPeriod = 50;
+        public int timerPeriod = 50;
         private List<Target> tieFighters;
         private List<Explosion> explosions;
         //private Dictionary<int, Crosshair> crosshairs;
         public List<Player> players;
         private int targetCounter = 0;
         private bool doFighter = true;
+        private int maxFightersOnScreen = 1;
+        private Random randomSeederForTieFighters = new Random();
 
         public GameManager()
         {
@@ -65,18 +62,32 @@ namespace Tie_Server
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             Debug.WriteLine("Processing game data");
+
             lock (this)
             {
                 UpdateTieFighters();
                 UpdateExplosions();
-                if (doFighter)
-                {
+                //if (tieFighters.Count==0)
+                if (SpawnRandomTieFighter(50))
                     CreateNewFighters();
-                    doFighter = false;
-                }
                 CheckCrosshairHits();
             }
-           // GetGameData(); // send to clients
+
+            // GetGameData(); // send to clients
+        }
+
+        public bool SpawnRandomTieFighter(int maxOdd)  // between 0 and maxOdd.
+        {
+            Random random = new Random();
+            int outcome = random.Next(0, maxOdd);
+            return (outcome == 1);
+        }
+
+        public int GetRandomHeightTieFighter()
+        {
+            int outcome = randomSeederForTieFighters.Next(10, 90);
+            Console.WriteLine(outcome);
+            return outcome;
         }
 
         internal void UpdatePlayerCrosshair(dynamic clientID, dynamic crosshair)
@@ -143,9 +154,9 @@ namespace Tie_Server
         /// </summary>
         private void CreateNewFighters()
         {
-            if (tieFighters.Count < 1)
+            if (tieFighters.Count < 5)
             {
-                tieFighters.Add(new Target(1000, targetCounter++, 0, 50, 10, 10)); // id management not in yet
+                tieFighters.Add(new Target((randomSeederForTieFighters.Next(4, 80)*100), targetCounter++, 0, GetRandomHeightTieFighter(), 10, 10)); // id management not in yet
             }
         }
 

@@ -46,12 +46,8 @@ namespace Tie_Fighter.Others
         public MediaPlayer GetAvailablePlayer()
         {
             foreach (MediaPlayer mediaPlayer in _mediaPlayers)
-            {
                 if (mediaPlayer.done)
-                {
                     return mediaPlayer;
-                }
-            }
             return null;
         }
     }
