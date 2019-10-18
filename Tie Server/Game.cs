@@ -12,7 +12,7 @@ namespace Tie_Server
     /// </summary>
     public class Game
     {
-        private GameManager gameManager;
+        //private GameManager gameManager;
 
         public void Start()
         {
@@ -28,17 +28,20 @@ namespace Tie_Server
         public HighScore GetHighestScore(List<Player> players)
         {
             //PLACEHOLDER CODE, REPLACE LATER
-            Player highestScore = null;
+            //Player highestScore = null;
             return new HighScore();
         }
 
-        public static List<HighScore> getHighScoresFromFile()
+        public static List<HighScore> GetHighScoresFromFile()
         {
             string path = Directory.GetCurrentDirectory();
             path += "highscores.txt";
             List<HighScore> highscores = new List<HighScore>();
             if (!File.Exists(path))
+            {
+                highscores.Add(new HighScore("testscore", 100));
                 return highscores;
+            }
             else
             {
                 using (FileStream fileStream = new FileStream(path, FileMode.Open))
@@ -46,6 +49,7 @@ namespace Tie_Server
                     var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     highscores = (List<HighScore>)binaryFormatter.Deserialize(fileStream);
                 }
+                highscores.Add(new HighScore("testscore", 100));
                 return highscores;
             }
         }

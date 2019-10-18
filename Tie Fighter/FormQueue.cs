@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tie_Fighter.Others;
+using Newtonsoft;
+using Newtonsoft.Json.Linq;
 
 namespace Tie_Fighter
 {
@@ -31,6 +33,13 @@ namespace Tie_Fighter
         {
             FormGame formGame = new FormGame(this.client);
             formGame.Show();
+        }
+
+        private void Highscoresbutton_Click(object sender, EventArgs e)
+        {
+            dynamic message = new JObject();
+            message.type = "highscorerequest";
+            client.Write(message);
         }
     }
 }

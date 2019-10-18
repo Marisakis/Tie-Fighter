@@ -14,7 +14,7 @@ namespace UnitTests
             //Arrange
 
             //Act
-            List<HighScore> scores = Game.getHighScoresFromFile();
+            List<HighScore> scores = Game.GetHighScoresFromFile();
 
             //Assert
             Assert.IsNotNull(scores);
@@ -46,7 +46,7 @@ namespace UnitTests
 
             //Act
             Game.writeHighscoresToFile(scores);
-            scores = Game.getHighScoresFromFile();
+            scores = Game.GetHighScoresFromFile();
 
             //Assert
             Assert.IsTrue(scores.Contains(test1));

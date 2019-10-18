@@ -9,8 +9,8 @@ namespace Tie_Server
     [Serializable]
     public struct HighScore
     {
-        string name { get; }
-        int score { get; }
+        public string name { get; }
+        public int score { get; }
 
         public HighScore(string name, int score)
         {
@@ -20,6 +20,11 @@ namespace Tie_Server
         public int CompareTo(HighScore h)
         {
             return this.score - h.score;
+        }
+
+        public String toString()
+        {
+            return this.name + ": " + this.score;
         }
     }
 

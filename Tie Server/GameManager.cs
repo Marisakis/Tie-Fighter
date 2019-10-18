@@ -20,7 +20,7 @@ namespace Tie_Server
         private List<Explosion> explosions;
         public List<Player> players;
         private int targetCounter = 0;
-        private bool doFighter = true;
+        //private bool doFighter = true;
 
         public GameManager()
         {

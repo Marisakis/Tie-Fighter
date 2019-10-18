@@ -7,6 +7,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Networking;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Tie_Server
 {
@@ -90,6 +92,16 @@ namespace Tie_Server
                     break;
                 case "crosshair":
                     this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
+                    break;
+                case "highscorerequest":
+                    List<HighScore> highscores = Game.GetHighScoresFromFile();
+                    dynamic reply = new JObject();
+                    reply.type = "highscores";
+                    JArray array = new JArray();
+                    foreach(HighScore h in highscores)
+                        array.Add(JsonConvert.SerializeObject(h));
+                    reply.data = array;
+                    sender.Write(reply);
                     break;
                 default:
                     Console.WriteLine("Data type not recognised");
