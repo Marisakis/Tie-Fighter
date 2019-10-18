@@ -6,7 +6,22 @@ using System.Threading.Tasks;
 
 namespace Tie_Server
 {
-    class Class1
+    [Serializable]
+    public struct HighScore
     {
+        string name { get; }
+        int score { get; }
+
+        public HighScore(string name, int score)
+        {
+            this.name = name;
+            this.score = score;
+        }
+        public int CompareTo(HighScore h)
+        {
+            return this.score - h.score;
+        }
     }
+
+    
 }

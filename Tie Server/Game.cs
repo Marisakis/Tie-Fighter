@@ -10,7 +10,7 @@ namespace Tie_Server
     /// <summary>
     /// Class that contains a game and 
     /// </summary>
-    class Game
+    public class Game
     {
         private GameManager gameManager;
 

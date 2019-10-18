@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tie Server", "Tie Server\Ti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking", "Networking2\Networking.csproj", "{72DB2357-DAB7-49EF-8977-5A99225343FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{5DF555F1-D2F0-4FEC-A0BF-351C772476D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{72DB2357-DAB7-49EF-8977-5A99225343FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72DB2357-DAB7-49EF-8977-5A99225343FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72DB2357-DAB7-49EF-8977-5A99225343FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DF555F1-D2F0-4FEC-A0BF-351C772476D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DF555F1-D2F0-4FEC-A0BF-351C772476D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DF555F1-D2F0-4FEC-A0BF-351C772476D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DF555F1-D2F0-4FEC-A0BF-351C772476D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

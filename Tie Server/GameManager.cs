@@ -18,7 +18,6 @@ namespace Tie_Server
         const int timerPeriod = 50;
         private List<Target> tieFighters;
         private List<Explosion> explosions;
-        //private Dictionary<int, Crosshair> crosshairs;
         public List<Player> players;
         private int targetCounter = 0;
         private bool doFighter = true;
