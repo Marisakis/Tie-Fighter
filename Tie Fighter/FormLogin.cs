@@ -101,9 +101,11 @@ namespace Tie_Fighter
                         dynamic scores = data.data;
                         for (int i = 0; i < scores.Count; i++)
                         {
-                            JValue value = scores[i];
-                            //HighScore highScore = (HighScore)JsonConvert.DeserializeObject(value.ToString());
-                            HighScore highScore = new HighScore((string)value.Value<string>("name"),(int)value.Value<int>("score"));
+                            dynamic value = scores[i];
+                            value = value.Value;
+                            HighScore highScore = JsonConvert.DeserializeObject<HighScore>(value.ToString());
+                            //HighScore highScore = new HighScore((string)value.Value<string>("name"),(int)value.Value<int>("score"));
+                            //HighScore highScore = new HighScore((string)value.getValue("name"), (int)value.getValue("score"));
                             highscores.Add(highScore);
 
                         }
@@ -114,7 +116,6 @@ namespace Tie_Fighter
                     {
                         builder.Append(h.ToString() + "\r\n");
                     }
-
                     MessageBox.Show(builder.ToString(), "highscores", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
 

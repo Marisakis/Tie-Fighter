@@ -22,7 +22,7 @@ namespace Tie_Server
             return this.score - h.score;
         }
 
-        public String toString()
+        public override String ToString()
         {
             return this.name + ": " + this.score;
         }
