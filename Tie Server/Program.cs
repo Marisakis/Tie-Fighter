@@ -7,10 +7,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Networking;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Tie_Server
 {
-    public class Program: IDataReceiver
+    public class Program : IDataReceiver
     {
         static void Main(string[] args)
         {
@@ -18,28 +20,36 @@ namespace Tie_Server
 
         }
 
-        GameManager gameManager;
         TcpListener listener;
         private List<Client> clients = new List<Client>();
         private Dictionary<String, Client> namedClients = new Dictionary<string, Client>();
         private int clientCounter = 0;
-
+        private Object _lockObj = new object();
+        private List<Game> games = new List<Game>();
+ 
         private Program()
         {
             Console.WriteLine("Starting server");
-            this.gameManager  = new GameManager();
-
-            /*Console.WriteLine("Json test");
-            gameManager.GetGameData();
-*/
             StartAcceptingClientConnections();
-            while(true)
+            games.Add(new Game());
+            while (true)
             {
-                Console.ReadKey();
-                foreach (Client client in clients)
+                bool lockWasTaken = false;
+                try
                 {
-                    client.Write(gameManager.GetGameData());
+                    System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
+                    foreach(Game game in games)
+                    {
+                        if(game.gameStatus == GameStatus.Running)
+                        {
+                            game.Tick();
+                        }
+                    }
 
+                }
+                finally
+                {
+                    if (lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
                 }
             }
         }
@@ -53,10 +63,30 @@ namespace Tie_Server
 
         private void OnConnect(IAsyncResult ar)
         {
-            var newTcpClient = listener.EndAcceptTcpClient(ar);
-            clients.Add(new Client(newTcpClient, this));
-            Console.WriteLine("New client connected, Clients: " + clients.Count);
-            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
+            bool lockWasTaken = false;
+            try
+            {
+                System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
+                var newTcpClient = listener.EndAcceptTcpClient(ar);
+                clients.Add(new Client(newTcpClient, this));
+                //Console.WriteLine("New client connected, Clients: " + clients.Count);
+                listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
+            } finally
+            {
+                if (lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+            }
+        }
+
+        public static void handleHighscoreRequest ( Client sender)
+        {
+            List<HighScore> highscores = Game.GetHighScoresFromFile();
+            dynamic reply = new JObject();
+            reply.type = "highscores";
+            JArray array = new JArray();
+            foreach (HighScore h in highscores)
+                array.Add(JsonConvert.SerializeObject(h));
+            reply.data = array;
+            sender.Write(reply);
         }
 
         public void handlePacket(dynamic data, Client sender)
@@ -67,22 +97,22 @@ namespace Tie_Server
             {
                 case "login":
                     namedClients.Add((string)data.name, sender);
-                    //Console.WriteLine("x");
-                    //Console.WriteLine("Added client: " + (string)data.name + " to dictionary");
                     Player newPlayer = new Player((string)data.name);
                     newPlayer.id = clientCounter++;
-                    this.gameManager.players.Add(newPlayer);
+                    newPlayer.client = sender;
+                    Game currentLobby = games.Last<Game>();
+                    if (currentLobby.gameStatus != GameStatus.Lobby)
+                        games.Add(new Game());
+                    games.Last<Game>().AddPlayer(newPlayer);
                     break;
-                case "crosshair":
-                    this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
+                case "highscorerequest":
+                    handleHighscoreRequest(sender);
                     break;
-                 default:
+                default:
                     Console.WriteLine("Data type not recognised");
                     break;
-                 
+
             }
         }
-
-     
     }
 }

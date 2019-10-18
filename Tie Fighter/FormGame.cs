@@ -43,12 +43,15 @@ namespace Tie_Fighter
 
         //Game objects
         private List<GameObject> _gameObjects;
-        private List<TieFighter> _tieFighters;
+        private List<Fighter> _tieFighters;
         private List<Explosion> _explosions;
         private List<Crosshair> _crosshairs;
 
         private List<Player> players;
-        private bool addingNow = false;
+
+        //Locking the list
+        object _lockObj = new object();
+
 
         public FormGame(Client client)
         {
@@ -83,7 +86,7 @@ namespace Tie_Fighter
 
             //GameObjects
             this._gameObjects = new List<GameObject>();
-            this._tieFighters = new List<TieFighter>();
+            this._tieFighters = new List<Fighter>();
             this._explosions = new List<Explosion>();
             this._crosshairs = new List<Crosshair>();
 
@@ -99,19 +102,29 @@ namespace Tie_Fighter
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Graphics graphics = e.Graphics;
-            DrawPlayerCrosshair(graphics);
-            DrawCockpit(graphics);
+            bool _lockWasTaken = false;
+            try
+            {
+                System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
+                Graphics graphics = e.Graphics;
+                
 
-            //Draw each Tie Fighter / Explosion / Crosshair.
-            foreach (TieFighter tieFighter in _tieFighters)
-                tieFighter.Draw(graphics, Width, Height, false);
-            foreach (Explosion explosion in _explosions)
-                explosion.Draw(graphics, Width, Height, false);
-            foreach (Crosshair crosshair in _crosshairs)
-                crosshair.Draw(graphics, Width, Height, true);
+                //Draw each Tie Fighter / Explosion / Crosshair.
+                foreach (TieFighter tieFighter in _tieFighters)
+                    tieFighter.Draw(graphics, Width, Height, false);
+                foreach (Explosion explosion in _explosions)
+                    explosion.Draw(graphics, Width, Height, false);
+                foreach (Crosshair crosshair in _crosshairs)
+                    crosshair.Draw(graphics, Width, Height, true);
 
-            base.OnPaint(e);
+                DrawPlayerCrosshair(graphics);
+                DrawCockpit(graphics);
+                base.OnPaint(e);
+            }
+            finally
+            {
+                if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+            }
         }
 
         public void CreateTimer()
@@ -194,7 +207,6 @@ namespace Tie_Fighter
         public TieFighter FindFighterByID(int fighterID)
         {
             foreach (TieFighter fighter in _gameObjects)
-
                 if (fighter.id == fighterID)
                     return fighter;
             return null;
@@ -202,12 +214,140 @@ namespace Tie_Fighter
 
         public void handlePacket(dynamic data, Client sender)
         {
-            Console.WriteLine(data);
-            addingNow = true;
-            JArray jFighters = data.fighters;
-            JArray jExplosions = data.explosions;
-            JArray jPlayers = data.players;
-            Console.WriteLine(data);
+                JArray jFighters = data.fighters;
+                JArray jExplosions = data.explosions;
+                JArray jPlayers = data.players;
+
+                Fighter[] fighters = GetFighters(jFighters);
+                Explosion[] explosions = GetExplosions(jExplosions);
+                Player[] players = GetPlayers(jPlayers);
+                HandleFighters(fighters);
+        }
+
+        public void HandleFighters(Fighter[] fighters)
+        {
+            if (_tieFighters!=null)
+            HandleGameObjects(fighters, _tieFighters);
+        }
+
+        public void HandleGameObjects(Fighter[] toAddObjects, List<Fighter> existingObjects)
+        {
+            // If id is not in toAddObjects, but is in existingObjects, remove new GameObject.
+            for (int i = 0; i < existingObjects.Count; i++)
+            {
+                bool found = false;
+                for (int j = 0; j < toAddObjects.Length; j++)
+                    if (existingObjects[i].id == toAddObjects[j].id)
+                        found = true;
+                if (!found)
+                    existingObjects[i].Dispose();
+            }
+            for (int i = existingObjects.Count - 1; i > -1; i--)
+                if (existingObjects[i].disposed)
+                    existingObjects.Remove(existingObjects[i]);
+
+            // If id is not in existingObjects, but is in toAddObjects, create new GameObject.
+            List<Fighter> toAdd = new List<Fighter>();
+            for (int i = 0; i < toAddObjects.Length; i++)
+            {
+                bool found = false;
+                for (int j = 0; j < existingObjects.Count; j++)
+                    if (toAddObjects[i].id == existingObjects[j].id)
+                    {
+                        found = true;
+                        existingObjects[j].percentageX = toAddObjects[i].percentageX;
+                        existingObjects[j].percentageY = toAddObjects[j].percentageY;
+                        existingObjects[j].TTP = toAddObjects[j].TTP;
+                    }
+                if (!found)
+                    toAdd.Add(toAddObjects[i]);
+            }
+            foreach (Fighter gameObject in toAdd)
+            {
+                existingObjects.Add(gameObject);
+                gameObject.PlayFlySound(_directoryManager.TieFighterFlyBy);
+            }
+        }
+
+        public void HandleExplosions(Explosion[] explosions)
+        {
+
+        }
+
+        public void HandlePlayers(Player[] players)
+        {
+
+        }
+
+        public Fighter[] GetFighters(JArray jFighters)
+        {
+            Fighter[] fighters;
+            if (jFighters != null)
+            {
+                fighters = new Fighter[jFighters.Count];
+                for (int i = 0; i < jFighters.Count; i++)
+                {
+                    JObject jFighter = jFighters[i].ToObject<JObject>();
+                    int id = (int)jFighter.GetValue("id");
+                    int x = (int)jFighter.GetValue("x");
+                    int y = (int)jFighter.GetValue("y");
+                    int width = (int)jFighter.GetValue("width");
+                    int height = (int)jFighter.GetValue("height");
+                    int TTP = (int)jFighter.GetValue("TTP");
+                    Fighter fighter = new TieFighter(this._mediaPlayerHandler, x, y, width, height);
+                    fighter.TTP = TTP;
+                    fighter.id = id;
+                    fighters[i] = fighter;
+                }
+                return fighters;
+            }
+            return null;
+        }
+
+        public Explosion[] GetExplosions(JArray jExplosions)
+        {
+            Explosion[] explosions;
+            if (jExplosions != null)
+            {
+                explosions = new Explosion[jExplosions.Count];
+                for (int i = 0; i < jExplosions.Count; i++)
+                {
+                    JObject jExplosion = jExplosions[i].ToObject<JObject>();
+                    int id = (int)jExplosion.GetValue("id");
+                    int x = (int)jExplosion.GetValue("x");
+                    int y = (int)jExplosion.GetValue("y");
+                    int width = (int)jExplosion.GetValue("width");
+                    int height = (int)jExplosion.GetValue("height");
+                    int TTL = (int)jExplosion.GetValue("TTL");
+                    Explosion explosion = new Explosion(this._mediaPlayerHandler, x, y, width, height);
+                    explosion.TTL = TTL;
+                    explosion.id = id;
+                    explosions[i] = explosion;
+                }
+                return explosions;
+            }
+            return null;
+        }
+
+        public Player[] GetPlayers(JArray jPlayers)
+        {
+            Player[] players;
+            if (jPlayers != null)
+            {
+                players = new Player[jPlayers.Count];
+                for (int i = 0; i < jPlayers.Count; i++)
+                {
+                    JObject jPlayer = jPlayers[i].ToObject<JObject>();
+                    int id = (int)jPlayer.GetValue("id");
+                    string name = (string)jPlayer.GetValue("string");
+                    int score = (int)jPlayer.GetValue("score");
+                    Player player = new Player(name, score);
+                    player.id = id;
+                    players[i] = player;
+                }
+                return players;
+            }
+            return null;
         }
     }
 }

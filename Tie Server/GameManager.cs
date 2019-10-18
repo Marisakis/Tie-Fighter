@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-
 using System.Diagnostics;
 using Tie_Server.GameObjects;
 using Newtonsoft.Json.Linq;
@@ -14,14 +13,14 @@ using Newtonsoft.Json.Converters;
 namespace Tie_Server
 {
 
-    class GameManager
+    public class GameManager
     {
-        const int timerPeriod = 1000;
+        const int timerPeriod = 50; //Time in millisecond between each internal update
         private List<Target> tieFighters;
         private List<Explosion> explosions;
-        //private Dictionary<int, Crosshair> crosshairs;
         public List<Player> players;
         private int targetCounter = 0;
+        //private bool doFighter = true;
 
         public GameManager()
         {
@@ -29,7 +28,7 @@ namespace Tie_Server
             explosions = new List<Explosion>();
             players = new List<Player>();
 
-            var timerDelegate = new System.Timers.Timer(timerPeriod); // 
+            var timerDelegate = new System.Timers.Timer(timerPeriod); 
             timerDelegate.Elapsed += OnTimedEvent;
             timerDelegate.AutoReset = true;
             timerDelegate.Enabled = true;
@@ -48,7 +47,6 @@ namespace Tie_Server
                 data.explosions = jExplosions;
                 data.player = jPlayers;
 
-
                 //var jsonString = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() });
                 //Console.WriteLine(jsonString);
                 return data;
@@ -65,16 +63,18 @@ namespace Tie_Server
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            Debug.WriteLine("Processing game data");
+            //Debug.WriteLine("Processing game data");
             lock (this)
             {
                 UpdateTieFighters();
                 UpdateExplosions();
-                CreateNewFighters();
+                /*if (doFighter)
+                {*/
+                    CreateNewFighters();
+                 /*   doFighter = false;
+                }*/
                 CheckCrosshairHits();
             }
-            GetGameData(); // send to clients
-
         }
 
         internal void UpdatePlayerCrosshair(dynamic clientID, dynamic crosshair)
@@ -103,7 +103,7 @@ namespace Tie_Server
         /// </summary>
         private void UpdateTieFighters()
         {
-            Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
+            //Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
@@ -137,13 +137,13 @@ namespace Tie_Server
         }
 
         /// <summary>
-        /// This method checks if the amount of fighters is beneath a certain trehshold and adds new ones if needed
+        /// This method checks if the amount of fighters is beneath a certain trehshold and adds one if needed
         /// </summary>
         private void CreateNewFighters()
         {
-            if (tieFighters.Count < 1)
+            if (tieFighters.Count < 10)
             {
-                tieFighters.Add(new Target(5000, targetCounter++, 0, 50, 10, 10)); // id management not in yet
+                tieFighters.Add(new Target(1000, targetCounter++, 0, 50, 10, 10)); 
             }
         }
 

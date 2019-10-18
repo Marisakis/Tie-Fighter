@@ -10,22 +10,22 @@ namespace Networking
 {
     public class Client
     {
-        private TcpClient newTcpClient;
-        private IDataReceiver dataReceiver;
+        private TcpClient TcpClient;
+        private IDataReceiver dataReceiver { get;  set; }
         private NetworkStream stream;
         private byte[] buffer = new byte[1024];
-        string totalBuffer = "";
+        string totalBuffer = String.Empty;
 
         public Client(TcpClient newTcpClient, IDataReceiver dataReceiver)
         {
-            this.newTcpClient = newTcpClient;
+            this.TcpClient = newTcpClient;
             this.dataReceiver = dataReceiver;
             Connect();
         }
 
         public void Connect()
         {
-            this.stream = newTcpClient.GetStream();
+            this.stream = TcpClient.GetStream();
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
         }
 
@@ -36,15 +36,15 @@ namespace Networking
 
         public bool GetIsConnected()
         {
-            return this.newTcpClient.Connected;
+            return this.TcpClient.Connected;
         }
 
         private void OnRead(IAsyncResult ar)
         {
-            Console.WriteLine("Received a message");
+            //Console.WriteLine("Received a message");
             int receivedBytes = stream.EndRead(ar);
-            totalBuffer += System.Text.Encoding.ASCII.GetString(buffer, 0, receivedBytes);
-            Console.WriteLine(totalBuffer);
+            totalBuffer += Encoding.ASCII.GetString(buffer, 0, receivedBytes);
+            //Console.WriteLine(totalBuffer);
 
             while (totalBuffer.Contains("<EOF>"))
             {
@@ -61,16 +61,30 @@ namespace Networking
 
         public void Write(string data)
         {
-            Console.WriteLine("Sending message: " + data);
-            data += "<EOF>";
-            stream.Write(System.Text.Encoding.ASCII.GetBytes(data), 0, data.Length);
-            stream.Flush();
+            try
+            {
+                Console.WriteLine("Sending message: " + data);
+                data += "<EOF>";
+                stream.Write(System.Text.Encoding.ASCII.GetBytes(data), 0, data.Length);
+                stream.Flush();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("error in connection");
+                // dataReceiver.NotifyConnectionError();  ? Would that be a good solution?
+            }
         }
 
         public void Write(dynamic message)
         {
             Console.WriteLine("Writing dynamic object");
             Write(JsonConvert.SerializeObject(message));
+        }
+
+        public void Disconnect()
+        {
+            this.dataReceiver = null;
+            this.TcpClient.Close();
         }
     }
 }

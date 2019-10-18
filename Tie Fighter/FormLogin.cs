@@ -1,10 +1,15 @@
 ﻿using Networking;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using Tie_Fighter.Others;
+using Tie_Server;
+
 namespace Tie_Fighter
 {
 
@@ -46,10 +51,10 @@ namespace Tie_Fighter
             bool succeed = Connect(name, IP, serverPortNumber);
             if (!succeed)
             {
-                    DialogResult result = MessageBox.Show($"Server on IP-address: \"{IP}\" with port: \"{serverPortNumber}\" was not found. Retry?", "IP / port not accepting - error",
-                        MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                    if (result == DialogResult.OK)
-                        succeed = AttemptConnect(name, IP, serverPortNumber);
+                DialogResult result = MessageBox.Show($"Server on IP-address: \"{IP}\" with port: \"{serverPortNumber}\" was not found. Retry?", "IP / port not accepting - error",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (result == DialogResult.OK)
+                    succeed = AttemptConnect(name, IP, serverPortNumber);
             }
             return succeed;
         }
@@ -72,14 +77,27 @@ namespace Tie_Fighter
                     }
                     System.Threading.Thread.Sleep(1);
                 }
+                return true;
             }
-            catch {}
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         public void handlePacket(dynamic data, Client sender)
         {
             //handle login response here
+            switch ((string)data.type)
+            {
+                case "loginAccept":
+                    break;
+                default:
+                    break;
+
+            }
+
+
         }
     }
 }

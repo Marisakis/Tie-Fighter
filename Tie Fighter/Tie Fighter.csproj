@@ -233,10 +233,14 @@
       <Project>{72db2357-dab7-49ef-8977-5a99225343fa}</Project>
       <Name>Networking</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tie Server\Tie Server.csproj">
+      <Project>{d9a6623e-27ea-40b1-81dc-98bdf5bfc870}</Project>
+      <Name>Tie Server</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /yr "C:\Users\Dustin\Documents\TieFighter\Leap\Leap.dll" "$(TargetDir)"
-xcopy /yr "C:\Users\Dustin\Documents\TieFighter\Leap\LeapCSharp.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>xcopy /yr "C:\Users\Sebco\OneDrive\Documenten\TieFighter\Leap\Leap.dll" "$(TargetDir)"
+xcopy /yr "C:\Users\Sebco\OneDrive\Documenten\TieFighter\Leap\LeapCSharp.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
