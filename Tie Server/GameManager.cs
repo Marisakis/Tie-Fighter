@@ -12,7 +12,7 @@ namespace Tie_Server
     public class GameManager
     {
         public const int timerPeriod = 50; //Time in millisecond between each internal update
-        public const int explosionTimeToLive = 1000;
+        public const int explosionTimeToLive = 400;
         private List<Target> tieFighters;
         private List<Explosion> explosions;
         public List<Player> players;
@@ -43,7 +43,7 @@ namespace Tie_Server
                 dynamic data = new JObject();
                 data.fighters = jFighters;
                 data.explosions = jExplosions;
-                data.player = jPlayers;
+                data.players = jPlayers;
                 return data;
             }
         }
@@ -54,7 +54,7 @@ namespace Tie_Server
             {
                 UpdateTieFighters();
                 UpdateExplosions();
-                if (SpawnRandomTieFighter(50))
+                if (SpawnRandomTieFighter(35))
                     CreateNewFighters();
                 CheckCrosshairHits();
             }

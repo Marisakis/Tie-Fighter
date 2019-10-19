@@ -162,18 +162,13 @@ namespace Tie_Fighter
         public void Fire()
         {
             this._mediaPlayerHandler.PlayFile(_directoryManager.FireSound, null);
-
             UpdateCrosshairData(true);
         }
 
         public void MoveTo(int x, int y)
         {
             this._crosshair.SetXY(x, y, Width, Height);
-
-
             UpdateCrosshairData();
-
-
         }
 
         public void UpdatePosition(int x, int y)
@@ -259,7 +254,8 @@ namespace Tie_Fighter
             {
                 System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
                 HandleFighters(fighters);
-                HandlePlayers(players);
+                HandleExplosions(explosions);
+                //HandlePlayers(players);
             }
             finally
             {
@@ -267,7 +263,44 @@ namespace Tie_Fighter
             }
         }
 
+        public void HandleGameExplosions(Explosion[] toAddExplosions, List<Explosion> existingExplosions)
+        {
+            // If id is not in toAddExplosions, but is in existingExplosions, remove new Explosion.
+            for (int i = 0; i < existingExplosions.Count; i++)
+            {
+                bool found = false;
+                for (int j = 0; j < toAddExplosions.Length; j++)
+                    if (existingExplosions[i].id == toAddExplosions[j].id)
+                        found = true;
+                if (!found)
+                    existingExplosions[i].Dispose();
+            }
+            for (int i = existingExplosions.Count - 1; i > -1; i--)
+                if (existingExplosions[i].disposed)
+                    existingExplosions.Remove(existingExplosions[i]);
 
+            // If id is not in existingExplosions, but is in toAddExplosions, create new Explosion.
+            List<Explosion> toAdd = new List<Explosion>();
+            for (int i = 0; i < toAddExplosions.Length; i++)
+            {
+                bool found = false;
+                for (int j = 0; j < existingExplosions.Count; j++)
+                    if (toAddExplosions[i].id == existingExplosions[j].id)
+                    {
+                        found = true;
+                        existingExplosions[j].percentageX = toAddExplosions[i].percentageX;
+                        existingExplosions[j].percentageY = toAddExplosions[i].percentageY;
+                        existingExplosions[j].TTL = existingExplosions[i].TTL;
+                    }
+                if (!found)
+                    toAdd.Add(toAddExplosions[i]);
+            }
+            foreach (Explosion gameObject in toAdd)
+            {
+                existingExplosions.Add(gameObject);
+                existingExplosions[existingExplosions.Count - 1].PlayExplosionSound(_directoryManager.TieExplodeSound);
+            }
+        }
 
         public void HandleGameObjects(Fighter[] toAddObjects, List<Fighter> existingObjects)
         {
@@ -279,7 +312,10 @@ namespace Tie_Fighter
                     if (existingObjects[i].id == toAddObjects[j].id)
                         found = true;
                 if (!found)
+                {
+                    existingObjects[i].StopMediaPlayer();
                     existingObjects[i].Dispose();
+                }
             }
             for (int i = existingObjects.Count - 1; i > -1; i--)
                 if (existingObjects[i].disposed)
@@ -320,19 +356,22 @@ namespace Tie_Fighter
                 {
                     if (player.id == existingCrosshair.id)
                     {
-                        existingCrosshair.percentageX = player.crosshair.percentageX;
-                        existingCrosshair.percentageY = player.crosshair.percentageY;
+                        existingCrosshair.percentageX = player.x;
+                        existingCrosshair.percentageY = player.y;
                     }
-                    else
+                    else if (crosshairID < 10)
                     {
-
+                        Crosshair crosshair = new Crosshair(this._mediaPlayerHandler, _directoryManager.Crosshair(++crosshairID), player.x, player.y, player.w, player.h);
+                        crosshair.id = player.id;
+                        AddCrosshairList.Add(crosshair);
+                        Console.WriteLine($"Added crosshair with x,y,w,h {player.x},{player.y},{player.w},{player.h}");
                     }
                 }
-
             }
-            Crosshair crosshair = new Crosshair(this._mediaPlayerHandler, _directoryManager.Crosshair(++crosshairID), player.crosshair.percentageX, player.crosshair.percentageY, player.crosshair.percentageWidth, player.crosshair.percentageHeight);
-            crosshair.id = player.id;
-
+            foreach (Crosshair ToAddCrosshair in AddCrosshairList)
+            {
+                this._crosshairs.Add(ToAddCrosshair);
+            }
         }
 
         public void HandleFighters(Fighter[] fighters)
@@ -343,12 +382,13 @@ namespace Tie_Fighter
 
         public void HandleExplosions(Explosion[] explosions)
         {
-
+            if (_explosions != null)
+                HandleGameExplosions(explosions, _explosions);
         }
 
         public void HandlePlayers(Player[] players)
         {
-            if (players != null)
+            if (this.players != null)
                 if (players.Length > 1)
                     HandlePlayerObjects(players);
         }
@@ -415,8 +455,18 @@ namespace Tie_Fighter
                     int id = (int)jPlayer.GetValue("id");
                     string name = (string)jPlayer.GetValue("string");
                     int score = (int)jPlayer.GetValue("score");
+                    JObject jCrosshair = (JObject)jPlayer.GetValue("crosshair");
+                    int x = (int)jCrosshair.GetValue("x");
+                    int y = (int)jCrosshair.GetValue("y");
+                    int w = (int)jCrosshair.GetValue("width");
+                    int h = (int)jCrosshair.GetValue("height");
+
                     Player player = new Player(name, score);
                     player.id = id;
+                    player.x = x;
+                    player.y = y;
+                    player.w = w;
+                    player.h = h;
                     players[i] = player;
                 }
                 return players;

@@ -4,12 +4,13 @@ using Tie_Fighter.Others;
 
 namespace Tie_Fighter.GameObjects
 {
-    public abstract class GameObject : IDisposable 
+    public abstract class GameObject : IDisposable
     {
         public bool disposed = false;
         protected Bitmap bitmap;
         protected Others.MediaPlayerHandler mediaPlayer;
         private Rectangle rectangle;
+        public Others.MediaPlayer usedMediaPlayer;
         public int id { get; set; }
 
         public GameObject(Others.MediaPlayerHandler mediaPlayerHandler, int percentageX, int percentageY, int percentageWidth, int percentageHeight)
@@ -37,7 +38,7 @@ namespace Tie_Fighter.GameObjects
         }
 
         public virtual void Draw(Graphics graphics, int pixelsWidth, int pixelsHeight, bool centerImage = false)
-        { 
+        {
             int x = PercentageToPixels(this.percentageX, pixelsWidth);
             int y = PercentageToPixels(this.percentageY, pixelsHeight);
             int width = PercentageToPixels(this.percentageWidth, pixelsWidth);
@@ -57,12 +58,19 @@ namespace Tie_Fighter.GameObjects
 
         public int PercentageToPixels(int percentage, int totalPixels)
         {
-            return (int)(percentage*(totalPixels/100.0));
+            return (int)(percentage * (totalPixels / 100.0));
         }
 
         public int PixelsToPercentage(int pixels, int totalPixels)
         {
-            return (int)(((pixels+0.0) / totalPixels) * 100.0);
+            return (int)(((pixels + 0.0) / totalPixels) * 100.0);
+        }
+
+        public void StopMediaPlayer()
+        {
+            if (this.usedMediaPlayer != null)
+                this.usedMediaPlayer.EndPlay();
+
         }
 
         public void Dispose()

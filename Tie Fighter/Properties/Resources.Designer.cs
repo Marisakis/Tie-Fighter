@@ -73,6 +73,16 @@ namespace Tie_Fighter.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Explode {
+            get {
+                object obj = ResourceManager.GetObject("Explode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ShooterBG {
             get {
                 object obj = ResourceManager.GetObject("ShooterBG", resourceCulture);

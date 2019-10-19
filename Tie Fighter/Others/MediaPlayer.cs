@@ -45,6 +45,11 @@ namespace Tie_Fighter.Others
             done = true;
         }
 
+        public void EndPlay()
+        {
+            player.stop();
+        }
+
         public void Player_PlayStateChange(int NewState)
         {
             if ((WMPLib.WMPPlayState)NewState == WMPLib.WMPPlayState.wmppsStopped && done==false)
