@@ -17,11 +17,13 @@ namespace Tie_Server
     public enum GameStatus { Lobby, Running, Finished }
     public class Game : IDataReceiver
     {
+        private Program main;
         public GameManager gameManager;
         public GameStatus gameStatus { get; set; } = GameStatus.Lobby;
 
-        public Game()
+        public Game(Program main)
         {
+            this.main = main;
             this.gameManager = new GameManager();
         }
 
@@ -94,9 +96,12 @@ namespace Tie_Server
             dynamic data = new JObject();
             data.type = "gameended";
             foreach (Player player in gameManager.players)
+            {
+                main.AssignPlayerToGame(player.client, player.name);
                 player.client.Write(data);
-            this.gameStatus = GameStatus.Finished;
-            //refer all clients back to server
+            }
+            this.gameManager = new GameManager();
+            this.gameStatus = GameStatus.Lobby;
 
         }
 
