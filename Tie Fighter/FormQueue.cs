@@ -39,6 +39,7 @@ namespace Tie_Fighter
         {
             FormGame formGame = new FormGame(this.client);
             formGame.Show();
+            this.Hide();
         }
 
         private void Highscoresbutton_Click(object sender, EventArgs e)

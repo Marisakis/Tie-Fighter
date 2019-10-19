@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Networking;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,10 +15,11 @@ namespace Tie_Server
 {
     public class Program : IDataReceiver
     {
-        static void Main(string[] args)
+       public static void Main(string[] args)
         {
-            new Program();
-
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new FormServer());
         }
 
         TcpListener listener;
@@ -26,10 +28,12 @@ namespace Tie_Server
         private int clientCounter = 0;
         private Object _lockObj = new object();
         private List<Game> games = new List<Game>();
+        private string port { get; set; }
  
-        private Program()
+        public Program(string port)
         {
-            Console.WriteLine("Starting server");
+            this.port = port;
+            Console.WriteLine($"Starting server on port: {port}");
             StartAcceptingClientConnections();
             games.Add(new Game());
             while (true)
@@ -39,13 +43,9 @@ namespace Tie_Server
                 {
                     System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
                     foreach(Game game in games)
-                    {
                         if(game.gameStatus == GameStatus.Running)
-                        {
                             game.Tick();
-                        }
-                    }
-
+                    System.Threading.Thread.Sleep(GameManager.timerPeriod / 5);
                 }
                 finally
                 {
@@ -57,7 +57,7 @@ namespace Tie_Server
 
         private void StartAcceptingClientConnections()
         {
-            listener = new TcpListener(IPAddress.Any, 1717);
+            listener = new TcpListener(IPAddress.Any, Int32.Parse(this.port));
             listener.Start();
             listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
         }
@@ -109,6 +109,7 @@ namespace Tie_Server
                     break;
                 case "highscorerequest":
                     handleHighscoreRequest(sender);
+                    break;
                 case "crosshair":
                     //this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
                     break;

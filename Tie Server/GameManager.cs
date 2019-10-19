@@ -10,12 +10,11 @@ namespace Tie_Server
 
     public class GameManager
     {
-        const int timerPeriod = 50; //Time in millisecond between each internal update
+        public const int timerPeriod = 50; //Time in millisecond between each internal update
         private List<Target> tieFighters;
         private List<Explosion> explosions;
         public List<Player> players;
         private int targetCounter = 0;
-        private bool doFighter = true;
         private Random randomSeederForTieFighters = new Random();
 
         public GameManager()
@@ -42,35 +41,20 @@ namespace Tie_Server
                 data.fighters = jFighters;
                 data.explosions = jExplosions;
                 data.player = jPlayers;
-
-                //var jsonString = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() });
-                //Console.WriteLine(jsonString);
                 return data;
             }
         }
 
-        /*public dynamic GetDynamicTieFighter(Target target)
-        {
-            dynamic dynamicTarget = new JObject();
-            dynamicTarget = JObject.FromObject(target);
-            Console.WriteLine(dynamicTarget);
-            return dynamicTarget;
-        }*/
-
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            //Debug.WriteLine("Processing game data");
             lock (this)
             {
                 UpdateTieFighters();
                 UpdateExplosions();
-                //if (tieFighters.Count==0)
                 if (SpawnRandomTieFighter(50))
                     CreateNewFighters();
                 CheckCrosshairHits();
             }
-
-            // GetGameData(); // send to clients
         }
 
         public bool SpawnRandomTieFighter(int maxOdd)  // between 0 and maxOdd.
@@ -111,7 +95,7 @@ namespace Tie_Server
         /// </summary>
         private void UpdateTieFighters()
         {
-            //Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
+            Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
