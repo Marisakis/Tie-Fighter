@@ -107,10 +107,10 @@ namespace Tie_Fighter
             {
                 System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
                 Graphics graphics = e.Graphics;
-                
+
 
                 //Draw each Tie Fighter / Explosion / Crosshair.
-                foreach (TieFighter tieFighter in _tieFighters)
+                foreach (Fighter tieFighter in _tieFighters)
                     tieFighter.Draw(graphics, Width, Height, false);
                 foreach (Explosion explosion in _explosions)
                     explosion.Draw(graphics, Width, Height, false);
@@ -130,7 +130,7 @@ namespace Tie_Fighter
         public void CreateTimer()
         {
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = (15); // in ms
+            timer.Interval = (20); // in ms
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
         }
@@ -169,6 +169,13 @@ namespace Tie_Fighter
         {
             this._crosshair.percentageX += x;
             this._crosshair.percentageY += y;
+
+            //Build data packet to write to server containing player position.
+            dynamic updatePos = new JObject();
+            updatePos.type = "crosshairUpdate";
+            updatePos.x = x;
+            updatePos.y = y;
+           // client.Write(updatePos);
         }
 
         public void FormGame_LeapEvent(LeapEventArgs e)
@@ -214,21 +221,27 @@ namespace Tie_Fighter
 
         public void handlePacket(dynamic data, Client sender)
         {
-                JArray jFighters = data.fighters;
-                JArray jExplosions = data.explosions;
-                JArray jPlayers = data.players;
+            JArray jFighters = data.fighters;
+            JArray jExplosions = data.explosions;
+            JArray jPlayers = data.players;
 
-                Fighter[] fighters = GetFighters(jFighters);
-                Explosion[] explosions = GetExplosions(jExplosions);
-                Player[] players = GetPlayers(jPlayers);
+            Fighter[] fighters = GetFighters(jFighters);
+            Explosion[] explosions = GetExplosions(jExplosions);
+            Player[] players = GetPlayers(jPlayers);
+
+            bool _lockWasTaken = false;
+            try
+            {
+                System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
                 HandleFighters(fighters);
+            }
+            finally
+            {
+                if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+            }
         }
 
-        public void HandleFighters(Fighter[] fighters)
-        {
-            if (_tieFighters!=null)
-            HandleGameObjects(fighters, _tieFighters);
-        }
+        
 
         public void HandleGameObjects(Fighter[] toAddObjects, List<Fighter> existingObjects)
         {
@@ -256,8 +269,8 @@ namespace Tie_Fighter
                     {
                         found = true;
                         existingObjects[j].percentageX = toAddObjects[i].percentageX;
-                        existingObjects[j].percentageY = toAddObjects[j].percentageY;
-                        existingObjects[j].TTP = toAddObjects[j].TTP;
+                        existingObjects[j].percentageY = toAddObjects[i].percentageY;
+                        existingObjects[j].TTP = toAddObjects[i].TTP;
                     }
                 if (!found)
                     toAdd.Add(toAddObjects[i]);
@@ -265,8 +278,16 @@ namespace Tie_Fighter
             foreach (Fighter gameObject in toAdd)
             {
                 existingObjects.Add(gameObject);
-                gameObject.PlayFlySound(_directoryManager.TieFighterFlyBy);
+                existingObjects[existingObjects.Count - 1].PlayFlySound(_directoryManager.TieFighterFlyBy);
+                if (existingObjects[existingObjects.Count - 1].TTP < 3000) existingObjects[existingObjects.Count - 1].MakeTieInterceptor();
+                if (existingObjects[existingObjects.Count - 1].TTP > 6000) existingObjects[existingObjects.Count - 1].MakeTieBomber();
             }
+        }
+
+        public void HandleFighters(Fighter[] fighters)
+        {
+            if (_tieFighters != null)
+                HandleGameObjects(fighters, _tieFighters);
         }
 
         public void HandleExplosions(Explosion[] explosions)

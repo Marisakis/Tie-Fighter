@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Diagnostics;
-using Tie_Server.GameObjects;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Timers;
+using Tie_Server.GameObjects;
 
 namespace Tie_Server
 {
@@ -20,7 +15,8 @@ namespace Tie_Server
         private List<Explosion> explosions;
         public List<Player> players;
         private int targetCounter = 0;
-        //private bool doFighter = true;
+        private bool doFighter = true;
+        private Random randomSeederForTieFighters = new Random();
 
         public GameManager()
         {
@@ -68,13 +64,25 @@ namespace Tie_Server
             {
                 UpdateTieFighters();
                 UpdateExplosions();
-                /*if (doFighter)
-                {*/
+                //if (tieFighters.Count==0)
+                if (SpawnRandomTieFighter(50))
                     CreateNewFighters();
-                 /*   doFighter = false;
-                }*/
                 CheckCrosshairHits();
             }
+
+            // GetGameData(); // send to clients
+        }
+
+        public bool SpawnRandomTieFighter(int maxOdd)  // between 0 and maxOdd.
+        {
+            Random random = new Random();
+            int outcome = random.Next(0, maxOdd);
+            return (outcome == 1);
+        }
+
+        public int GetRandomHeightTieFighter()
+        {
+            return randomSeederForTieFighters.Next(10, 90);
         }
 
         internal void UpdatePlayerCrosshair(dynamic clientID, dynamic crosshair)
@@ -107,15 +115,12 @@ namespace Tie_Server
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
-
                 t.x += (100.0 / (t.TTP / timerPeriod));
                 if (t.x > 100)
                     toRemove.Add(t);
             }
             foreach (Target t in toRemove)
-            {
                 tieFighters.Remove(t);
-            }
         }
 
         /// <summary>
@@ -131,9 +136,7 @@ namespace Tie_Server
                     toRemove.Add(x);
             }
             foreach (Explosion x in toRemove)
-            {
                 explosions.Remove(x);
-            }
         }
 
         /// <summary>
@@ -141,10 +144,8 @@ namespace Tie_Server
         /// </summary>
         private void CreateNewFighters()
         {
-            if (tieFighters.Count < 10)
-            {
-                tieFighters.Add(new Target(1000, targetCounter++, 0, 50, 10, 10)); 
-            }
+            if (tieFighters.Count < 5)
+                tieFighters.Add(new Target((randomSeederForTieFighters.Next(4, 80)*100), targetCounter++, 0, GetRandomHeightTieFighter(), 10, 10)); // id management not in yet
         }
 
         /// <summary>

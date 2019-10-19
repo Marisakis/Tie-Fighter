@@ -238,6 +238,9 @@
       <Name>Tie Server</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tiebomber.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /yr "C:\Users\Sebco\OneDrive\Documenten\TieFighter\Leap\Leap.dll" "$(TargetDir)"

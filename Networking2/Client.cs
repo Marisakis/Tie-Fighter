@@ -50,13 +50,11 @@ namespace Networking
             {
                 string packet = totalBuffer.Substring(0, totalBuffer.IndexOf("<EOF>"));
                 totalBuffer = totalBuffer.Substring(totalBuffer.IndexOf("<EOF>") + 5);
-                Console.WriteLine("End of message found");
+               // Console.WriteLine("End of message found");
                 dynamic data = JsonConvert.DeserializeObject(packet);
                 dataReceiver.handlePacket(data, this);
             }
-
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
-
         }
 
         public void Write(string data)
@@ -77,7 +75,7 @@ namespace Networking
 
         public void Write(dynamic message)
         {
-            Console.WriteLine("Writing dynamic object");
+            //Console.WriteLine("Writing dynamic object");
             Write(JsonConvert.SerializeObject(message));
         }
 
