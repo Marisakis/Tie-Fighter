@@ -1,3 +1,4 @@
+using Networking;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -5,12 +6,13 @@ using System.Diagnostics;
 using System.Timers;
 using Tie_Server.GameObjects;
 
+
 namespace Tie_Server
 {
 
     public class GameManager
     {
-        const int timerPeriod = 50; //Time in millisecond between each internal update
+        public const int timerPeriod = 50; //Time in millisecond between each internal update
         private List<Target> tieFighters;
         private List<Explosion> explosions;
         public List<Player> players;
@@ -85,26 +87,31 @@ namespace Tie_Server
             return randomSeederForTieFighters.Next(10, 90);
         }
 
-        internal void UpdatePlayerCrosshair(dynamic clientID, dynamic crosshair)
+        internal void UpdatePlayerCrosshair(Client sender, dynamic crosshair)
         {
-            int playerID = clientID;
             int x = crosshair.x;
             int y = crosshair.y;
             bool isFiring = crosshair.isFiring;
 
+            // Find player by Client instead! Then update
+            /*
             Player player = FindPlayerByID(playerID);
             if (player != null)
                 player.UpdateCrosshair(x, y, isFiring);
+
+        }*/
+
         }
 
-        public Player FindPlayerByID(int playerID)
-        {
-            foreach (Player player in players)
-                if (player.id == playerID)
-                    return player;
-            return null;
-        }
 
+        /* public Player FindPlayerByID(int playerID)
+         {
+             foreach (Player player in players)
+                 if (player.id == playerID)
+                     return player;
+             return null;
+         }
+ */
 
         /// <summary>
         /// This method moves all existing TieFighters over the screen. It also checks for fighters that have exceeded screen boundaries
@@ -154,8 +161,45 @@ namespace Tie_Server
         /// </summary>
         private void CheckCrosshairHits()
         {
+            int maxDistance = 10; // aim within 10% of screen
+            List<Target> toRemove = new List<Target>();
+            List<Explosion> toAdd = new List<Explosion>();
             //Check each crosshair with each tie fighter
             // if hit, remove fighter, increase score, add new explosion with targetcounter id
+            foreach (Player player in players)
+            {
+                Crosshair crosshair = player.crosshair;
+                System.Diagnostics.Debug.WriteLine("pew");
+                System.Diagnostics.Debug.WriteLine(crosshair.x  + " " + crosshair.y + " " + crosshair.isFiring);
+
+
+                if (crosshair.isFiring)
+                {
+                    foreach(Target t in tieFighters)
+                    {
+                        if(GetDistance(crosshair.x, crosshair.y, t.x,t.y) < 5)
+                        {
+                            toRemove.Add(t);
+                            toAdd.Add(new Explosion(3, targetCounter++, t.x, t.y, t.width, t.height));
+                            player.score += 1;
+                            System.Diagnostics.Debug.WriteLine("boom");
+                        }
+                    }
+                }
+            }
+            foreach(Target t in toRemove)
+            {
+                tieFighters.Remove(t);
+            }
+            foreach(Explosion x in toAdd)
+            {
+                explosions.Add(x);
+            }
+
+        }
+        private static double GetDistance(double x1, double y1, double x2, double y2)
+        {
+            return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
         }
 
     }

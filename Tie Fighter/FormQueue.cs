@@ -39,6 +39,9 @@ namespace Tie_Fighter
         {
             FormGame formGame = new FormGame(this.client);
             formGame.Show();
+            dynamic message = new JObject();
+            message.type = "startgame";
+            client.Write(message);
         }
 
         private void Highscoresbutton_Click(object sender, EventArgs e)

@@ -158,6 +158,16 @@ namespace Tie_Fighter
         public void Fire()
         {
             this._mediaPlayerHandler.PlayFile(_directoryManager.FireSound, null);
+            dynamic updatePos = new JObject();
+            dynamic data = new JObject();
+            updatePos.type = "crosshair";
+            data.x = _crosshair.percentageX;
+            data.y = _crosshair.percentageY;
+            data.isFiring = true;
+            updatePos.data = data;
+            client.Write(updatePos);
+
+            //Todo: add reverting to not firing..
         }
 
         public void MoveTo(int x, int y)
@@ -171,11 +181,7 @@ namespace Tie_Fighter
             this._crosshair.percentageY += y;
 
             //Build data packet to write to server containing player position.
-            dynamic updatePos = new JObject();
-            updatePos.type = "crosshairUpdate";
-            updatePos.x = x;
-            updatePos.y = y;
-           // client.Write(updatePos);
+            
         }
 
         public void FormGame_LeapEvent(LeapEventArgs e)

@@ -61,7 +61,7 @@ namespace Networking
         {
             try
             {
-                Console.WriteLine("Sending message: " + data);
+                //Console.WriteLine("Sending message: " + data);
                 data += "<EOF>";
                 stream.Write(System.Text.Encoding.ASCII.GetBytes(data), 0, data.Length);
                 stream.Flush();

@@ -35,6 +35,7 @@ namespace Tie_Server
             while (true)
             {
                 bool lockWasTaken = false;
+
                 try
                 {
                     System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
@@ -52,6 +53,8 @@ namespace Tie_Server
                     if (lockWasTaken)
                         System.Threading.Monitor.Exit(_lockObj);
                 }
+                System.Threading.Thread.Sleep(GameManager.timerPeriod/2);
+
             }
         }
 
@@ -109,6 +112,7 @@ namespace Tie_Server
                     break;
                 case "highscorerequest":
                     handleHighscoreRequest(sender);
+                    break;
                 case "crosshair":
                     //this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
                     break;
