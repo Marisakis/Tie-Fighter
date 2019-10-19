@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using Tie_Fighter.Players;
 using Newtonsoft.Json;
 using Tie_Fighter.GameObjects.Explosions;
+using System.Threading;
 
 namespace Tie_Fighter
 {
@@ -49,14 +50,18 @@ namespace Tie_Fighter
 
         private List<Player> players;
         private int millis = 0;
+        private FormQueue lobby;
         private string myName;
 
         //Locking the list
         object _lockObj = new object();
+        private delegate void SafeCallDelegate(Client client, string name);
+        private delegate void SafeDisposeDelegate();
 
 
-        public FormGame(Client client, string name)
+        public FormGame(Client client, string name, FormQueue sender)
         {
+            this.lobby = sender;
             this.myName = name;
             this.client = client;
             client.SetDataReceiver(this);
@@ -240,26 +245,52 @@ namespace Tie_Fighter
 
         public void handlePacket(dynamic data, Client sender)
         {
-            Console.WriteLine(data);
-            JArray jFighters = data.fighters;
-            JArray jExplosions = data.explosions;
-            JArray jPlayers = data.players;
-
-            Fighter[] fighters = GetFighters(jFighters);
-            Explosion[] explosions = GetExplosions(jExplosions);
-            Player[] players = GetPlayers(jPlayers);
-
-            bool _lockWasTaken = false;
-            try
+            //Console.WriteLine(data);
+            switch((string)data.type)
             {
-                System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
-                HandleFighters(fighters);
-                HandleExplosions(explosions);
-                //HandlePlayers(players);
+                case "gamedata":
+                    JArray jFighters = data.fighters;
+                    JArray jExplosions = data.explosions;
+                    JArray jPlayers = data.players;
+
+                    Fighter[] fighters = GetFighters(jFighters);
+                    Explosion[] explosions = GetExplosions(jExplosions);
+                    Player[] players = GetPlayers(jPlayers);
+
+                    bool _lockWasTaken = false;
+                    try
+                    {
+                        System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
+                        HandleFighters(fighters);
+                        HandleExplosions(explosions);
+                        //HandlePlayers(players);
+                    }
+                    finally
+                    {
+                        if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+                    }
+                    break;
+                case "gameended":
+                    Console.WriteLine("Game ended");
+                    lobby.Restart(this.client, this.myName);
+                    this.End();
+                    //this.Dispose(); //generates thread error
+                    break;
             }
-            finally
+            
+        }
+
+        private void End()
+        {
+            if(this.InvokeRequired)
             {
-                if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+                var d = new SafeDisposeDelegate(End);
+                this.Invoke(d);
+                    
+            }
+            else
+            {
+                this.Dispose();
             }
         }
 

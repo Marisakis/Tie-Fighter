@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Tie_Server
 {
     [Serializable]
-    public struct HighScore
+    public struct HighScore: IComparable<HighScore>
     {
         public string name { get; }
         public int score { get; }
@@ -19,7 +19,7 @@ namespace Tie_Server
         }
         public int CompareTo(HighScore h)
         {
-            return this.score - h.score;
+            return h.score - this.score;
         }
 
         public override String ToString()

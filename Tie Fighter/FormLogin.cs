@@ -42,6 +42,7 @@ namespace Tie_Fighter
             {
                 // this.Hide();
                 FormQueue formQueue = new FormQueue(this.client, name);
+                this.Hide();
                 formQueue.Show();
             }
         }
@@ -65,7 +66,7 @@ namespace Tie_Fighter
             {
                 this.client = new Client(new TcpClient(ip, serverPortNumber), this);
                 int maxConnectTimeMillis = 1000;
-                for (int i = 0; i < maxConnectTimeMillis; i++)
+                for (int i = 0; i < maxConnectTimeMillis; i += 100)
                 {
                     if (client.GetIsConnected())
                     {
@@ -75,7 +76,7 @@ namespace Tie_Fighter
                         client.Write(login);
                         return true;
                     }
-                    System.Threading.Thread.Sleep(1);
+                    System.Threading.Thread.Sleep(100);
                 }
                 return true;
             }
