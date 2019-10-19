@@ -54,9 +54,7 @@ namespace Networking
                 dynamic data = JsonConvert.DeserializeObject(packet);
                 dataReceiver.handlePacket(data, this);
             }
-
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
-
         }
 
         public void Write(string data)

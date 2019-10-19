@@ -169,6 +169,13 @@ namespace Tie_Fighter
         {
             this._crosshair.percentageX += x;
             this._crosshair.percentageY += y;
+
+            //Build data packet to write to server containing player position.
+            dynamic updatePos = new JObject();
+            updatePos.type = "crosshairUpdate";
+            updatePos.x = x;
+            updatePos.y = y;
+           // client.Write(updatePos);
         }
 
         public void FormGame_LeapEvent(LeapEventArgs e)

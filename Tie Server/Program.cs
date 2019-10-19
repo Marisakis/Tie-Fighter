@@ -38,14 +38,13 @@ namespace Tie_Server
                 {
                     System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
                     foreach (Client client in clients)
-                    {
                         client.Write(gameManager.GetGameData());
-                    }
-                    System.Threading.Thread.Sleep(gameManager.timerPeriod/5);
+                    System.Threading.Thread.Sleep(gameManager.timerPeriod / 5);
                 }
                 finally
                 {
-                    if (lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+                    if (lockWasTaken)
+                        System.Threading.Monitor.Exit(_lockObj);
                 }
             }
         }
@@ -66,7 +65,8 @@ namespace Tie_Server
                 var newTcpClient = listener.EndAcceptTcpClient(ar);
                 clients.Add(new Client(newTcpClient, this));
                 listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
-            } finally
+            }
+            finally
             {
                 if (lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
             }
@@ -75,6 +75,7 @@ namespace Tie_Server
         public void handlePacket(dynamic data, Client sender)
         {
             //Console.WriteLine("received a message in program");
+            Console.WriteLine(data);
             Console.WriteLine("Data type: " + data.type);
             switch ((string)data.type)
             {
@@ -85,7 +86,7 @@ namespace Tie_Server
                     this.gameManager.players.Add(newPlayer);
                     break;
                 case "crosshair":
-                    this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
+                    //this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
                     break;
                 default:
                     Console.WriteLine("Data type not recognised");

@@ -85,9 +85,7 @@ namespace Tie_Server
 
         public int GetRandomHeightTieFighter()
         {
-            int outcome = randomSeederForTieFighters.Next(10, 90);
-            Console.WriteLine(outcome);
-            return outcome;
+            return randomSeederForTieFighters.Next(10, 90);
         }
 
         internal void UpdatePlayerCrosshair(dynamic clientID, dynamic crosshair)
@@ -120,15 +118,12 @@ namespace Tie_Server
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
-
                 t.x += (100.0 / (t.TTP / timerPeriod));
                 if (t.x > 100)
                     toRemove.Add(t);
             }
             foreach (Target t in toRemove)
-            {
                 tieFighters.Remove(t);
-            }
         }
 
         /// <summary>
@@ -144,9 +139,7 @@ namespace Tie_Server
                     toRemove.Add(x);
             }
             foreach (Explosion x in toRemove)
-            {
                 explosions.Remove(x);
-            }
         }
 
         /// <summary>
@@ -155,9 +148,7 @@ namespace Tie_Server
         private void CreateNewFighters()
         {
             if (tieFighters.Count < 5)
-            {
                 tieFighters.Add(new Target((randomSeederForTieFighters.Next(4, 80)*100), targetCounter++, 0, GetRandomHeightTieFighter(), 10, 10)); // id management not in yet
-            }
         }
 
         /// <summary>
