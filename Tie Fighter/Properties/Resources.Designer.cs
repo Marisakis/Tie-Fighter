@@ -73,6 +73,16 @@ namespace Tie_Fighter.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Explode {
+            get {
+                object obj = ResourceManager.GetObject("Explode", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ShooterBG {
             get {
                 object obj = ResourceManager.GetObject("ShooterBG", resourceCulture);
@@ -117,6 +127,26 @@ namespace Tie_Fighter.Properties {
             get {
                 object obj = ResourceManager.GetObject("TieFighter", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TieFighterIcon {
+            get {
+                object obj = ResourceManager.GetObject("TieFighterIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon TieFighterIcon1 {
+            get {
+                object obj = ResourceManager.GetObject("TieFighterIcon1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

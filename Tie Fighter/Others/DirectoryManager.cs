@@ -17,6 +17,8 @@ namespace Tie_Fighter.Others
         public string VideoDir { get; }
         public string FireSound { get; }
         public string TieFighterFlyBy { get; }
+
+        public string TieExplodeSound { get; }
         public string Good { get; }
         public string Bad { get; }
 
@@ -51,6 +53,7 @@ namespace Tie_Fighter.Others
                 this.AudioDir = $"{tieFighterPath}/Audio";
                 this.FireSound = $"{AudioDir}/Player/tie_fire.mp3";
                 this.TieFighterFlyBy = $"{AudioDir}/TieFighter/flyby2.mp3";
+                this.TieExplodeSound = $"{AudioDir}/TieFighter/explode.wav";
                 this.Good = $"{AudioDir}/GameMusic/goodsmall.mp3";
                 this.Bad = $"{AudioDir}/GameMusic/death_music.mp3";
 

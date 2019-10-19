@@ -41,7 +41,7 @@ namespace Tie_Fighter
             if (AttemptConnect(name, ipAddress, serverPortNumber))
             {
                 // this.Hide();
-                FormQueue formQueue = new FormQueue(this.client);
+                FormQueue formQueue = new FormQueue(this.client, name);
                 formQueue.Show();
             }
         }

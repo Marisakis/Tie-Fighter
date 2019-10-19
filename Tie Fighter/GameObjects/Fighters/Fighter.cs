@@ -4,6 +4,7 @@ namespace Tie_Fighter.GameObjects
 {
     public abstract class Fighter : GameObject
     {
+        
         public Fighter(Others.MediaPlayerHandler mediaPlayer, int xPercentage, int yPercentage, int widthPercentage, int heightPercentage) : base(mediaPlayer, xPercentage, yPercentage, widthPercentage, heightPercentage)
         {
         }
@@ -11,7 +12,8 @@ namespace Tie_Fighter.GameObjects
         public virtual int TTP { get; set; } // Time to pass, in milliseconds.
         public virtual void PlayFlySound(string URL)
         {
-            mediaPlayer.PlayFile(URL, (TTP/1000.0));
+            Others.MediaPlayer usedMP = mediaPlayer.PlayFile(URL, (TTP/1000.0));
+            this.usedMediaPlayer = usedMP;
         }
 
         public virtual void MakeTieInterceptor()

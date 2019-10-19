@@ -26,7 +26,7 @@ namespace Tie_Fighter.Others
                 Console.WriteLine(_mediaPlayers.Count);
             }
             availableMediaPlayer.PlayFile(url, timeToPlay);
-
+           
             if (counter==10 && _mediaPlayers.Count>5)
             {
                 counter = 0;

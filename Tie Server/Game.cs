@@ -71,7 +71,7 @@ namespace Tie_Server
         public void Start()
         {
             gameStatus = GameStatus.Running;
-            var timerDelegate = new System.Timers.Timer(30000);
+            var timerDelegate = new System.Timers.Timer(999999);
             timerDelegate.Elapsed += OnTimedEvent;
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;

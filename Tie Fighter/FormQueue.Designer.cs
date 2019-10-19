@@ -29,6 +29,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormQueue));
             this.lobbyPlayersLabel = new System.Windows.Forms.Label();
             this.StartBtn = new System.Windows.Forms.Button();
             this.chatBox = new System.Windows.Forms.RichTextBox();
@@ -44,10 +45,9 @@
             // lobbyPlayersLabel
             // 
             this.lobbyPlayersLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lobbyPlayersLabel.Location = new System.Drawing.Point(4, 19);
-            this.lobbyPlayersLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lobbyPlayersLabel.Location = new System.Drawing.Point(3, 16);
             this.lobbyPlayersLabel.Name = "lobbyPlayersLabel";
-            this.lobbyPlayersLabel.Size = new System.Drawing.Size(259, 531);
+            this.lobbyPlayersLabel.Size = new System.Drawing.Size(194, 431);
             this.lobbyPlayersLabel.TabIndex = 0;
             // 
             // StartBtn
@@ -61,10 +61,9 @@
             this.StartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.11881F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartBtn.ForeColor = System.Drawing.Color.White;
-            this.StartBtn.Location = new System.Drawing.Point(4, 486);
-            this.StartBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.StartBtn.Location = new System.Drawing.Point(3, 395);
             this.StartBtn.Name = "StartBtn";
-            this.StartBtn.Size = new System.Drawing.Size(792, 64);
+            this.StartBtn.Size = new System.Drawing.Size(594, 52);
             this.StartBtn.TabIndex = 2;
             this.StartBtn.Text = "S t a r t";
             this.StartBtn.UseVisualStyleBackColor = false;
@@ -74,10 +73,9 @@
             // 
             this.chatBox.BackColor = System.Drawing.SystemColors.Info;
             this.chatBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.chatBox.Location = new System.Drawing.Point(4, 487);
-            this.chatBox.Margin = new System.Windows.Forms.Padding(4);
+            this.chatBox.Location = new System.Drawing.Point(3, 395);
             this.chatBox.Name = "chatBox";
-            this.chatBox.Size = new System.Drawing.Size(259, 63);
+            this.chatBox.Size = new System.Drawing.Size(194, 52);
             this.chatBox.TabIndex = 3;
             this.chatBox.Text = "Message";
             this.chatBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ChatBox_KeyDown);
@@ -87,11 +85,9 @@
             this.groupBox1.Controls.Add(this.chatBox);
             this.groupBox1.Controls.Add(this.lobbyPlayersLabel);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupBox1.Location = new System.Drawing.Point(800, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Location = new System.Drawing.Point(600, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(267, 554);
+            this.groupBox1.Size = new System.Drawing.Size(200, 450);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "L o b b y";
@@ -103,10 +99,8 @@
             this.groupBox2.Controls.Add(this.StartBtn);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(800, 554);
+            this.groupBox2.Size = new System.Drawing.Size(600, 450);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             // 
@@ -115,11 +109,9 @@
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
             this.groupBox3.Controls.Add(this.highscoresbutton);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(4, 19);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox3.Location = new System.Drawing.Point(3, 16);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox3.Size = new System.Drawing.Size(792, 467);
+            this.groupBox3.Size = new System.Drawing.Size(594, 379);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             // 
@@ -134,10 +126,9 @@
             this.highscoresbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.highscoresbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.11881F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.highscoresbutton.ForeColor = System.Drawing.Color.White;
-            this.highscoresbutton.Location = new System.Drawing.Point(4, 399);
-            this.highscoresbutton.Margin = new System.Windows.Forms.Padding(4);
+            this.highscoresbutton.Location = new System.Drawing.Point(3, 324);
             this.highscoresbutton.Name = "highscoresbutton";
-            this.highscoresbutton.Size = new System.Drawing.Size(784, 64);
+            this.highscoresbutton.Size = new System.Drawing.Size(588, 52);
             this.highscoresbutton.TabIndex = 2;
             this.highscoresbutton.Text = "G e t   H i g h s c o r e s";
             this.highscoresbutton.UseVisualStyleBackColor = false;
@@ -145,15 +136,15 @@
             // 
             // FormQueue
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tie_Fighter.Properties.Resources.tiefighterxwing;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormQueue";
