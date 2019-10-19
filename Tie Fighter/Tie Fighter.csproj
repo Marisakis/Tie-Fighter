@@ -241,6 +241,12 @@
   <ItemGroup>
     <None Include="Resources\tiebomber.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TieFighterIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TieFighterIcon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /yr "C:\Users\Dustin\Documents\TieFighter\Leap\Leap.dll" "$(TargetDir)"

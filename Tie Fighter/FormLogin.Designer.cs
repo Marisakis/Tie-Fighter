@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.LoginBtn = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -91,7 +92,7 @@
             this.userNameField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.267326F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.userNameField.ForeColor = System.Drawing.Color.Black;
             this.userNameField.Location = new System.Drawing.Point(300, 339);
-            this.userNameField.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.userNameField.Margin = new System.Windows.Forms.Padding(10);
             this.userNameField.Name = "userNameField";
             this.userNameField.Size = new System.Drawing.Size(200, 22);
             this.userNameField.TabIndex = 0;
@@ -106,7 +107,7 @@
             this.ipAddressField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.267326F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ipAddressField.ForeColor = System.Drawing.Color.Black;
             this.ipAddressField.Location = new System.Drawing.Point(300, 361);
-            this.ipAddressField.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.ipAddressField.Margin = new System.Windows.Forms.Padding(10);
             this.ipAddressField.Name = "ipAddressField";
             this.ipAddressField.Size = new System.Drawing.Size(200, 22);
             this.ipAddressField.TabIndex = 1;
@@ -121,7 +122,7 @@
             this.serverPortField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.267326F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.serverPortField.ForeColor = System.Drawing.Color.Black;
             this.serverPortField.Location = new System.Drawing.Point(300, 383);
-            this.serverPortField.Margin = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.serverPortField.Margin = new System.Windows.Forms.Padding(10);
             this.serverPortField.Name = "serverPortField";
             this.serverPortField.Size = new System.Drawing.Size(200, 22);
             this.serverPortField.TabIndex = 2;
@@ -139,6 +140,7 @@
             this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormLogin";

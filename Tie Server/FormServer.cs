@@ -15,6 +15,7 @@ namespace Tie_Server
         public FormServer()
         {
             InitializeComponent();
+            this.Icon = Properties.Resources.ServerIcon;
         }
 
         private void StartBtn_Click(object sender, EventArgs e)

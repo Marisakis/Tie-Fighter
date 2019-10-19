@@ -58,7 +58,7 @@
             // 
             this.PortNumberField.BackColor = System.Drawing.Color.Red;
             this.PortNumberField.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PortNumberField.Location = new System.Drawing.Point(350, 12);
+            this.PortNumberField.Location = new System.Drawing.Point(350, 375);
             this.PortNumberField.Margin = new System.Windows.Forms.Padding(0);
             this.PortNumberField.Name = "PortNumberField";
             this.PortNumberField.Size = new System.Drawing.Size(100, 20);
@@ -71,12 +71,12 @@
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.groupBox1.Controls.Add(this.PortNumberField);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox1.Location = new System.Drawing.Point(0, 363);
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(350, 3, 350, 3);
-            this.groupBox1.Size = new System.Drawing.Size(800, 35);
+            this.groupBox1.Size = new System.Drawing.Size(800, 398);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             // 
@@ -93,7 +93,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormServer";
-            this.Text = "FormServer";
+            this.Text = "Tie Fighter server";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
