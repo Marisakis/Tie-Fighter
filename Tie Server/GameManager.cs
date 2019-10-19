@@ -149,17 +149,9 @@ namespace Tie_Server
                     if (player.crosshair.isFiring)
                         if ((Math.Abs(player.crosshair.x-target.x)<=target.width/2) && (Math.Abs(player.crosshair.y - target.y) <= target.height / 2))
                             {
-                                //Handle here
                                 ToRemoveList.Add(target);
                                 player.crosshair.isFiring = false;
-                                 Console.WriteLine("Detected hit!");
                             }
-                            else
-                        {
-                            Console.WriteLine($"Crosshair x,y: {player.crosshair.x},{player.crosshair.y} and target x,y {target.x},{target.y} and target w,h {target.width},{target.height}");
-                        }
-
-
             bool _lockWasTaken = false;
             if (ToRemoveList.Count > 0)
                 try

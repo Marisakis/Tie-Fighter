@@ -49,6 +49,7 @@ namespace Tie_Fighter
 
         private List<Player> players;
         private int millis = 0;
+        private int lastFire = 0;
         private string myName;
 
         //Locking the list
@@ -161,6 +162,7 @@ namespace Tie_Fighter
 
         public void Fire()
         {
+            lastFire = DateTime.Now.Millisecond;
             this._mediaPlayerHandler.PlayFile(_directoryManager.FireSound, null);
             UpdateCrosshairData(true);
         }
@@ -240,7 +242,6 @@ namespace Tie_Fighter
 
         public void handlePacket(dynamic data, Client sender)
         {
-            Console.WriteLine(data);
             JArray jFighters = data.fighters;
             JArray jExplosions = data.explosions;
             JArray jPlayers = data.players;

@@ -56,7 +56,7 @@ namespace Tie_Server
                         player.client.Write(data);
                     break;
                 default:
-                    Console.WriteLine("Data type not recognised");
+                    Console.WriteLine("Data type not recognized");
                     break;
             }
         }
@@ -72,10 +72,10 @@ namespace Tie_Server
             public void Start()
         {
             gameStatus = GameStatus.Running;
-            var timerDelegate = new System.Timers.Timer(999999);
-            timerDelegate.Elapsed += OnTimedEvent;
-            timerDelegate.AutoReset = false;
-            timerDelegate.Enabled = true;
+            //var timerDelegate = new System.Timers.Timer(999999);
+            //timerDelegate.Elapsed += OnTimedEvent;
+            //timerDelegate.AutoReset = false;
+            //timerDelegate.Enabled = true;
         }
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)

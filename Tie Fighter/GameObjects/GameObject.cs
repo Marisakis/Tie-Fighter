@@ -70,14 +70,13 @@ namespace Tie_Fighter.GameObjects
         {
             if (this.usedMediaPlayer != null)
                 this.usedMediaPlayer.EndPlay();
-
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
 
         protected virtual void Dispose(bool disposing)
         {

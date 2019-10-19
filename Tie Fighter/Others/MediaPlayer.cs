@@ -40,22 +40,36 @@ namespace Tie_Fighter.Others
 
         public void Stop()
         {
-            player.controls.stop();
-            player.close();
-            done = true;
+            try
+            {
+                player.controls.stop();
+                player.close();
+            }
+            catch (Exception e) { }
+                done = true;
+            
         }
 
         public void EndPlay()
         {
-            player.stop();
+            try
+            {
+                player.stop();
+            }
+            catch (Exception e) { }
+            done = true;
         }
 
         public void Player_PlayStateChange(int NewState)
         {
             if ((WMPLib.WMPPlayState)NewState == WMPLib.WMPPlayState.wmppsStopped && done==false)
             {
-                player.controls.stop();
-                player.close();
+                try
+                {
+                    player.controls.stop();
+                    player.close();
+                }
+                catch (Exception e) { }
                 done = true;
                 //Actions on stop
             }
