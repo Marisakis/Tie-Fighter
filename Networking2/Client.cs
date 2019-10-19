@@ -61,21 +61,17 @@ namespace Networking
         {
             try
             {
-               // Console.WriteLine("Sending message: " + data);
                 data += "<EOF>";
                 stream.Write(System.Text.Encoding.ASCII.GetBytes(data), 0, data.Length);
                 stream.Flush();
             }
             catch (Exception e)
             {
-                //Console.WriteLine("error in connection");
-                // dataReceiver.NotifyConnectionError();  ? Would that be a good solution?
             }
         }
 
         public void Write(dynamic message)
         {
-            //Console.WriteLine("Writing dynamic object");
             Write(JsonConvert.SerializeObject(message));
         }
 

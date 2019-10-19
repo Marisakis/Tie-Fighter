@@ -24,9 +24,11 @@ namespace Tie_Fighter
         private Others.MediaPlayer mediaPlayer;
         private Thread updateChatThread;
         private delegate void SafeCallDelegate(string text);
+        private string name;
 
-        public FormQueue(Client client)
+        public FormQueue(Client client, string name)
         {
+            this.name = name;
             InitializeComponent();
             this.client = client;
             this.client.SetDataReceiver(this);
@@ -37,16 +39,13 @@ namespace Tie_Fighter
 
         private void StartBtn_MouseClick(object sender, MouseEventArgs e)
         {
-            FormGame formGame = new FormGame(this.client);
+            FormGame formGame = new FormGame(this.client, this.name);
             formGame.Show();
-
             //Starten game GIT code:
             dynamic message = new JObject();
             message.type = "startgame";
             client.Write(message);
-            
             this.Hide();
-
         }
 
         private void Highscoresbutton_Click(object sender, EventArgs e)
@@ -63,7 +62,7 @@ namespace Tie_Fighter
                 e.SuppressKeyPress = true;
                 dynamic message = new JObject();
                 message.type = "chatmessage";
-                message.data = chatBox.Text;
+                message.data = $"{name}: {chatBox.Text}";
                 client.Write(message);
                 chatBox.Text = "";
             }
@@ -73,9 +72,7 @@ namespace Tie_Fighter
         {
             switch ((string)data.type)
             {
-
                 case "highscores":
-
                     StringBuilder builder = new StringBuilder();
                     List<HighScore> highscores = new List<HighScore>();
                     if (data.data != null)
@@ -89,19 +86,13 @@ namespace Tie_Fighter
                             highscores.Add(highScore);
 
                         }
-
                     }
-
                     foreach (HighScore h in highscores)
-                    {
                         builder.Append(h.ToString() + "\r\n");
-                    }
                     MessageBox.Show(builder.ToString(), "highscores", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
                 case "chatmessage":
-                    //this.lobbyPlayersLabel.Text += "/r/n" + data.data; // gives error: wrong thread
                     string message = data.data;
-                    //this.UpdateChat(message);
                     updateChatThread = new Thread(() => UpdateChat(message));
                     updateChatThread.Start();
                         break;
@@ -123,10 +114,5 @@ namespace Tie_Fighter
                 lobbyPlayersLabel.Text += "\r\n" + chat;
             }
         }
-
-
-
-
-
     }
 }

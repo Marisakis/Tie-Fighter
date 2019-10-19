@@ -48,14 +48,16 @@ namespace Tie_Fighter
         private List<Crosshair> _crosshairs;
 
         private List<Player> players;
-        private int millis=0;
+        private int millis = 0;
+        private string myName;
 
         //Locking the list
         object _lockObj = new object();
 
 
-        public FormGame(Client client)
+        public FormGame(Client client, string name)
         {
+            this.myName = name;
             this.client = client;
             client.SetDataReceiver(this);
 
@@ -171,7 +173,7 @@ namespace Tie_Fighter
 
             UpdateCrosshairData();
 
-         
+
         }
 
         public void UpdatePosition(int x, int y)
@@ -182,9 +184,9 @@ namespace Tie_Fighter
             UpdateCrosshairData();
         }
 
-        public void UpdateCrosshairData(bool isFiring=false)
+        public void UpdateCrosshairData(bool isFiring = false)
         {
-            if (Math.Abs(millis - DateTime.Now.Millisecond)>15 || isFiring)
+            if (Math.Abs(millis - DateTime.Now.Millisecond) > 15 || isFiring)
             {
 
                 dynamic updatePos = new JObject();
@@ -243,6 +245,7 @@ namespace Tie_Fighter
 
         public void handlePacket(dynamic data, Client sender)
         {
+            Console.WriteLine(data);
             JArray jFighters = data.fighters;
             JArray jExplosions = data.explosions;
             JArray jPlayers = data.players;
@@ -256,6 +259,7 @@ namespace Tie_Fighter
             {
                 System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
                 HandleFighters(fighters);
+                HandlePlayers(players);
             }
             finally
             {
@@ -263,7 +267,7 @@ namespace Tie_Fighter
             }
         }
 
-        
+
 
         public void HandleGameObjects(Fighter[] toAddObjects, List<Fighter> existingObjects)
         {
@@ -306,6 +310,31 @@ namespace Tie_Fighter
             }
         }
 
+        public void HandlePlayerObjects(Player[] players)
+        {
+            byte crosshairID = 0;
+            List<Crosshair> AddCrosshairList = new List<Crosshair>();
+            foreach (Player player in players)
+            {
+                foreach (Crosshair existingCrosshair in _crosshairs)
+                {
+                    if (player.id == existingCrosshair.id)
+                    {
+                        existingCrosshair.percentageX = player.crosshair.percentageX;
+                        existingCrosshair.percentageY = player.crosshair.percentageY;
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+            }
+            Crosshair crosshair = new Crosshair(this._mediaPlayerHandler, _directoryManager.Crosshair(++crosshairID), player.crosshair.percentageX, player.crosshair.percentageY, player.crosshair.percentageWidth, player.crosshair.percentageHeight);
+            crosshair.id = player.id;
+
+        }
+
         public void HandleFighters(Fighter[] fighters)
         {
             if (_tieFighters != null)
@@ -319,7 +348,9 @@ namespace Tie_Fighter
 
         public void HandlePlayers(Player[] players)
         {
-
+            if (players != null)
+                if (players.Length > 1)
+                    HandlePlayerObjects(players);
         }
 
         public Fighter[] GetFighters(JArray jFighters)
