@@ -94,7 +94,7 @@ namespace Tie_Server
         {
             //Console.WriteLine("received a message in program");
             Console.WriteLine(data);
-            Console.WriteLine("Data type: " + data.type);
+            //Console.WriteLine("Data type: " + data.type);
             switch ((string)data.type)
             {
                 case "login":
@@ -114,7 +114,7 @@ namespace Tie_Server
                     //this.gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
                     break;
                 default:
-                    Console.WriteLine("Data type not recognised");
+                    Console.WriteLine("Data type not recognized");
                     break;
 
             }

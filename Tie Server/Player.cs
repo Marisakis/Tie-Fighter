@@ -25,7 +25,7 @@ namespace Tie_Server
         public string name { get; set; }
         public int score { get; set; }
 
-        Crosshair crosshair { get; set; }
+        public Crosshair crosshair { get; set; }
 
         internal void UpdateCrosshair(int x, int y, bool isFiring)
         {

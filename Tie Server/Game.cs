@@ -34,7 +34,8 @@ namespace Tie_Server
             data.data = "Player " + newPlayer.name + " has joined the lobby";
             foreach (Player player in gameManager.players)
                 player.client.Write(data);
-            this.Start();
+
+            //this.Start();
         }
 
         public void handlePacket(dynamic data, Client sender)
@@ -42,7 +43,7 @@ namespace Tie_Server
             switch ((string)data.type)
             {
                 case "crosshair":
-                    gameManager.UpdatePlayerCrosshair(data.data.clientID, data.data.crosshair);
+                    gameManager.UpdatePlayerCrosshair(sender, data.data);
                     break;
                 case "highscorerequest":
                     Program.handleHighscoreRequest(sender);
@@ -71,7 +72,7 @@ namespace Tie_Server
             public void Start()
         {
             gameStatus = GameStatus.Running;
-            var timerDelegate = new System.Timers.Timer(30000);
+            var timerDelegate = new System.Timers.Timer(999999);
             timerDelegate.Elapsed += OnTimedEvent;
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;
@@ -87,7 +88,8 @@ namespace Tie_Server
             List<HighScore> scores = GetHighScoresFromFile();
             scores.Add(GetHighestScore());
             scores.Sort();
-            scores.RemoveRange(10, scores.Count - 10); // trim so only 10 remain
+            if (scores.Count > 10)
+                scores.RemoveRange(10, scores.Count - 10); // trim so only 10 remain
             writeHighscoresToFile(scores);
         }
 

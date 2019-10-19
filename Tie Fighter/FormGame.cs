@@ -48,6 +48,7 @@ namespace Tie_Fighter
         private List<Crosshair> _crosshairs;
 
         private List<Player> players;
+        private int millis=0;
 
         //Locking the list
         object _lockObj = new object();
@@ -98,6 +99,7 @@ namespace Tie_Fighter
 
             //Hide cursor
             Cursor.Dispose();
+
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -111,9 +113,9 @@ namespace Tie_Fighter
 
                 //Draw each Tie Fighter / Explosion / Crosshair.
                 foreach (Fighter tieFighter in _tieFighters)
-                    tieFighter.Draw(graphics, Width, Height, false);
+                    tieFighter.Draw(graphics, Width, Height, true);
                 foreach (Explosion explosion in _explosions)
-                    explosion.Draw(graphics, Width, Height, false);
+                    explosion.Draw(graphics, Width, Height, true);
                 foreach (Crosshair crosshair in _crosshairs)
                     crosshair.Draw(graphics, Width, Height, true);
 
@@ -158,11 +160,18 @@ namespace Tie_Fighter
         public void Fire()
         {
             this._mediaPlayerHandler.PlayFile(_directoryManager.FireSound, null);
+
+            UpdateCrosshairData(true);
         }
 
         public void MoveTo(int x, int y)
         {
             this._crosshair.SetXY(x, y, Width, Height);
+
+
+            UpdateCrosshairData();
+
+         
         }
 
         public void UpdatePosition(int x, int y)
@@ -170,12 +179,25 @@ namespace Tie_Fighter
             this._crosshair.percentageX += x;
             this._crosshair.percentageY += y;
 
-            //Build data packet to write to server containing player position.
-            dynamic updatePos = new JObject();
-            updatePos.type = "crosshairUpdate";
-            updatePos.x = x;
-            updatePos.y = y;
-           // client.Write(updatePos);
+            UpdateCrosshairData();
+        }
+
+        public void UpdateCrosshairData(bool isFiring=false)
+        {
+            if (Math.Abs(millis - DateTime.Now.Millisecond)>15 || isFiring)
+            {
+
+                dynamic updatePos = new JObject();
+                dynamic data = new JObject();
+                updatePos.type = "crosshair";
+                data.x = _crosshair.percentageX;
+                data.y = _crosshair.percentageY;
+                data.isFiring = isFiring;
+                updatePos.data = data;
+                client.Write(updatePos);
+
+                millis = DateTime.Now.Millisecond;
+            }
         }
 
         public void FormGame_LeapEvent(LeapEventArgs e)

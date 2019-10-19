@@ -23,19 +23,19 @@ namespace Tie_Fighter.Others
         /// <param name="timeToPlay">Use 2.0 for double speed, 0.5 for half speed, null or -1 to leave unchanged</param>
         public void PlayFile(string url, double? timeToPlay)
         {
-            done = false;
-            player.PlayStateChange += Player_PlayStateChange;
-            player.URL = url;
-            if (timeToPlay != null || timeToPlay==-1)
+            try
             {
-                try
+                done = false;
+                player.PlayStateChange += Player_PlayStateChange;
+                player.URL = url;
+                if (timeToPlay != null || timeToPlay == -1)
                 {
                     double duration = player.newMedia(url).duration;
                     player.settings.rate = (duration / (double)timeToPlay);
                 }
-                catch (Exception e) { }
+                player.controls.play();
             }
-            player.controls.play();
+            catch (Exception e) { }
         }
 
         public void Stop()

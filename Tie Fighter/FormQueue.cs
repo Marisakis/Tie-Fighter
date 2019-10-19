@@ -39,7 +39,14 @@ namespace Tie_Fighter
         {
             FormGame formGame = new FormGame(this.client);
             formGame.Show();
+
+            //Starten game GIT code:
+            dynamic message = new JObject();
+            message.type = "startgame";
+            client.Write(message);
+            
             this.Hide();
+
         }
 
         private void Highscoresbutton_Click(object sender, EventArgs e)
