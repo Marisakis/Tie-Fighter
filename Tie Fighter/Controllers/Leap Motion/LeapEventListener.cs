@@ -7,6 +7,9 @@ using Leap;
 
 namespace Tie_Fighter.Controllers.Leap_Motion
 {
+    /// <summary>
+    /// Event listener for Leap events.
+    /// </summary>
     public class LeapEventListener : Listener
     {
         ILeapEventDelegate eventDelegate;

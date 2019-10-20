@@ -4,6 +4,9 @@ using Tie_Fighter.Others;
 
 namespace Tie_Fighter.GameObjects
 {
+    /// <summary>
+    /// Basic methods to draw and display. Note that everything is in percentages for optimal compatibility.
+    /// </summary>
     public abstract class GameObject : IDisposable
     {
         public bool disposed = false;

@@ -27,6 +27,4 @@ namespace Tie_Server
             return this.name + ": " + this.score;
         }
     }
-
-    
 }

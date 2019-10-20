@@ -21,6 +21,9 @@ using System.Threading;
 
 namespace Tie_Fighter
 {
+    /// <summary>
+    /// Handles the drawing and receiving of items. This Form binds everything together.
+    /// </summary>
     public partial class FormGame : Form, IActionInput<int>, IDataReceiver //, ILeapEventDelegate
     {
         //Networking

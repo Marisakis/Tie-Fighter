@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tie_Server.GameObjects
 {
+    /// <summary>
+    /// Crosshair object.
+    /// </summary>
     public class Crosshair : GameObject
     {
         public Crosshair(int id, double x, double y, int width, int height) : base(id, x, y, width, height)

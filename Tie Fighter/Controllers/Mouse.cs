@@ -2,6 +2,10 @@
 
 namespace Tie_Fighter.Controllers
 {
+    /// <summary>
+    /// Handles MouseEvents.
+    /// </summary>
+    /// <typeparam name="MouseEvent"></typeparam>
     public class Mouse<MouseEvent> : GeneralController<MouseEvent, int> where MouseEvent : MouseEventArgs
     {
         bool fired;

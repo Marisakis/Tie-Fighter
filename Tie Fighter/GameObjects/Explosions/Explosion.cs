@@ -2,6 +2,9 @@
 
 namespace Tie_Fighter.GameObjects.Explosions
 {
+    /// <summary>
+    /// Explosion is shown after a TieFighter has been destroyed.
+    /// </summary>
     public class Explosion : GameObject
     {
         public Explosion(Others.MediaPlayerHandler mediaPlayer, int x, int y, int width, int height) : base(mediaPlayer, x, y, width, height)

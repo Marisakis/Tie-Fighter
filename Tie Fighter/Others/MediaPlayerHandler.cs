@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tie_Fighter.Others
 {
+    /// <summary>
+    /// Handles MediaPlayer instances for optimal multiple sound effects. When a tie fighter is being shot you still want to hear environment music, otherwise this would just be stopped and interrupted by the shooting sound.
+    /// </summary>
     public class MediaPlayerHandler
     {
         private List<MediaPlayer> _mediaPlayers;

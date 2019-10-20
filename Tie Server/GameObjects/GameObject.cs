@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tie_Server.GameObjects
 {
+    /// <summary>
+    /// General GameObject.
+    /// </summary>
     public abstract class GameObject
     {
        

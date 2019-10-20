@@ -10,6 +10,9 @@ using static Leap.Finger;
 
 namespace Tie_Fighter.Controllers.Leap_Motion
 {
+    /// <summary>
+    /// This LeapMotion class handles the detection of specific gestures. Finger positions, bones and other muscle positions are being detected by the Leap Motion, which enables support for the Leap Motion.
+    /// </summary>
     public class LeapMotion : ILeapEventDelegate
     {
         private Controller _controller;
@@ -40,10 +43,7 @@ namespace Tie_Fighter.Controllers.Leap_Motion
                         ConnectHandler();
                         break;
                     case "onFrame":
-                       // Console.WriteLine("Received frame Leap Motion");
                         DetectGesture(this._controller.Frame());
-                       // DetectHandPosition(this._controller.Frame());
-                       // DetectFingers(this._controller.Frame());
                         DetectCoordinates(this._controller.Frame());
                         break;
                 }

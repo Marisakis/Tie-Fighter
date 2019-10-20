@@ -5,7 +5,10 @@ namespace Tie_Fighter.Controllers
 {
     public class LeapMotionHandler<LeapMotionEvent> : GeneralController<LeapMotionEvent, int> where LeapMotionEvent : LeapEventArgs
     {
-        
+        /// <summary>
+        /// The LeapMotionHandler extends the GeneralController, this class handles the Leap actions.
+        /// </summary>
+        /// <param name="actionInput"></param>
         public LeapMotionHandler(IActionInput<int> actionInput) : base(actionInput) 
         {
            

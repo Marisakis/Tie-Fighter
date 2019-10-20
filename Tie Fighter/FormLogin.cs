@@ -12,7 +12,9 @@ using Tie_Server;
 
 namespace Tie_Fighter
 {
-
+    /// <summary>
+    /// Login window for the client. Can enter server IP-address and port number.
+    /// </summary>
     public partial class FormLogin : Form, IDataReceiver
     {
         private Others.MediaPlayer mediaPlayer;

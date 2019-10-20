@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Tie_Fighter.Others
 {
+    /// <summary>
+    /// Handles the playing of mp3 and wav sound effects. Needed to play shooting and explosions sounds. Is also used for music.
+    /// </summary>
     public class MediaPlayer
     {
         WMPLib.WindowsMediaPlayerClass player;

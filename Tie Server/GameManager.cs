@@ -88,21 +88,11 @@ namespace Tie_Server
                 }
         }
 
-        /* public Player FindPlayerByID(int playerID)
-         {
-             foreach (Player player in players)
-                 if (player.id == playerID)
-                     return player;
-             return null;
-         }
- */
-
         /// <summary>
         /// This method moves all existing TieFighters over the screen. It also checks for fighters that have exceeded screen boundaries
         /// </summary>
         private void UpdateTieFighters()
         {
-            //Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
@@ -155,11 +145,6 @@ namespace Tie_Server
                             ToRemoveList.Add(target);
                             player.crosshair.isFiring = false;
                             player.score++;
-                            //Console.WriteLine("Detected hit!");
-                        }
-                        else
-                        {
-                            //Console.WriteLine($"Crosshair x,y: {player.crosshair.x},{player.crosshair.y} and target x,y {target.x},{target.y} and target w,h {target.width},{target.height}");
                         }
 
 
@@ -178,44 +163,7 @@ namespace Tie_Server
                 {
                     if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
                 }
-            ToRemoveList.Clear();/*
-            //Check each crosshair with each tie fighter
-            // if hit, remove fighter, increase score, add new explosion with targetcounter id
-            foreach (Player player in players)
-            {
-                Crosshair crosshair = player.crosshair;
-                System.Diagnostics.Debug.WriteLine("pew");
-                System.Diagnostics.Debug.WriteLine(crosshair.x  + " " + crosshair.y + " " + crosshair.isFiring);
-
-
-                if (crosshair.isFiring)
-                {
-                    foreach(Target t in tieFighters)
-                    {
-                        if(GetDistance(crosshair.x, crosshair.y, t.x,t.y) < 5)
-                        {
-                            toRemove.Add(t);
-                            toAdd.Add(new Explosion(3, targetCounter++, t.x, t.y, t.width, t.height));
-                            player.score += 1;
-                            System.Diagnostics.Debug.WriteLine("boom");
-                        }
-                    }
-                }
-            }
-            foreach(Target t in toRemove)
-            {
-                tieFighters.Remove(t);
-            }
-            foreach(Explosion x in toAdd)
-            {
-                explosions.Add(x);
-            }
-*/
+            ToRemoveList.Clear();
         }
-        private static double GetDistance(double x1, double y1, double x2, double y2)
-        {
-            return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
-        }
-
     }
 }

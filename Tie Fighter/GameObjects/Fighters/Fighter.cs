@@ -2,9 +2,11 @@
 
 namespace Tie_Fighter.GameObjects
 {
+    /// <summary>
+    /// Fighter class can play an engine sound (Tie Fighter roar).
+    /// </summary>
     public abstract class Fighter : GameObject
     {
-        
         public Fighter(Others.MediaPlayerHandler mediaPlayer, int xPercentage, int yPercentage, int widthPercentage, int heightPercentage) : base(mediaPlayer, xPercentage, yPercentage, widthPercentage, heightPercentage)
         {
         }

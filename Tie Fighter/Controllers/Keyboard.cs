@@ -2,6 +2,11 @@
 
 namespace Tie_Fighter.Controllers
 {
+
+    /// <summary>
+    /// Handles KeyboardEvents.
+    /// </summary>
+    /// <typeparam name="KeyboardEvent"></typeparam>
     public class Keyboard<KeyboardEvent> : GeneralController<KeyboardEvent, int> where KeyboardEvent : KeyEventArgs
     {
         private int _minSensitivity = 3;

@@ -17,7 +17,6 @@ namespace Tie_Server
             this.id = 500;
             this.score = 0;
             this.crosshair = new Crosshair(0,-10,-10,10,10);
-            
         }
 
         public Client client { get; set; }

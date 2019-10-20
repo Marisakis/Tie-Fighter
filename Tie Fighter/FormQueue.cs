@@ -17,6 +17,9 @@ using System.Threading;
 
 namespace Tie_Fighter
 {
+    /// <summary>
+    /// The FormQueue is basically a game lobby.
+    /// </summary>
     public partial class FormQueue : Form, IDataReceiver
     {
         private Client client;

@@ -112,7 +112,6 @@ namespace Tie_Server
 
         public void handlePacket(dynamic data, Client sender)
         {
-            //Console.WriteLine(data);
             switch ((string)data.type)
             {
                 case "login":
