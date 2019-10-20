@@ -35,11 +35,9 @@
             this.chatBox = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.highscoresbutton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // lobbyPlayersLabel
@@ -95,7 +93,7 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox2.Controls.Add(this.groupBox3);
+            this.groupBox2.Controls.Add(this.highscoresbutton);
             this.groupBox2.Controls.Add(this.StartBtn);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
@@ -103,36 +101,26 @@
             this.groupBox2.Size = new System.Drawing.Size(600, 450);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox3.Controls.Add(this.highscoresbutton);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 16);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(594, 379);
-            this.groupBox3.TabIndex = 6;
-            this.groupBox3.TabStop = false;
+            this.groupBox2.Enter += new System.EventHandler(this.GroupBox2_Enter);
             // 
             // highscoresbutton
             // 
             this.highscoresbutton.BackColor = System.Drawing.Color.Transparent;
             this.highscoresbutton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.highscoresbutton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.highscoresbutton.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.highscoresbutton.Dock = System.Windows.Forms.DockStyle.Top;
             this.highscoresbutton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.highscoresbutton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.highscoresbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.highscoresbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.11881F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.highscoresbutton.ForeColor = System.Drawing.Color.White;
-            this.highscoresbutton.Location = new System.Drawing.Point(3, 324);
+            this.highscoresbutton.Location = new System.Drawing.Point(3, 16);
+            this.highscoresbutton.Margin = new System.Windows.Forms.Padding(0);
             this.highscoresbutton.Name = "highscoresbutton";
-            this.highscoresbutton.Size = new System.Drawing.Size(588, 52);
-            this.highscoresbutton.TabIndex = 2;
+            this.highscoresbutton.Size = new System.Drawing.Size(594, 52);
+            this.highscoresbutton.TabIndex = 3;
             this.highscoresbutton.Text = "G e t   H i g h s c o r e s";
             this.highscoresbutton.UseVisualStyleBackColor = false;
-            this.highscoresbutton.Click += new System.EventHandler(this.Highscoresbutton_Click);
             // 
             // FormQueue
             // 
@@ -151,7 +139,6 @@
             this.Text = "Tie Fighter Shooter lobby";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -163,7 +150,6 @@
         private System.Windows.Forms.RichTextBox chatBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button highscoresbutton;
     }
 }

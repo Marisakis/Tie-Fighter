@@ -24,7 +24,6 @@ namespace Tie_Server
 
         TcpListener listener;
         private List<Client> clients = new List<Client>();
-        //private Dictionary<String, Client> namedClients = new Dictionary<string, Client>();
         private int clientCounter = 0;
         private Object _lockObj = new object();
         private List<Game> games = new List<Game>();
@@ -39,22 +38,19 @@ namespace Tie_Server
             while (true)
             {
                 bool lockWasTaken = false;
-
                 try
                 {
                     System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
                     foreach(Game game in games)
                         if(game.gameStatus == GameStatus.Running)
                             game.Tick();
-                    System.Threading.Thread.Sleep(GameManager.timerPeriod / 5);
                 }
                 finally
                 {
                     if (lockWasTaken)
                         System.Threading.Monitor.Exit(_lockObj);
                 }
-                System.Threading.Thread.Sleep(GameManager.timerPeriod/2);
-
+                System.Threading.Thread.Sleep(GameManager.timerPeriod / 5);
             }
         }
 
@@ -116,13 +112,10 @@ namespace Tie_Server
 
         public void handlePacket(dynamic data, Client sender)
         {
-            //Console.WriteLine("received a message in program");
-            Console.WriteLine(data);
-            //Console.WriteLine("Data type: " + data.type);
+            //Console.WriteLine(data);
             switch ((string)data.type)
             {
                 case "login":
-                    //namedClients.Add((string)data.name, sender);
                     AssignPlayerToGame(sender, (string)data.name);
                     break;
                 case "highscorerequest":
@@ -134,7 +127,6 @@ namespace Tie_Server
                 default:
                     Console.WriteLine("Data type not recognized");
                     break;
-
             }
         }
     }

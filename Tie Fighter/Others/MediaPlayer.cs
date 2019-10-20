@@ -38,16 +38,15 @@ namespace Tie_Fighter.Others
             catch (Exception e) { }
         }
 
-        public void Stop()
-        {
-            player.controls.stop();
-            player.close();
-            done = true;
-        }
-
         public void EndPlay()
         {
-            player.stop();
+            try
+            {
+                player.stop();
+                player.clear();
+                player.close();
+            } catch (Exception e) { }
+            done = true;
         }
 
         public void Player_PlayStateChange(int NewState)

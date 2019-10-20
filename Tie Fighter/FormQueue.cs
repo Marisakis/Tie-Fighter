@@ -137,5 +137,10 @@ namespace Tie_Fighter
                 lobbyPlayersLabel.Text += "\r\n" + chat;
             }
         }
+
+        private void GroupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
