@@ -73,12 +73,7 @@ namespace Tie_Fighter
 
         }
 
-        private void Highscoresbutton_Click(object sender, EventArgs e)
-        {
-            dynamic message = new JObject();
-            message.type = "highscorerequest";
-            client.Write(message);
-        }
+        
 
         private void ChatBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -143,6 +138,13 @@ namespace Tie_Fighter
         private void GroupBox2_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void Highscoresbutton_Click_1(object sender, EventArgs e)
+        {
+            dynamic message = new JObject();
+            message.type = "highscorerequest";
+            client.Write(message);
         }
     }
 }

@@ -252,7 +252,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /yr "C:\Users\Dustin\Documents\TieFighter\Leap\Leap.dll" "$(TargetDir)"
-xcopy /yr "C:\Users\Dustin\Documents\TieFighter\Leap\LeapCSharp.dll" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>xcopy /yr "C:\Users\sebco\Onedrive\documenten\TieFighter\Leap\Leap.dll" "$(TargetDir)"
+xcopy /yr "C:\Users\sebco\Onedrive\documenten\\TieFighter\Leap\LeapCSharp.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

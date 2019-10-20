@@ -43,9 +43,10 @@
             // lobbyPlayersLabel
             // 
             this.lobbyPlayersLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lobbyPlayersLabel.Location = new System.Drawing.Point(3, 16);
+            this.lobbyPlayersLabel.Location = new System.Drawing.Point(4, 19);
+            this.lobbyPlayersLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lobbyPlayersLabel.Name = "lobbyPlayersLabel";
-            this.lobbyPlayersLabel.Size = new System.Drawing.Size(194, 431);
+            this.lobbyPlayersLabel.Size = new System.Drawing.Size(259, 531);
             this.lobbyPlayersLabel.TabIndex = 0;
             // 
             // StartBtn
@@ -59,9 +60,10 @@
             this.StartBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.11881F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartBtn.ForeColor = System.Drawing.Color.White;
-            this.StartBtn.Location = new System.Drawing.Point(3, 395);
+            this.StartBtn.Location = new System.Drawing.Point(4, 486);
+            this.StartBtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.StartBtn.Name = "StartBtn";
-            this.StartBtn.Size = new System.Drawing.Size(594, 52);
+            this.StartBtn.Size = new System.Drawing.Size(792, 64);
             this.StartBtn.TabIndex = 2;
             this.StartBtn.Text = "S t a r t";
             this.StartBtn.UseVisualStyleBackColor = false;
@@ -71,9 +73,10 @@
             // 
             this.chatBox.BackColor = System.Drawing.SystemColors.Info;
             this.chatBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.chatBox.Location = new System.Drawing.Point(3, 395);
+            this.chatBox.Location = new System.Drawing.Point(4, 487);
+            this.chatBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chatBox.Name = "chatBox";
-            this.chatBox.Size = new System.Drawing.Size(194, 52);
+            this.chatBox.Size = new System.Drawing.Size(259, 63);
             this.chatBox.TabIndex = 3;
             this.chatBox.Text = "Message";
             this.chatBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ChatBox_KeyDown);
@@ -83,9 +86,11 @@
             this.groupBox1.Controls.Add(this.chatBox);
             this.groupBox1.Controls.Add(this.lobbyPlayersLabel);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.groupBox1.Location = new System.Drawing.Point(600, 0);
+            this.groupBox1.Location = new System.Drawing.Point(800, 0);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 450);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Size = new System.Drawing.Size(267, 554);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "L o b b y";
@@ -97,11 +102,12 @@
             this.groupBox2.Controls.Add(this.StartBtn);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(600, 450);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Size = new System.Drawing.Size(800, 554);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Enter += new System.EventHandler(this.GroupBox2_Enter);
             // 
             // highscoresbutton
             // 
@@ -114,25 +120,27 @@
             this.highscoresbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.highscoresbutton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.11881F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.highscoresbutton.ForeColor = System.Drawing.Color.White;
-            this.highscoresbutton.Location = new System.Drawing.Point(3, 16);
+            this.highscoresbutton.Location = new System.Drawing.Point(4, 19);
             this.highscoresbutton.Margin = new System.Windows.Forms.Padding(0);
             this.highscoresbutton.Name = "highscoresbutton";
-            this.highscoresbutton.Size = new System.Drawing.Size(594, 52);
+            this.highscoresbutton.Size = new System.Drawing.Size(792, 64);
             this.highscoresbutton.TabIndex = 3;
             this.highscoresbutton.Text = "G e t   H i g h s c o r e s";
             this.highscoresbutton.UseVisualStyleBackColor = false;
+            this.highscoresbutton.Click += new System.EventHandler(this.Highscoresbutton_Click_1);
             // 
             // FormQueue
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tie_Fighter.Properties.Resources.tiefighterxwing;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1067, 554);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormQueue";
