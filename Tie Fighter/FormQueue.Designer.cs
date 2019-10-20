@@ -127,7 +127,6 @@
             this.highscoresbutton.TabIndex = 3;
             this.highscoresbutton.Text = "G e t   H i g h s c o r e s";
             this.highscoresbutton.UseVisualStyleBackColor = false;
-            this.highscoresbutton.Click += new System.EventHandler(this.Highscoresbutton_Click_1);
             // 
             // FormQueue
             // 

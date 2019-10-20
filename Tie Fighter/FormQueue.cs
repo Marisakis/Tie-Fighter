@@ -78,8 +78,8 @@ namespace Tie_Fighter
                 this.Focus();
                 this.chatBox.ResetText();
                 this.Show();
-                this.name = name;                this.client.SetDataReceiver(this);
-
+                this.name = name;
+                this.client.SetDataReceiver(this);
                 this.client = client;
             }
 
@@ -170,17 +170,6 @@ namespace Tie_Fighter
             }
         }
 
-        private void GroupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Highscoresbutton_Click_1(object sender, EventArgs e)
-        {
-            dynamic message = new JObject();
-            message.type = "highscorerequest";
-            client.Write(message);
-        }
 
         public void HandleError(Client client)
         {
