@@ -24,6 +24,7 @@ namespace Tie_Fighter
         private Others.MediaPlayer mediaPlayer;
         private Thread updateChatThread;
         private delegate void SafeCallDelegate(string text);
+        private delegate void RestartDelegate(Client client, string name);
         private string name;
 
         public FormQueue(Client client, string name)
@@ -39,13 +40,35 @@ namespace Tie_Fighter
 
         private void StartBtn_MouseClick(object sender, MouseEventArgs e)
         {
-            FormGame formGame = new FormGame(this.client, this.name);
+            FormGame formGame = new FormGame(this.client, this.name, this);
             formGame.Show();
             //Starten game GIT code:
             dynamic message = new JObject();
             message.type = "startgame";
             client.Write(message);
             this.Hide();
+        }
+
+        public void Restart(Client client, string name)
+        {
+            if (this.InvokeRequired)
+            {
+                var d = new RestartDelegate(Restart);
+                this.Invoke(d, new object[] { this.client, this.name });
+
+            }
+            else
+            {
+                Console.WriteLine("attempting to restart lobby");
+
+                this.Show();
+                this.name = name;
+                this.client = client;
+                this.client.SetDataReceiver(this);
+                Console.WriteLine("showing lobby");
+
+            }
+
         }
 
         private void Highscoresbutton_Click(object sender, EventArgs e)
@@ -95,7 +118,7 @@ namespace Tie_Fighter
                     string message = data.data;
                     updateChatThread = new Thread(() => UpdateChat(message));
                     updateChatThread.Start();
-                        break;
+                    break;
                 default:
                     break;
 
@@ -107,12 +130,17 @@ namespace Tie_Fighter
             if (lobbyPlayersLabel.InvokeRequired)
             {
                 var d = new SafeCallDelegate(UpdateChat);
-                lobbyPlayersLabel.Invoke(d, new object[] {  chat });
+                lobbyPlayersLabel.Invoke(d, new object[] { chat });
             }
             else
             {
                 lobbyPlayersLabel.Text += "\r\n" + chat;
             }
+        }
+
+        private void GroupBox2_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

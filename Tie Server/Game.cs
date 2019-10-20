@@ -17,11 +17,13 @@ namespace Tie_Server
     public enum GameStatus { Lobby, Running, Finished }
     public class Game : IDataReceiver
     {
+        private Program main;
         public GameManager gameManager;
         public GameStatus gameStatus { get; set; } = GameStatus.Lobby;
 
-        public Game()
+        public Game(Program main)
         {
+            this.main = main;
             this.gameManager = new GameManager();
         }
 
@@ -71,7 +73,7 @@ namespace Tie_Server
         public void Start()
         {
             gameStatus = GameStatus.Running;
-            var timerDelegate = new System.Timers.Timer(999999);
+            var timerDelegate = new System.Timers.Timer(60000);
             timerDelegate.Elapsed += OnTimedEvent;
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;
@@ -84,12 +86,23 @@ namespace Tie_Server
 
         private void Finish()
         {
+            Console.WriteLine("Ending game");
             List<HighScore> scores = GetHighScoresFromFile();
             scores.Add(GetHighestScore());
             scores.Sort();
             if (scores.Count > 10)
                 scores.RemoveRange(10, scores.Count - 10); // trim so only 10 remain
             writeHighscoresToFile(scores);
+            dynamic data = new JObject();
+            data.type = "gameended";
+            foreach (Player player in gameManager.players)
+            {
+                main.AssignPlayerToGame(player.client, player.name);
+                player.client.Write(data);
+            }
+            this.gameManager = new GameManager();
+            this.gameStatus = GameStatus.Lobby;
+
         }
 
 

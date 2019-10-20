@@ -24,7 +24,6 @@ namespace Tie_Server
 
         TcpListener listener;
         private List<Client> clients = new List<Client>();
-        private Dictionary<String, Client> namedClients = new Dictionary<string, Client>();
         private int clientCounter = 0;
         private Object _lockObj = new object();
         private List<Game> games = new List<Game>();
@@ -35,26 +34,23 @@ namespace Tie_Server
             this.port = port;
             Console.WriteLine($"Starting server on port: {port}");
             StartAcceptingClientConnections();
-            games.Add(new Game());
+            games.Add(new Game(this));
             while (true)
             {
                 bool lockWasTaken = false;
-
                 try
                 {
                     System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
                     foreach(Game game in games)
                         if(game.gameStatus == GameStatus.Running)
                             game.Tick();
-                    System.Threading.Thread.Sleep(GameManager.timerPeriod / 5);
                 }
                 finally
                 {
                     if (lockWasTaken)
                         System.Threading.Monitor.Exit(_lockObj);
                 }
-                System.Threading.Thread.Sleep(GameManager.timerPeriod/2);
-
+                System.Threading.Thread.Sleep(GameManager.timerPeriod / 5);
             }
         }
 
@@ -93,22 +89,34 @@ namespace Tie_Server
             sender.Write(reply);
         }
 
+        public void AssignPlayerToGame(Client sender, string name)
+        { 
+            Player newPlayer = new Player(name);
+            newPlayer.id = clientCounter++;
+            newPlayer.client = sender;
+            GetActiveLobby().AddPlayer(newPlayer); 
+        }
+
+        private Game GetActiveLobby()
+        {
+            foreach(Game game in games)
+            {
+                if (game.gameStatus == GameStatus.Lobby)
+                    return game;
+            }
+            Game newGame = new Game(this);
+            games.Add(newGame);
+            Console.WriteLine("Games: " + games.Count);
+            return newGame;
+        }
+
         public void handlePacket(dynamic data, Client sender)
         {
-            //Console.WriteLine("received a message in program");
-            Console.WriteLine(data);
-            //Console.WriteLine("Data type: " + data.type);
+            //Console.WriteLine(data);
             switch ((string)data.type)
             {
                 case "login":
-                    namedClients.Add((string)data.name, sender);
-                    Player newPlayer = new Player((string)data.name);
-                    newPlayer.id = clientCounter++;
-                    newPlayer.client = sender;
-                    Game currentLobby = games.Last<Game>();
-                    if (currentLobby.gameStatus != GameStatus.Lobby)
-                        games.Add(new Game());
-                    games.Last<Game>().AddPlayer(newPlayer);
+                    AssignPlayerToGame(sender, (string)data.name);
                     break;
                 case "highscorerequest":
                     handleHighscoreRequest(sender);
@@ -119,7 +127,6 @@ namespace Tie_Server
                 default:
                     Console.WriteLine("Data type not recognized");
                     break;
-
             }
         }
     }

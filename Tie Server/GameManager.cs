@@ -42,6 +42,7 @@ namespace Tie_Server
                 JArray jExplosions = JArray.FromObject(explosions);
                 JArray jPlayers = JArray.FromObject(players);
                 dynamic data = new JObject();
+                data.type = "gamedata";
                 data.fighters = jFighters;
                 data.explosions = jExplosions;
                 data.players = jPlayers;
@@ -86,11 +87,6 @@ namespace Tie_Server
                     player.crosshair.isFiring = isFiring;
                 }
         }
-
-        }*/
-
-        }
-
 
         /* public Player FindPlayerByID(int playerID)
          {
@@ -153,16 +149,17 @@ namespace Tie_Server
             foreach (Player player in players)
                 foreach (Target target in tieFighters)
                     if (player.crosshair.isFiring)
-                        if ((Math.Abs(player.crosshair.x-target.x)<=target.width/2) && (Math.Abs(player.crosshair.y - target.y) <= target.height / 2))
-                            {
-                                //Handle here
-                                ToRemoveList.Add(target);
-                                player.crosshair.isFiring = false;
-                                 Console.WriteLine("Detected hit!");
-                            }
-                            else
+                        if ((Math.Abs(player.crosshair.x - target.x) <= target.width / 2) && (Math.Abs(player.crosshair.y - target.y) <= target.height / 2))
                         {
-                            Console.WriteLine($"Crosshair x,y: {player.crosshair.x},{player.crosshair.y} and target x,y {target.x},{target.y} and target w,h {target.width},{target.height}");
+                            //Handle here
+                            ToRemoveList.Add(target);
+                            player.crosshair.isFiring = false;
+                            player.score++;
+                            //Console.WriteLine("Detected hit!");
+                        }
+                        else
+                        {
+                            //Console.WriteLine($"Crosshair x,y: {player.crosshair.x},{player.crosshair.y} and target x,y {target.x},{target.y} and target w,h {target.width},{target.height}");
                         }
 
 
@@ -181,7 +178,7 @@ namespace Tie_Server
                 {
                     if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
                 }
-            ToRemoveList.Clear();
+            ToRemoveList.Clear();/*
             //Check each crosshair with each tie fighter
             // if hit, remove fighter, increase score, add new explosion with targetcounter id
             foreach (Player player in players)
@@ -213,7 +210,7 @@ namespace Tie_Server
             {
                 explosions.Add(x);
             }
-
+*/
         }
         private static double GetDistance(double x1, double y1, double x2, double y2)
         {
