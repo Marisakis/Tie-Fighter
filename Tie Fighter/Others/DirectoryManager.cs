@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Tie_Fighter.Others
 {
+    /// <summary>
+    /// Can retrieve directories from the DirectoryManager. Handy to store specific locations to, for example, audio or video files.
+    /// </summary>
     public class DirectoryManager
     {
         //Leap Motion SDK.
@@ -34,7 +37,10 @@ namespace Tie_Fighter.Others
         {
             return $"{CrosshairDir}/crosshair{number}.png";
         }
-
+        
+        /// <summary>
+        /// Build directory paths.
+        /// </summary>
         public DirectoryManager()
         {
             string documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);

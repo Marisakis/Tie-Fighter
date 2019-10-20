@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Tie_Fighter.Others
 {
+    /// <summary>
+    /// Handles the playing of mp3 and wav sound effects. Needed to play shooting and explosions sounds. Is also used for music.
+    /// </summary>
     public class MediaPlayer
     {
         WMPLib.WindowsMediaPlayerClass player;
@@ -17,7 +20,7 @@ namespace Tie_Fighter.Others
         }
 
         /// <summary>
-        /// 
+        /// Play an audio file from a specific source [URL] with a specific TimeToPlay. If TTP is null use native TTP.
         /// </summary>
         /// <param name="url"></param>
         /// <param name="timeToPlay">Use 2.0 for double speed, 0.5 for half speed, null or -1 to leave unchanged</param>
@@ -38,6 +41,9 @@ namespace Tie_Fighter.Others
             catch (Exception e) { }
         }
 
+        /// <summary>
+        /// End audio stream and stop sound output.
+        /// </summary>
         public void EndPlay()
         {
             try
@@ -49,6 +55,10 @@ namespace Tie_Fighter.Others
             done = true;
         }
 
+        /// <summary>
+        /// Player state changed is used to close / stop the player.
+        /// </summary>
+        /// <param name="NewState"></param>
         public void Player_PlayStateChange(int NewState)
         {
             if ((WMPLib.WMPPlayState)NewState == WMPLib.WMPPlayState.wmppsStopped && done==false)

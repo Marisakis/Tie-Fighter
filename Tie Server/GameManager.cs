@@ -9,7 +9,9 @@ using Tie_Server.GameObjects;
 
 namespace Tie_Server
 {
-
+    /// <summary>
+    /// The GameManager handles notifying clients with GameObject elements and handles the game which is running. Decides where new Fighters spawn, etc.
+    /// </summary>
     public class GameManager
     {
         public const int timerPeriod = 50; //Time in millisecond between each internal update
@@ -21,6 +23,9 @@ namespace Tie_Server
         private Random randomSeederForTieFighters = new Random();
         Object _lockObj = new object();
 
+        /// <summary>
+        /// Initialization and create an update timer in the default constructor.
+        /// </summary>
         public GameManager()
         {
             tieFighters = new List<Target>();
@@ -34,6 +39,10 @@ namespace Tie_Server
 
         }
 
+        /// <summary>
+        /// Receive all Game data.
+        /// </summary>
+        /// <returns></returns>
         public dynamic GetGameData()
         {
             lock (this)
@@ -50,6 +59,11 @@ namespace Tie_Server
             }
         }
 
+        /// <summary>
+        /// Update tie fighters, explosions and overall game. Also check for crosshair hits and _could_ create a new Tie Fighter (randomized).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             lock (this)
@@ -62,6 +76,11 @@ namespace Tie_Server
             }
         }
 
+        /// <summary>
+        /// Spawn a random tie fighter.
+        /// </summary>
+        /// <param name="maxOdd"></param>
+        /// <returns></returns>
         public bool SpawnRandomTieFighter(int maxOdd)  // between 0 and maxOdd.
         {
             Random random = new Random();
@@ -69,11 +88,20 @@ namespace Tie_Server
             return (outcome == 1);
         }
 
+        /// <summary>
+        /// Get a random TieFighter height.
+        /// </summary>
+        /// <returns></returns>
         public int GetRandomHeightTieFighter()
         {
             return randomSeederForTieFighters.Next(10, 90);
         }
 
+        /// <summary>
+        /// Update the crosshair position of a player.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="crosshair"></param>
         internal void UpdatePlayerCrosshair(Client client, dynamic crosshair)
         {
             int x = crosshair.x;
@@ -88,31 +116,11 @@ namespace Tie_Server
                 }
         }
 
-        /* public Player FindPlayerByID(int playerID)
-         {
-             foreach (Player player in players)
-                 if (player.id == playerID)
-                     return player;
-             return null;
-         }
-
- */
-
-        public void removePlayer(Client client)
-        {
-            Player disconnectedPlayer = null;
-            foreach (Player player in players)
-                if (player.client == client)
-                    disconnectedPlayer = player;
-            players.Remove(disconnectedPlayer);
-        }
-
         /// <summary>
         /// This method moves all existing TieFighters over the screen. It also checks for fighters that have exceeded screen boundaries
         /// </summary>
         private void UpdateTieFighters()
         {
-            //Debug.WriteLine("Handling " + tieFighters.Count + " fighters");
             var toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
@@ -165,11 +173,6 @@ namespace Tie_Server
                             ToRemoveList.Add(target);
                             player.crosshair.isFiring = false;
                             player.score++;
-                            //Console.WriteLine("Detected hit!");
-                        }
-                        else
-                        {
-                            //Console.WriteLine($"Crosshair x,y: {player.crosshair.x},{player.crosshair.y} and target x,y {target.x},{target.y} and target w,h {target.width},{target.height}");
                         }
 
 
@@ -188,44 +191,7 @@ namespace Tie_Server
                 {
                     if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
                 }
-            ToRemoveList.Clear();/*
-            //Check each crosshair with each tie fighter
-            // if hit, remove fighter, increase score, add new explosion with targetcounter id
-            foreach (Player player in players)
-            {
-                Crosshair crosshair = player.crosshair;
-                System.Diagnostics.Debug.WriteLine("pew");
-                System.Diagnostics.Debug.WriteLine(crosshair.x  + " " + crosshair.y + " " + crosshair.isFiring);
-
-
-                if (crosshair.isFiring)
-                {
-                    foreach(Target t in tieFighters)
-                    {
-                        if(GetDistance(crosshair.x, crosshair.y, t.x,t.y) < 5)
-                        {
-                            toRemove.Add(t);
-                            toAdd.Add(new Explosion(3, targetCounter++, t.x, t.y, t.width, t.height));
-                            player.score += 1;
-                            System.Diagnostics.Debug.WriteLine("boom");
-                        }
-                    }
-                }
-            }
-            foreach(Target t in toRemove)
-            {
-                tieFighters.Remove(t);
-            }
-            foreach(Explosion x in toAdd)
-            {
-                explosions.Add(x);
-            }
-*/
+            ToRemoveList.Clear();
         }
-        private static double GetDistance(double x1, double y1, double x2, double y2)
-        {
-            return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
-        }
-
     }
 }

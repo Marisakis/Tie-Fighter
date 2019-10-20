@@ -17,6 +17,9 @@ using System.Threading;
 
 namespace Tie_Fighter
 {
+    /// <summary>
+    /// The FormQueue is a game lobby.
+    /// </summary>
     public partial class FormQueue : Form, IDataReceiver
     {
         private Client client;
@@ -27,6 +30,11 @@ namespace Tie_Fighter
         private delegate void RestartDelegate(Client client, string name);
         private string name;
 
+        /// <summary>
+        /// Create a queue and play a in-lobby sound effect.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="name"></param>
         public FormQueue(Client client, string name)
         {
             this.name = name;
@@ -37,7 +45,11 @@ namespace Tie_Fighter
             mediaPlayer = new Others.MediaPlayer();
             mediaPlayer.PlayFile(directoryManager.Good, null);
         }
-
+        /// <summary>
+        /// Action on mouse click on start button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StartBtn_MouseClick(object sender, MouseEventArgs e)
         {
             FormGame formGame = new FormGame(this.client, this.name, this);
@@ -48,7 +60,11 @@ namespace Tie_Fighter
             client.Write(message);
             this.Hide();
         }
-
+        /// <summary>
+        /// Restart the lobby.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="name"></param>
         public void Restart(Client client, string name)
         {
             if (this.InvokeRequired)
@@ -59,22 +75,33 @@ namespace Tie_Fighter
             }
             else
             {
-                //Console.WriteLine("attempting to restart lobby");
-
                 this.Focus();
                 this.chatBox.ResetText();
                 this.Show();
                 this.name = name;                this.client.SetDataReceiver(this);
 
                 this.client = client;
-                //Console.WriteLine("showing lobby");
-
             }
 
         }
 
-        
+        /// <summary>
+        /// Retrieve high score from server when clicking on the button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Highscoresbutton_Click(object sender, EventArgs e)
+        {
+            dynamic message = new JObject();
+            message.type = "highscorerequest";
+            client.Write(message);
+        }
 
+        /// <summary>
+        /// Send message to server (and all clients) upon "enter" key press.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChatBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Enter)
@@ -87,7 +114,11 @@ namespace Tie_Fighter
                 chatBox.Text = "";
             }
         }
-
+        /// <summary>
+        /// Handle a packet received from the server.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="sender"></param>
         public void handlePacket(dynamic data, Client sender)
         {
             switch ((string)data.type)
@@ -122,6 +153,10 @@ namespace Tie_Fighter
             }
 
         }
+        /// <summary>
+        /// Update the chat which invokes on the GUI thread.
+        /// </summary>
+        /// <param name="chat"></param>
         private void UpdateChat(string chat)
         {
             if (lobbyPlayersLabel.InvokeRequired)

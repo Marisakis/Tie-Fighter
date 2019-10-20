@@ -43,16 +43,12 @@ namespace Networking
         {
             try
             {
-                //Console.WriteLine("Received a message");
                 int receivedBytes = stream.EndRead(ar);
                 totalBuffer += Encoding.ASCII.GetString(buffer, 0, receivedBytes);
-                //Console.WriteLine(totalBuffer);
-
                 while (totalBuffer.Contains("<EOF>"))
                 {
                     string packet = totalBuffer.Substring(0, totalBuffer.IndexOf("<EOF>"));
                     totalBuffer = totalBuffer.Substring(totalBuffer.IndexOf("<EOF>") + 5);
-                    // Console.WriteLine("End of message found");
                     dynamic data = JsonConvert.DeserializeObject(packet);
                     dataReceiver.handlePacket(data, this);
                 }

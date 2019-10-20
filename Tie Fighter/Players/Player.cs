@@ -7,6 +7,9 @@ using Tie_Fighter.GameObjects.Crosshairs;
 
 namespace Tie_Fighter.Players
 {
+    /// <summary>
+    /// The player class stores information about the player, such as a name, score and crosshair position.
+    /// </summary>
     public class Player
     {
         public int id;

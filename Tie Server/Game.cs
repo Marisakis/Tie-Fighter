@@ -9,24 +9,36 @@ using System.Threading.Tasks;
 using System.Timers;
 
 namespace Tie_Server
-{
+{    
     /// <summary>
-    /// Class that contains a game. It manages the gathering of players, the 
+    /// Defines the current GameStatus, can be either in Lobby, Running or Finished.
+    /// </summary>
+    public enum GameStatus { Lobby, Running, Finished }
+
+    /// <summary>
+    /// Class that contains a game. It manages the gathering of players.
     /// </summary>
 
-    public enum GameStatus { Lobby, Running, Finished }
     public class Game : IDataReceiver
     {
         private Program main;
         public GameManager gameManager;
         public GameStatus gameStatus { get; set; } = GameStatus.Lobby;
 
+        /// <summary>
+        /// Default constructor sets main and creates a GameManager.
+        /// </summary>
+        /// <param name="main"></param>
         public Game(Program main)
         {
             this.main = main;
             this.gameManager = new GameManager();
         }
 
+        /// <summary>
+        /// Add a player to the game.
+        /// </summary>
+        /// <param name="newPlayer"></param>
         public void AddPlayer(Player newPlayer)
         {
             newPlayer.client.SetDataReceiver(this);
@@ -36,9 +48,12 @@ namespace Tie_Server
             data.data = "Player " + newPlayer.name + " has joined the lobby";
             foreach (Player player in gameManager.players)
                 player.client.Write(data);
-            //this.Start();
         }
-
+        /// <summary>
+        /// Handle a received packet, for example force start the game.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="sender"></param>
         public void handlePacket(dynamic data, Client sender)
         {
             switch ((string)data.type)
@@ -62,6 +77,9 @@ namespace Tie_Server
             }
         }
 
+        /// <summary>
+        /// Upon each timer Tick index the GameData.
+        /// </summary>
         public void Tick()
         {
             foreach (Player player in gameManager.players)
@@ -70,6 +88,10 @@ namespace Tie_Server
                 client.Write(gameManager.GetGameData());
             }
         }
+
+        /// <summary>
+        /// Each game runs for 1 minute, then goes back to the lobby.
+        /// </summary>
         public void Start()
         {
             gameStatus = GameStatus.Running;
@@ -79,11 +101,19 @@ namespace Tie_Server
             timerDelegate.Enabled = true;
         }
 
+        /// <summary>
+        /// Timed event calls finish method so the game stops and players return to the lobby.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             Finish();
         }
 
+        /// <summary>
+        /// Finish the game and save the highscores.
+        /// </summary>
         private void Finish()
         {
             Console.WriteLine("Ending game");
@@ -108,6 +138,10 @@ namespace Tie_Server
         }
 
 
+        /// <summary>
+        /// Receive the highest score.
+        /// </summary>
+        /// <returns></returns>
         public HighScore GetHighestScore()
         {
             List<HighScore> scores = new List<HighScore>();
@@ -117,6 +151,10 @@ namespace Tie_Server
             return (scores[0]);
         }
 
+        /// <summary>
+        /// Receive highscores from a file.
+        /// </summary>
+        /// <returns></returns>
         public static List<HighScore> GetHighScoresFromFile()
         {
             string path = Directory.GetCurrentDirectory();
@@ -124,7 +162,6 @@ namespace Tie_Server
             List<HighScore> highscores = new List<HighScore>();
             if (!File.Exists(path))
             {
-                //highscores.Add(new HighScore("testscore", 100));
                 return highscores;
             }
             else
@@ -134,11 +171,14 @@ namespace Tie_Server
                     var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     highscores = (List<HighScore>)binaryFormatter.Deserialize(fileStream);
                 }
-                //highscores.Add(new HighScore("testscore", 100));
                 return highscores;
             }
         }
 
+        /// <summary>
+        /// Write highscores to a file.
+        /// </summary>
+        /// <param name="highscores"></param>
         public static void writeHighscoresToFile(List<HighScore> highscores)
         {
             string path = Directory.GetCurrentDirectory();

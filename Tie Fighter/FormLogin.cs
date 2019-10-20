@@ -12,13 +12,18 @@ using Tie_Server;
 
 namespace Tie_Fighter
 {
-
+    /// <summary>
+    /// Login window for the client. Can enter server IP-address and port number.
+    /// </summary>
     public partial class FormLogin : Form, IDataReceiver
     {
         private Others.MediaPlayer mediaPlayer;
         private DirectoryManager directoryManager;
         private Client client;
 
+        /// <summary>
+        /// Constructor to create the login window, and play a video.
+        /// </summary>
         public FormLogin()
         {
             InitializeComponent();
@@ -31,7 +36,11 @@ namespace Tie_Fighter
             System.Diagnostics.Process process = System.Diagnostics.Process.Start(directoryManager.IntroVideo);
         }
 
-
+        /// <summary>
+        /// Action when user clicks on the login button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoginBtn_Click(object sender, EventArgs e)
         {
             string name = userNameField.Text;
@@ -47,6 +56,13 @@ namespace Tie_Fighter
             }
         }
 
+        /// <summary>
+        /// Attempt to connect to IP and port.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="IP"></param>
+        /// <param name="serverPortNumber"></param>
+        /// <returns></returns>
         public bool AttemptConnect(string name, string IP, int serverPortNumber)
         {
             bool succeed = Connect(name, IP, serverPortNumber);
@@ -59,7 +75,14 @@ namespace Tie_Fighter
             }
             return succeed;
         }
-
+        
+        /// <summary>
+        /// Connect with name to ip and port.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="ip"></param>
+        /// <param name="serverPortNumber"></param>
+        /// <returns></returns>
         public bool Connect(string name, string ip, int serverPortNumber)
         {
             try
@@ -86,6 +109,11 @@ namespace Tie_Fighter
             }
         }
 
+        /// <summary>
+        /// Handle server data on login.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="sender"></param>
         public void handlePacket(dynamic data, Client sender)
         {
             //handle login response here

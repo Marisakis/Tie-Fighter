@@ -13,8 +13,15 @@ using Newtonsoft.Json.Linq;
 
 namespace Tie_Server
 {
+    /// <summary>
+    /// The Program class initializes the server.
+    /// </summary>
     public class Program : IDataReceiver
     {
+        /// <summary>
+        /// The Main method launches the server GUI window.
+        /// </summary>
+        /// <param name="args"></param>
        public static void Main(string[] args)
         {
             Application.EnableVisualStyles();
@@ -29,6 +36,10 @@ namespace Tie_Server
         private List<Game> games = new List<Game>();
         private string port { get; set; }
  
+        /// <summary>
+        /// Launch the server on port [port]. Thread.Sleep is being used to prevent buffer overflowing and processor maxing.
+        /// </summary>
+        /// <param name="port"></param>
         public Program(string port)
         {
             this.port = port;
@@ -54,6 +65,9 @@ namespace Tie_Server
             }
         }
 
+        /// <summary>
+        /// Accept client connections from any IP address from any port.
+        /// </summary>
         private void StartAcceptingClientConnections()
         {
             listener = new TcpListener(IPAddress.Any, Int32.Parse(this.port));
@@ -61,6 +75,10 @@ namespace Tie_Server
             listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
         }
 
+        /// <summary>
+        /// When a client has connected, the client is added to the list. For obligated Thread safe conditions a lock object and boolean is used.
+        /// </summary>
+        /// <param name="ar"></param>
         private void OnConnect(IAsyncResult ar)
         {
             bool lockWasTaken = false;
@@ -76,7 +94,10 @@ namespace Tie_Server
                 if (lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
             }
         }
-
+        /// <summary>
+        /// Reply to a highscore request with the specific information.
+        /// </summary>
+        /// <param name="sender"></param>
         public static void handleHighscoreRequest ( Client sender)
         {
             List<HighScore> highscores = Game.GetHighScoresFromFile();
@@ -89,6 +110,11 @@ namespace Tie_Server
             sender.Write(reply);
         }
 
+        /// <summary>
+        /// Assign a player with name [name] to a specific game.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="name"></param>
         public void AssignPlayerToGame(Client sender, string name)
         { 
             Player newPlayer = new Player(name);
@@ -97,6 +123,10 @@ namespace Tie_Server
             GetActiveLobby().AddPlayer(newPlayer); 
         }
 
+        /// <summary>
+        /// Receive an active lobby, if none exist, create one.
+        /// </summary>
+        /// <returns></returns>
         private Game GetActiveLobby()
         {
             foreach(Game game in games)
@@ -110,9 +140,13 @@ namespace Tie_Server
             return newGame;
         }
 
+        /// <summary>
+        /// Handle a client packet, in case of login, a player is assigned to a game. In case of highscorerequest a HandleHighscoreRequest(sender) is called, etc.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="sender"></param>
         public void handlePacket(dynamic data, Client sender)
         {
-            //Console.WriteLine(data);
             switch ((string)data.type)
             {
                 case "login":
