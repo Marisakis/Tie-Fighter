@@ -101,7 +101,6 @@
             this.groupBox2.Size = new System.Drawing.Size(600, 450);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Enter += new System.EventHandler(this.GroupBox2_Enter);
             // 
             // highscoresbutton
             // 
@@ -121,6 +120,7 @@
             this.highscoresbutton.TabIndex = 3;
             this.highscoresbutton.Text = "G e t   H i g h s c o r e s";
             this.highscoresbutton.UseVisualStyleBackColor = false;
+            this.highscoresbutton.Click += new System.EventHandler(this.Highscoresbutton_Click);
             // 
             // FormQueue
             // 

@@ -113,7 +113,7 @@ namespace Tie_Fighter
             CreateTimer();
 
             //Hide cursor
-            Cursor.Dispose();
+            Cursor.Hide();
 
         }
         /// <summary>
@@ -346,7 +346,6 @@ namespace Tie_Fighter
                     Console.WriteLine("Game ended");
                     lobby.Restart(this.client, this.myName);
                     this.End();
-                    //this.Dispose(); //generates thread error
                     break;
             }
             

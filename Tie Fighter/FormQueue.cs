@@ -71,30 +71,17 @@ namespace Tie_Fighter
             {
                 var d = new RestartDelegate(Restart);
                 this.Invoke(d, new object[] { this.client, this.name });
-
             }
             else
             {
                 this.Focus();
                 this.chatBox.ResetText();
                 this.Show();
-                this.name = name;                this.client.SetDataReceiver(this);
-
+                this.name = name;
+                this.client.SetDataReceiver(this);
                 this.client = client;
             }
 
-        }
-
-        /// <summary>
-        /// Retrieve high score from server when clicking on the button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Highscoresbutton_Click(object sender, EventArgs e)
-        {
-            dynamic message = new JObject();
-            message.type = "highscorerequest";
-            client.Write(message);
         }
 
         /// <summary>
@@ -170,9 +157,16 @@ namespace Tie_Fighter
             }
         }
 
-        private void GroupBox2_Enter(object sender, EventArgs e)
+        /// <summary>
+        /// Retrieve high score from server when clicking on the button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Highscoresbutton_Click(object sender, EventArgs e)
         {
-
+            dynamic message = new JObject();
+            message.type = "highscorerequest";
+            client.Write(message);
         }
     }
 }
