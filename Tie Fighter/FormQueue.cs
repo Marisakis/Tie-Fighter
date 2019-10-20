@@ -146,5 +146,12 @@ namespace Tie_Fighter
             message.type = "highscorerequest";
             client.Write(message);
         }
+
+        public void HandleError(Client client)
+        {
+            /*FormLogin login = new FormLogin();
+            login.Show();
+            this.Hide();*/
+        }
     }
 }

@@ -129,5 +129,11 @@ namespace Tie_Server
                     break;
             }
         }
+
+        public void HandleError(Client client)
+        {
+            client.SetDataReceiver(null);
+            this.clients.Remove(client);
+        }
     }
 }

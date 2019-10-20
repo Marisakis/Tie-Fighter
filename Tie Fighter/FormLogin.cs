@@ -100,5 +100,10 @@ namespace Tie_Fighter
 
 
         }
+
+        public void HandleError(Client client)
+        {
+            
+        }
     }
 }

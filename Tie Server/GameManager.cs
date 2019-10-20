@@ -95,7 +95,17 @@ namespace Tie_Server
                      return player;
              return null;
          }
+
  */
+
+        public void removePlayer(Client client)
+        {
+            Player disconnectedPlayer = null;
+            foreach (Player player in players)
+                if (player.client == client)
+                    disconnectedPlayer = player;
+            players.Remove(disconnectedPlayer);
+        }
 
         /// <summary>
         /// This method moves all existing TieFighters over the screen. It also checks for fighters that have exceeded screen boundaries

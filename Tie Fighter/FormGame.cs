@@ -504,5 +504,12 @@ namespace Tie_Fighter
             }
             return null;
         }
+
+        public void HandleError(Client client)
+        {
+            /*FormLogin login = new FormLogin();
+            login.Show();
+            this.Hide();*/
+        }
     }
 }

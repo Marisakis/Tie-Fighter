@@ -150,6 +150,9 @@ namespace Tie_Server
             }
         }
 
-
+        public void HandleError(Client client)
+        {
+            this.gameManager.removePlayer(client);
+        }
     }
 }
