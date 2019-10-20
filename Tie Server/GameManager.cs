@@ -2,7 +2,6 @@ using Networking;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Timers;
 using Tie_Server.GameObjects;
 
@@ -16,12 +15,12 @@ namespace Tie_Server
     {
         public const int timerPeriod = 50; //Time in millisecond between each internal update
         public const int explosionTimeToLive = 400;
-        private List<Target> tieFighters;
-        private List<Explosion> explosions;
+        private readonly List<Target> tieFighters;
+        private readonly List<Explosion> explosions;
         public List<Player> players;
         private int targetCounter = 0;
-        private Random randomSeederForTieFighters = new Random();
-        Object _lockObj = new object();
+        private readonly Random randomSeederForTieFighters = new Random();
+        private readonly object _lockObj = new object();
 
         /// <summary>
         /// Initialization and create an update timer in the default constructor.
@@ -32,7 +31,7 @@ namespace Tie_Server
             explosions = new List<Explosion>();
             players = new List<Player>();
 
-            var timerDelegate = new System.Timers.Timer(timerPeriod);
+            Timer timerDelegate = new System.Timers.Timer(timerPeriod);
             timerDelegate.Elapsed += OnTimedEvent;
             timerDelegate.AutoReset = true;
             timerDelegate.Enabled = true;
@@ -71,7 +70,10 @@ namespace Tie_Server
                 UpdateTieFighters();
                 UpdateExplosions();
                 if (SpawnRandomTieFighter(35))
+                {
                     CreateNewFighters();
+                }
+
                 CheckCrosshairHits();
             }
         }
@@ -107,13 +109,15 @@ namespace Tie_Server
             int x = crosshair.x;
             int y = crosshair.y;
             bool isFiring = crosshair.isFiring;
-            foreach (Player player in this.players)
+            foreach (Player player in players)
+            {
                 if (player.client == client)
                 {
                     player.crosshair.x = x;
                     player.crosshair.y = y;
                     player.crosshair.isFiring = isFiring;
                 }
+            }
         }
 
         /// <summary>
@@ -121,15 +125,19 @@ namespace Tie_Server
         /// </summary>
         private void UpdateTieFighters()
         {
-            var toRemove = new List<Target>();
+            List<Target> toRemove = new List<Target>();
             foreach (Target t in tieFighters)
             {
                 t.x += (100.0 / (t.TTP / timerPeriod));
                 if (t.x > 100)
+                {
                     toRemove.Add(t);
+                }
             }
             foreach (Target t in toRemove)
+            {
                 tieFighters.Remove(t);
+            }
         }
 
         /// <summary>
@@ -137,15 +145,19 @@ namespace Tie_Server
         /// </summary>
         private void UpdateExplosions()
         {
-            var toRemove = new List<Explosion>();
+            List<Explosion> toRemove = new List<Explosion>();
             foreach (Explosion x in explosions)
             {
                 x.TTL -= 20;
                 if (x.TTL < 0)
+                {
                     toRemove.Add(x);
+                }
             }
             foreach (Explosion x in toRemove)
+            {
                 explosions.Remove(x);
+            }
         }
 
         /// <summary>
@@ -154,7 +166,9 @@ namespace Tie_Server
         private void CreateNewFighters()
         {
             if (tieFighters.Count < 5)
+            {
                 tieFighters.Add(new Target((randomSeederForTieFighters.Next(4, 80) * 100), targetCounter++, 0, GetRandomHeightTieFighter(), 10, 10)); // id management not in yet
+            }
         }
 
         /// <summary>
@@ -165,8 +179,11 @@ namespace Tie_Server
         {
             List<Target> ToRemoveList = new List<Target>();
             foreach (Player player in players)
+            {
                 foreach (Target target in tieFighters)
+                {
                     if (player.crosshair.isFiring)
+                    {
                         if ((Math.Abs(player.crosshair.x - target.x) <= target.width / 2) && (Math.Abs(player.crosshair.y - target.y) <= target.height / 2))
                         {
                             //Handle here
@@ -174,23 +191,31 @@ namespace Tie_Server
                             player.crosshair.isFiring = false;
                             player.score++;
                         }
-
+                    }
+                }
+            }
 
             bool _lockWasTaken = false;
             if (ToRemoveList.Count > 0)
+            {
                 try
                 {
                     System.Threading.Monitor.Enter(_lockObj, ref _lockWasTaken);
                     foreach (Target ToRemove in ToRemoveList)
                     {
                         explosions.Add(new Explosion(explosionTimeToLive, targetCounter++, ToRemove.x, ToRemove.y, 5, 5));
-                        this.tieFighters.Remove(ToRemove);
+                        tieFighters.Remove(ToRemove);
                     }
                 }
                 finally
                 {
-                    if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+                    if (_lockWasTaken)
+                    {
+                        System.Threading.Monitor.Exit(_lockObj);
+                    }
                 }
+            }
+
             ToRemoveList.Clear();
         }
     }

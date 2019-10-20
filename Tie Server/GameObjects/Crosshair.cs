@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tie_Server.GameObjects
+﻿namespace Tie_Server.GameObjects
 {
     /// <summary>
     /// Crosshair object.
@@ -21,12 +15,12 @@ namespace Tie_Server.GameObjects
         /// <param name="height">Height.</param>
         public Crosshair(int id, double x, double y, int width, int height) : base(id, x, y, width, height)
         {
-            this.isFiring = false;
+            isFiring = false;
         }
 
         /// <summary>
         /// Used to determine whether or not a user is firing.
         /// </summary>
-        public Boolean isFiring { get; set; }
+        public bool isFiring { get; set; }
     }
 }

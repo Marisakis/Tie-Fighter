@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tie_Fighter.Others
 {
@@ -37,7 +33,7 @@ namespace Tie_Fighter.Others
         {
             return $"{CrosshairDir}/crosshair{number}.png";
         }
-        
+
         /// <summary>
         /// Build directory paths.
         /// </summary>
@@ -53,23 +49,23 @@ namespace Tie_Fighter.Others
             else
             {
                 //Leap
-                this.LeapDir = $"{tieFighterPath}/Leap";
+                LeapDir = $"{tieFighterPath}/Leap";
 
                 //Audio
-                this.AudioDir = $"{tieFighterPath}/Audio";
-                this.FireSound = $"{AudioDir}/Player/tie_fire.mp3";
-                this.TieFighterFlyBy = $"{AudioDir}/TieFighter/flyby2.mp3";
-                this.TieExplodeSound = $"{AudioDir}/TieFighter/explode.wav";
-                this.Good = $"{AudioDir}/GameMusic/goodsmall.mp3";
-                this.Bad = $"{AudioDir}/GameMusic/death_music.mp3";
+                AudioDir = $"{tieFighterPath}/Audio";
+                FireSound = $"{AudioDir}/Player/tie_fire.mp3";
+                TieFighterFlyBy = $"{AudioDir}/TieFighter/flyby2.mp3";
+                TieExplodeSound = $"{AudioDir}/TieFighter/explode.wav";
+                Good = $"{AudioDir}/GameMusic/goodsmall.mp3";
+                Bad = $"{AudioDir}/GameMusic/death_music.mp3";
 
                 //Video
-                this.VideoDir = $"{tieFighterPath}/Videos";
-                this.IntroVideo = $"{VideoDir}/GameVideos/intro.mp4";
+                VideoDir = $"{tieFighterPath}/Videos";
+                IntroVideo = $"{VideoDir}/GameVideos/intro.mp4";
 
                 //Images
-                this.ImageDir = $"{tieFighterPath}/Images";
-                this.CrosshairDir = $"{ImageDir}/Crosshairs";
+                ImageDir = $"{tieFighterPath}/Images";
+                CrosshairDir = $"{ImageDir}/Crosshairs";
             }
         }
     }

@@ -1,19 +1,13 @@
 ﻿using Networking;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using Tie_Fighter.Others;
-using Newtonsoft;
-using Newtonsoft.Json.Linq;
 using Tie_Server;
-using Newtonsoft.Json;
-using System.Threading;
 
 namespace Tie_Fighter
 {
@@ -23,8 +17,8 @@ namespace Tie_Fighter
     public partial class FormQueue : Form, IDataReceiver
     {
         private Client client;
-        private DirectoryManager directoryManager;
-        private Others.MediaPlayer mediaPlayer;
+        private readonly DirectoryManager directoryManager;
+        private readonly Others.MediaPlayer mediaPlayer;
         private Thread updateChatThread;
         private delegate void SafeCallDelegate(string text);
         private delegate void RestartDelegate(Client client, string name);
@@ -52,13 +46,13 @@ namespace Tie_Fighter
         /// <param name="e"></param>
         private void StartBtn_MouseClick(object sender, MouseEventArgs e)
         {
-            FormGame formGame = new FormGame(this.client, this.name, this);
+            FormGame formGame = new FormGame(client, name, this);
             formGame.Show();
             //Starten game GIT code:
             dynamic message = new JObject();
             message.type = "startgame";
             client.Write(message);
-            this.Hide();
+            Hide();
         }
         /// <summary>
         /// Restart the lobby.
@@ -67,16 +61,16 @@ namespace Tie_Fighter
         /// <param name="name"></param>
         public void Restart(Client client, string name)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                var d = new RestartDelegate(Restart);
-                this.Invoke(d, new object[] { this.client, this.name });
+                RestartDelegate d = new RestartDelegate(Restart);
+                Invoke(d, new object[] { this.client, this.name });
             }
             else
             {
-                this.Focus();
-                this.chatBox.ResetText();
-                this.Show();
+                Focus();
+                chatBox.ResetText();
+                Show();
                 this.name = name;
                 this.client.SetDataReceiver(this);
                 this.client = client;
@@ -126,7 +120,10 @@ namespace Tie_Fighter
                         }
                     }
                     foreach (HighScore h in highscores)
+                    {
                         builder.Append(h.ToString() + "\r\n");
+                    }
+
                     MessageBox.Show(builder.ToString(), "highscores", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
                 case "chatmessage":
@@ -148,7 +145,7 @@ namespace Tie_Fighter
         {
             if (lobbyPlayersLabel.InvokeRequired)
             {
-                var d = new SafeCallDelegate(UpdateChat);
+                SafeCallDelegate d = new SafeCallDelegate(UpdateChat);
                 lobbyPlayersLabel.Invoke(d, new object[] { chat });
             }
             else

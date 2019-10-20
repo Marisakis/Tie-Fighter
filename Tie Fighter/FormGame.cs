@@ -1,23 +1,18 @@
-﻿using System;
+﻿using Networking;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Tie_Fighter.Controllers;
-using Leap;
 using Tie_Fighter.Controllers.Leap_Motion;
-using System.Drawing;
-using Tie_Fighter.GameObjects.HUD;
-using Tie_Fighter.GameObjects.Crosshairs;
-using System.Threading;
-using Tie_Fighter.Others;
-using System.Diagnostics;
 using Tie_Fighter.GameObjects;
-using Tie_Fighter.GameObjects.Fighters;
-using System.Collections.Generic;
-using Networking;
-using Newtonsoft.Json.Linq;
-using Tie_Fighter.Players;
-using Newtonsoft.Json;
+using Tie_Fighter.GameObjects.Crosshairs;
 using Tie_Fighter.GameObjects.Explosions;
-using System.Threading;
+using Tie_Fighter.GameObjects.Fighters;
+using Tie_Fighter.GameObjects.HUD;
+using Tie_Fighter.Others;
+using Tie_Fighter.Players;
 
 namespace Tie_Fighter
 {
@@ -27,37 +22,37 @@ namespace Tie_Fighter
     public partial class FormGame : Form, IActionInput<int>, IDataReceiver //, ILeapEventDelegate
     {
         //Networking
-        private Client client;
+        private readonly Client client;
 
         //Media player
-        private Others.MediaPlayerHandler _mediaPlayerHandler;
+        private readonly Others.MediaPlayerHandler _mediaPlayerHandler;
 
         //Event classes
-        private Keyboard<KeyEventArgs> _keyboard;
-        private Mouse<MouseEventArgs> _mouse;
-        private LeapMotionHandler<LeapEventArgs> _leapMotion;
+        private readonly Keyboard<KeyEventArgs> _keyboard;
+        private readonly Mouse<MouseEventArgs> _mouse;
+        private readonly LeapMotionHandler<LeapEventArgs> _leapMotion;
         //Leap
-        private LeapMotion _leap;
-        private Cockpit cockpit;
+        private readonly LeapMotion _leap;
+        private readonly Cockpit cockpit;
 
         //Static elements
-        private Wallpaper _wallpaper;
-        private Crosshair _crosshair;
-        private DirectoryManager _directoryManager;
+        private readonly Wallpaper _wallpaper;
+        private readonly Crosshair _crosshair;
+        private readonly DirectoryManager _directoryManager;
 
         //Game objects
-        private List<GameObject> _gameObjects;
-        private List<Fighter> _tieFighters;
-        private List<Explosion> _explosions;
-        private List<Crosshair> _crosshairs;
+        private readonly List<GameObject> _gameObjects;
+        private readonly List<Fighter> _tieFighters;
+        private readonly List<Explosion> _explosions;
+        private readonly List<Crosshair> _crosshairs;
 
-        private List<Player> players;
+        private readonly List<Player> players;
         private int millis = 0;
-        private FormQueue lobby;
-        private string myName;
+        private readonly FormQueue lobby;
+        private readonly string myName;
 
         //Locking the list
-        object _lockObj = new object();
+        private readonly object _lockObj = new object();
         private delegate void SafeCallDelegate(Client client, string name);
         private delegate void SafeDisposeDelegate();
 
@@ -69,8 +64,8 @@ namespace Tie_Fighter
         /// <param name="sender"></param>
         public FormGame(Client client, string name, FormQueue sender)
         {
-            this.lobby = sender;
-            this.myName = name;
+            lobby = sender;
+            myName = name;
             this.client = client;
             client.SetDataReceiver(this);
 
@@ -82,31 +77,31 @@ namespace Tie_Fighter
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             //Create directory manager and media player.
-            this._directoryManager = new DirectoryManager();
-            this._mediaPlayerHandler = new Others.MediaPlayerHandler();
+            _directoryManager = new DirectoryManager();
+            _mediaPlayerHandler = new Others.MediaPlayerHandler();
 
             //Events
-            this._keyboard = new Keyboard<KeyEventArgs>(this);
-            this._mouse = new Mouse<MouseEventArgs>(this);
-            this._leapMotion = new LeapMotionHandler<LeapEventArgs>(this);
+            _keyboard = new Keyboard<KeyEventArgs>(this);
+            _mouse = new Mouse<MouseEventArgs>(this);
+            _leapMotion = new LeapMotionHandler<LeapEventArgs>(this);
 
             //Leap
-            this._leap = new LeapMotion(this);
+            _leap = new LeapMotion(this);
 
             //GameObjects
-            this.cockpit = new Cockpit(this._mediaPlayerHandler, 0, 0, 100, 100);
-            this._wallpaper = new Wallpaper(this._mediaPlayerHandler, 0, 0, 100, 100);
+            cockpit = new Cockpit(_mediaPlayerHandler, 0, 0, 100, 100);
+            _wallpaper = new Wallpaper(_mediaPlayerHandler, 0, 0, 100, 100);
 
             string crosshairURL = _directoryManager.Crosshair(0);
-            this._crosshair = new Crosshair(this._mediaPlayerHandler, crosshairURL, 0, 0, 10, 10);
+            _crosshair = new Crosshair(_mediaPlayerHandler, crosshairURL, 0, 0, 10, 10);
 
             //GameObjects
-            this._gameObjects = new List<GameObject>();
-            this._tieFighters = new List<Fighter>();
-            this._explosions = new List<Explosion>();
-            this._crosshairs = new List<Crosshair>();
+            _gameObjects = new List<GameObject>();
+            _tieFighters = new List<Fighter>();
+            _explosions = new List<Explosion>();
+            _crosshairs = new List<Crosshair>();
 
-            this.players = new List<Player>();
+            players = new List<Player>();
 
 
             //Create game loop
@@ -131,11 +126,19 @@ namespace Tie_Fighter
 
                 //Draw each Tie Fighter / Explosion / Crosshair.
                 foreach (Fighter tieFighter in _tieFighters)
+                {
                     tieFighter.Draw(graphics, Width, Height, true);
+                }
+
                 foreach (Explosion explosion in _explosions)
+                {
                     explosion.Draw(graphics, Width, Height, true);
+                }
+
                 foreach (Crosshair crosshair in _crosshairs)
+                {
                     crosshair.Draw(graphics, Width, Height, true);
+                }
 
                 DrawPlayerCrosshair(graphics);
                 DrawCockpit(graphics);
@@ -143,7 +146,10 @@ namespace Tie_Fighter
             }
             finally
             {
-                if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+                if (_lockWasTaken)
+                {
+                    System.Threading.Monitor.Exit(_lockObj);
+                }
             }
         }
         /// <summary>
@@ -151,8 +157,10 @@ namespace Tie_Fighter
         /// </summary>
         public void CreateTimer()
         {
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = (20); // in ms
+            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
+            {
+                Interval = (20) // in ms
+            };
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
         }
@@ -163,7 +171,7 @@ namespace Tie_Fighter
         /// <param name="e"></param>
         private void timer_Tick(object sender, EventArgs e)
         {
-            this.Invalidate();
+            Invalidate();
         }
         /// <summary>
         /// Draw a background wallpaper.
@@ -171,7 +179,7 @@ namespace Tie_Fighter
         /// <param name="graphics"></param>
         public void DrawBG(Graphics graphics)
         {
-            this._wallpaper.Draw(graphics, Width, Height);
+            _wallpaper.Draw(graphics, Width, Height);
         }
         /// <summary>
         /// Draw the cockpit image HUD.
@@ -179,7 +187,7 @@ namespace Tie_Fighter
         /// <param name="graphics"></param>
         public void DrawCockpit(Graphics graphics)
         {
-            this.cockpit.Draw(graphics, Width, Height);
+            cockpit.Draw(graphics, Width, Height);
         }
         /// <summary>
         /// Draw the player crosshair.
@@ -187,14 +195,14 @@ namespace Tie_Fighter
         /// <param name="graphics"></param>
         public void DrawPlayerCrosshair(Graphics graphics)
         {
-            this._crosshair.Draw(graphics, Width, Height, true);
+            _crosshair.Draw(graphics, Width, Height, true);
         }
         /// <summary>
         /// Fire, play sound and update server data.
         /// </summary>
         public void Fire()
         {
-            this._mediaPlayerHandler.PlayFile(_directoryManager.FireSound, null);
+            _mediaPlayerHandler.PlayFile(_directoryManager.FireSound, null);
             UpdateCrosshairData(true);
         }
         /// <summary>
@@ -204,7 +212,7 @@ namespace Tie_Fighter
         /// <param name="y"></param>
         public void MoveTo(int x, int y)
         {
-            this._crosshair.SetXY(x, y, Width, Height);
+            _crosshair.SetXY(x, y, Width, Height);
             UpdateCrosshairData();
         }
         /// <summary>
@@ -214,8 +222,8 @@ namespace Tie_Fighter
         /// <param name="y"></param>
         public void UpdatePosition(int x, int y)
         {
-            this._crosshair.percentageX += x;
-            this._crosshair.percentageY += y;
+            _crosshair.percentageX += x;
+            _crosshair.percentageY += y;
 
             UpdateCrosshairData();
         }
@@ -295,8 +303,13 @@ namespace Tie_Fighter
         public Player FindPlayerByID(int playerID)
         {
             foreach (Player player in players)
+            {
                 if (player.id == playerID)
+                {
                     return player;
+                }
+            }
+
             return null;
         }
         /// <summary>
@@ -307,8 +320,13 @@ namespace Tie_Fighter
         public TieFighter FindFighterByID(int fighterID)
         {
             foreach (TieFighter fighter in _gameObjects)
+            {
                 if (fighter.id == fighterID)
+                {
                     return fighter;
+                }
+            }
+
             return null;
         }
         /// <summary>
@@ -318,7 +336,7 @@ namespace Tie_Fighter
         /// <param name="sender"></param>
         public void handlePacket(dynamic data, Client sender)
         {
-            switch((string)data.type)
+            switch ((string)data.type)
             {
                 case "gamedata":
                     JArray jFighters = data.fighters;
@@ -339,31 +357,32 @@ namespace Tie_Fighter
                     }
                     finally
                     {
-                        if (_lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+                        if (_lockWasTaken)
+                            System.Threading.Monitor.Exit(_lockObj);
                     }
                     break;
                 case "gameended":
                     Console.WriteLine("Game ended");
-                    lobby.Restart(this.client, this.myName);
-                    this.End();
+                    lobby.Restart(client, myName);
+                    End();
                     break;
             }
-            
+
         }
         /// <summary>
         /// End method is used to safely dispose this.
         /// </summary>
         private void End()
         {
-            if(this.InvokeRequired)
+            if (InvokeRequired)
             {
-                var d = new SafeDisposeDelegate(End);
-                this.Invoke(d);
-                    
+                SafeDisposeDelegate d = new SafeDisposeDelegate(End);
+                Invoke(d);
+
             }
             else
             {
-                this.Dispose();
+                Dispose();
             }
         }
         /// <summary>
@@ -378,14 +397,25 @@ namespace Tie_Fighter
             {
                 bool found = false;
                 for (int j = 0; j < toAddExplosions.Length; j++)
+                {
                     if (existingExplosions[i].id == toAddExplosions[j].id)
+                    {
                         found = true;
+                    }
+                }
+
                 if (!found)
+                {
                     existingExplosions[i].Dispose();
+                }
             }
             for (int i = existingExplosions.Count - 1; i > -1; i--)
+            {
                 if (existingExplosions[i].disposed)
+                {
                     existingExplosions.Remove(existingExplosions[i]);
+                }
+            }
 
             // If id is not in existingExplosions, but is in toAddExplosions, create new Explosion.
             List<Explosion> toAdd = new List<Explosion>();
@@ -393,6 +423,7 @@ namespace Tie_Fighter
             {
                 bool found = false;
                 for (int j = 0; j < existingExplosions.Count; j++)
+                {
                     if (toAddExplosions[i].id == existingExplosions[j].id)
                     {
                         found = true;
@@ -400,8 +431,12 @@ namespace Tie_Fighter
                         existingExplosions[j].percentageY = toAddExplosions[i].percentageY;
                         existingExplosions[j].TTL = existingExplosions[i].TTL;
                     }
+                }
+
                 if (!found)
+                {
                     toAdd.Add(toAddExplosions[i]);
+                }
             }
             foreach (Explosion gameObject in toAdd)
             {
@@ -421,8 +456,13 @@ namespace Tie_Fighter
             {
                 bool found = false;
                 for (int j = 0; j < toAddObjects.Length; j++)
+                {
                     if (existingObjects[i].id == toAddObjects[j].id)
+                    {
                         found = true;
+                    }
+                }
+
                 if (!found)
                 {
                     existingObjects[i].StopMediaPlayer();
@@ -430,8 +470,12 @@ namespace Tie_Fighter
                 }
             }
             for (int i = existingObjects.Count - 1; i > -1; i--)
+            {
                 if (existingObjects[i].disposed)
+                {
                     existingObjects.Remove(existingObjects[i]);
+                }
+            }
 
             // If id is not in existingObjects, but is in toAddObjects, create new GameObject.
             List<Fighter> toAdd = new List<Fighter>();
@@ -439,6 +483,7 @@ namespace Tie_Fighter
             {
                 bool found = false;
                 for (int j = 0; j < existingObjects.Count; j++)
+                {
                     if (toAddObjects[i].id == existingObjects[j].id)
                     {
                         found = true;
@@ -446,15 +491,26 @@ namespace Tie_Fighter
                         existingObjects[j].percentageY = toAddObjects[i].percentageY;
                         existingObjects[j].TTP = toAddObjects[i].TTP;
                     }
+                }
+
                 if (!found)
+                {
                     toAdd.Add(toAddObjects[i]);
+                }
             }
             foreach (Fighter gameObject in toAdd)
             {
                 existingObjects.Add(gameObject);
                 existingObjects[existingObjects.Count - 1].PlayFlySound(_directoryManager.TieFighterFlyBy);
-                if (existingObjects[existingObjects.Count - 1].TTP < 3000) existingObjects[existingObjects.Count - 1].MakeTieInterceptor();
-                if (existingObjects[existingObjects.Count - 1].TTP > 6000) existingObjects[existingObjects.Count - 1].MakeTieBomber();
+                if (existingObjects[existingObjects.Count - 1].TTP < 3000)
+                {
+                    existingObjects[existingObjects.Count - 1].MakeTieInterceptor();
+                }
+
+                if (existingObjects[existingObjects.Count - 1].TTP > 6000)
+                {
+                    existingObjects[existingObjects.Count - 1].MakeTieBomber();
+                }
             }
         }
         /// <summary>
@@ -476,8 +532,10 @@ namespace Tie_Fighter
                     }
                     else if (crosshairID < 10)
                     {
-                        Crosshair crosshair = new Crosshair(this._mediaPlayerHandler, _directoryManager.Crosshair(++crosshairID), player.x, player.y, player.w, player.h);
-                        crosshair.id = player.id;
+                        Crosshair crosshair = new Crosshair(_mediaPlayerHandler, _directoryManager.Crosshair(++crosshairID), player.x, player.y, player.w, player.h)
+                        {
+                            id = player.id
+                        };
                         AddCrosshairList.Add(crosshair);
                         Console.WriteLine($"Added crosshair with x,y,w,h {player.x},{player.y},{player.w},{player.h}");
                     }
@@ -485,7 +543,7 @@ namespace Tie_Fighter
             }
             foreach (Crosshair ToAddCrosshair in AddCrosshairList)
             {
-                this._crosshairs.Add(ToAddCrosshair);
+                _crosshairs.Add(ToAddCrosshair);
             }
         }
         /// <summary>
@@ -495,7 +553,9 @@ namespace Tie_Fighter
         public void HandleFighters(Fighter[] fighters)
         {
             if (_tieFighters != null)
+            {
                 HandleGameObjects(fighters, _tieFighters);
+            }
         }
 
         /// <summary>
@@ -505,7 +565,9 @@ namespace Tie_Fighter
         public void HandleExplosions(Explosion[] explosions)
         {
             if (_explosions != null)
+            {
                 HandleGameExplosions(explosions, _explosions);
+            }
         }
         /// <summary>
         /// Handle Players.
@@ -514,8 +576,12 @@ namespace Tie_Fighter
         public void HandlePlayers(Player[] players)
         {
             if (this.players != null)
+            {
                 if (players.Length > 1)
+                {
                     HandlePlayerObjects(players);
+                }
+            }
         }
         /// <summary>
         /// Decode a JSON Array to a class Fighter array that can easily be read.
@@ -537,9 +603,11 @@ namespace Tie_Fighter
                     int width = (int)jFighter.GetValue("width");
                     int height = (int)jFighter.GetValue("height");
                     int TTP = (int)jFighter.GetValue("TTP");
-                    Fighter fighter = new TieFighter(this._mediaPlayerHandler, x, y, width, height);
-                    fighter.TTP = TTP;
-                    fighter.id = id;
+                    Fighter fighter = new TieFighter(_mediaPlayerHandler, x, y, width, height)
+                    {
+                        TTP = TTP,
+                        id = id
+                    };
                     fighters[i] = fighter;
                 }
                 return fighters;
@@ -566,9 +634,11 @@ namespace Tie_Fighter
                     int width = (int)jExplosion.GetValue("width");
                     int height = (int)jExplosion.GetValue("height");
                     int TTL = (int)jExplosion.GetValue("TTL");
-                    Explosion explosion = new Explosion(this._mediaPlayerHandler, x, y, width, height);
-                    explosion.TTL = TTL;
-                    explosion.id = id;
+                    Explosion explosion = new Explosion(_mediaPlayerHandler, x, y, width, height)
+                    {
+                        TTL = TTL,
+                        id = id
+                    };
                     explosions[i] = explosion;
                 }
                 return explosions;
@@ -598,12 +668,14 @@ namespace Tie_Fighter
                     int w = (int)jCrosshair.GetValue("width");
                     int h = (int)jCrosshair.GetValue("height");
 
-                    Player player = new Player(name, score);
-                    player.id = id;
-                    player.x = x;
-                    player.y = y;
-                    player.w = w;
-                    player.h = h;
+                    Player player = new Player(name, score)
+                    {
+                        id = id,
+                        x = x,
+                        y = y,
+                        w = w,
+                        h = h
+                    };
                     players[i] = player;
                 }
                 return players;

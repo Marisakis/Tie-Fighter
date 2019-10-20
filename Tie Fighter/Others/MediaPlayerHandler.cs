@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tie_Fighter.Others
 {
@@ -11,7 +8,7 @@ namespace Tie_Fighter.Others
     /// </summary>
     public class MediaPlayerHandler
     {
-        private List<MediaPlayer> _mediaPlayers;
+        private readonly List<MediaPlayer> _mediaPlayers;
         private int counter = 0;
 
         /// <summary>
@@ -19,7 +16,7 @@ namespace Tie_Fighter.Others
         /// </summary>
         public MediaPlayerHandler()
         {
-            this._mediaPlayers = new List<MediaPlayer>();
+            _mediaPlayers = new List<MediaPlayer>();
         }
 
         /// <summary>
@@ -38,13 +35,17 @@ namespace Tie_Fighter.Others
                 Console.WriteLine(_mediaPlayers.Count);
             }
             availableMediaPlayer.PlayFile(url, timeToPlay);
-           
-            if (counter==10 && _mediaPlayers.Count>5)
+
+            if (counter == 10 && _mediaPlayers.Count > 5)
             {
                 counter = 0;
-                for (int i = _mediaPlayers.Count-1; i >=0; i--)
+                for (int i = _mediaPlayers.Count - 1; i >= 0; i--)
+                {
                     if (_mediaPlayers[i].done)
+                    {
                         _mediaPlayers.RemoveAt(i);
+                    }
+                }
             }
             counter++;
             return availableMediaPlayer;
@@ -66,8 +67,13 @@ namespace Tie_Fighter.Others
         public MediaPlayer GetAvailablePlayer()
         {
             foreach (MediaPlayer mediaPlayer in _mediaPlayers)
+            {
                 if (mediaPlayer.done)
+                {
                     return mediaPlayer;
+                }
+            }
+
             return null;
         }
     }

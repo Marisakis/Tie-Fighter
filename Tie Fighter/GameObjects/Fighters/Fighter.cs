@@ -1,6 +1,4 @@
-﻿using Tie_Fighter.Others;
-
-namespace Tie_Fighter.GameObjects
+﻿namespace Tie_Fighter.GameObjects
 {
     /// <summary>
     /// Fighter class can play an engine sound (Tie Fighter roar).
@@ -29,8 +27,8 @@ namespace Tie_Fighter.GameObjects
         /// <param name="URL"></param>
         public virtual void PlayFlySound(string URL)
         {
-            Others.MediaPlayer usedMP = mediaPlayer.PlayFile(URL, (TTP/1000.0));
-            this.usedMediaPlayer = usedMP;
+            Others.MediaPlayer usedMP = mediaPlayer.PlayFile(URL, (TTP / 1000.0));
+            usedMediaPlayer = usedMP;
         }
         /// <summary>
         /// Replace the Bitmap image by a Tie Interceptor (when TTP is lower than x). Tie Interceptors are faster.

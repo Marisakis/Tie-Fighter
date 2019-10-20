@@ -1,9 +1,4 @@
 ﻿using Networking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tie_Server.GameObjects;
 
 namespace Tie_Server
@@ -20,9 +15,9 @@ namespace Tie_Server
         public Player(string name)
         {
             this.name = name;
-            this.id = 500;
-            this.score = 0;
-            this.crosshair = new Crosshair(0,-10,-10,10,10);
+            id = 500;
+            score = 0;
+            crosshair = new Crosshair(0, -10, -10, 10, 10);
         }
 
         /// <summary>
@@ -51,9 +46,9 @@ namespace Tie_Server
         /// <param name="isFiring"></param>
         internal void UpdateCrosshair(int x, int y, bool isFiring)
         {
-            this.crosshair.x = (double)x;
-            this.crosshair.y = (double)y;
-            this.crosshair.isFiring = isFiring;
+            crosshair.x = x;
+            crosshair.y = y;
+            crosshair.isFiring = isFiring;
         }
     }
 }

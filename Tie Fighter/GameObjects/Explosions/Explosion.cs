@@ -1,6 +1,4 @@
-﻿using Tie_Fighter.Others;
-
-namespace Tie_Fighter.GameObjects.Explosions
+﻿namespace Tie_Fighter.GameObjects.Explosions
 {
     /// <summary>
     /// Explosion is shown after a TieFighter has been destroyed.
@@ -23,7 +21,7 @@ namespace Tie_Fighter.GameObjects.Explosions
         /// <summary>
         /// Defines the TimeToLive of the explosion.
         /// </summary>
-        public int TTL { get; set; } 
+        public int TTL { get; set; }
 
         /// <summary>
         /// Play the explosion sound from source [url].

@@ -1,31 +1,28 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.RegularExpressions;
-using Newtonsoft;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Networking
 {
     public class Client
     {
-        private TcpClient TcpClient;
-        private IDataReceiver dataReceiver { get;  set; }
+        private readonly TcpClient TcpClient;
+        private IDataReceiver dataReceiver { get; set; }
         private NetworkStream stream;
-        private byte[] buffer = new byte[1024];
-        string totalBuffer = String.Empty;
+        private readonly byte[] buffer = new byte[1024];
+        private string totalBuffer = string.Empty;
 
         public Client(TcpClient newTcpClient, IDataReceiver dataReceiver)
         {
-            this.TcpClient = newTcpClient;
+            TcpClient = newTcpClient;
             this.dataReceiver = dataReceiver;
             Connect();
         }
 
         public void Connect()
         {
-            this.stream = TcpClient.GetStream();
+            stream = TcpClient.GetStream();
             stream.BeginRead(buffer, 0, buffer.Length, new AsyncCallback(OnRead), null);
         }
 
@@ -36,7 +33,7 @@ namespace Networking
 
         public bool GetIsConnected()
         {
-            return this.TcpClient.Connected;
+            return TcpClient.Connected;
         }
 
         private void OnRead(IAsyncResult ar)
@@ -61,7 +58,7 @@ namespace Networking
                 stream.Write(System.Text.Encoding.ASCII.GetBytes(data), 0, data.Length);
                 stream.Flush();
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }
@@ -73,8 +70,8 @@ namespace Networking
 
         public void Disconnect()
         {
-            this.dataReceiver = null;
-            this.TcpClient.Close();
+            dataReceiver = null;
+            TcpClient.Close();
         }
     }
 }

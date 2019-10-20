@@ -3,13 +3,10 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace Tie_Server
-{    
+{
     /// <summary>
     /// Defines the current GameStatus, can be either in Lobby, Running or Finished.
     /// </summary>
@@ -21,7 +18,7 @@ namespace Tie_Server
 
     public class Game : IDataReceiver
     {
-        private Program main;
+        private readonly Program main;
         public GameManager gameManager;
         public GameStatus gameStatus { get; set; } = GameStatus.Lobby;
 
@@ -32,7 +29,7 @@ namespace Tie_Server
         public Game(Program main)
         {
             this.main = main;
-            this.gameManager = new GameManager();
+            gameManager = new GameManager();
         }
 
         /// <summary>
@@ -47,7 +44,9 @@ namespace Tie_Server
             data.type = "chatmessage";
             data.data = "Player " + newPlayer.name + " has joined the lobby";
             foreach (Player player in gameManager.players)
+            {
                 player.client.Write(data);
+            }
         }
         /// <summary>
         /// Handle a received packet, for example force start the game.
@@ -65,11 +64,14 @@ namespace Tie_Server
                     Program.handleHighscoreRequest(sender);
                     break;
                 case "startgame":
-                    this.Start();
+                    Start();
                     break;
                 case "chatmessage":
                     foreach (Player player in gameManager.players)
+                    {
                         player.client.Write(data);
+                    }
+
                     break;
                 default:
                     Console.WriteLine("Data type not recognised");
@@ -95,7 +97,7 @@ namespace Tie_Server
         public void Start()
         {
             gameStatus = GameStatus.Running;
-            var timerDelegate = new System.Timers.Timer(60000);
+            Timer timerDelegate = new System.Timers.Timer(60000);
             timerDelegate.Elapsed += OnTimedEvent;
             timerDelegate.AutoReset = false;
             timerDelegate.Enabled = true;
@@ -117,13 +119,16 @@ namespace Tie_Server
         private void Finish()
         {
             Console.WriteLine("Ending game");
-            this.gameStatus = GameStatus.Finished;
+            gameStatus = GameStatus.Finished;
 
             List<HighScore> scores = GetHighScoresFromFile();
             scores.Add(GetHighestScore());
             scores.Sort();
             if (scores.Count > 10)
+            {
                 scores.RemoveRange(10, scores.Count - 10); // trim so only 10 remain
+            }
+
             writeHighscoresToFile(scores);
             dynamic data = new JObject();
             data.type = "gameended";
@@ -132,8 +137,8 @@ namespace Tie_Server
                 main.AssignPlayerToGame(player.client, player.name);
                 player.client.Write(data);
             }
-            this.gameManager = new GameManager();
-            this.gameStatus = GameStatus.Lobby;
+            gameManager = new GameManager();
+            gameStatus = GameStatus.Lobby;
 
         }
 
@@ -146,7 +151,10 @@ namespace Tie_Server
         {
             List<HighScore> scores = new List<HighScore>();
             foreach (Player player in gameManager.players)
+            {
                 scores.Add(new HighScore(player.name, player.score));
+            }
+
             scores.Sort();
             return (scores[0]);
         }
@@ -168,7 +176,7 @@ namespace Tie_Server
             {
                 using (FileStream fileStream = new FileStream(path, FileMode.Open))
                 {
-                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     highscores = (List<HighScore>)binaryFormatter.Deserialize(fileStream);
                 }
                 return highscores;
@@ -185,7 +193,7 @@ namespace Tie_Server
             path += "highscores.txt";
             using (Stream stream = File.Open(path, FileMode.Create))
             {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 binaryFormatter.Serialize(stream, highscores);
             }
         }

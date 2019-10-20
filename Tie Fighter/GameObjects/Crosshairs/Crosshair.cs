@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Media;
-using Tie_Fighter.Others;
+﻿using System.Drawing;
 
 namespace Tie_Fighter.GameObjects.Crosshairs
 {
@@ -18,7 +15,7 @@ namespace Tie_Fighter.GameObjects.Crosshairs
         /// <param name="height">Defines the height of the crosshair.</param>
         public Crosshair(Others.MediaPlayerHandler mediaPlayer, string crosshairURL, int x, int y, int width, int height) : base(mediaPlayer, x, y, width, height)
         {
-            bitmap =new Bitmap(crosshairURL);
+            bitmap = new Bitmap(crosshairURL);
         }
     }
 }

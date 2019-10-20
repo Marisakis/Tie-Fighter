@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using Tie_Fighter.Others;
 
 namespace Tie_Fighter.GameObjects
 {
@@ -25,12 +24,12 @@ namespace Tie_Fighter.GameObjects
         /// <param name="percentageHeight">Set the percentage height.</param>
         public GameObject(Others.MediaPlayerHandler mediaPlayerHandler, int percentageX, int percentageY, int percentageWidth, int percentageHeight)
         {
-            this.mediaPlayer = mediaPlayerHandler;
+            mediaPlayer = mediaPlayerHandler;
             this.percentageX = percentageX;
             this.percentageY = percentageY;
             this.percentageWidth = percentageWidth;
             this.percentageHeight = percentageHeight;
-            this.rectangle = new Rectangle();
+            rectangle = new Rectangle();
         }
 
         /// <summary>
@@ -67,8 +66,8 @@ namespace Tie_Fighter.GameObjects
         /// <param name="pixelsHeight">Used to calculate percentage y.</param>
         public virtual void SetXY(int pixelsX, int pixelsY, int pixelsWidth, int pixelsHeight)
         {
-            this.percentageX = PixelsToPercentage(pixelsX, pixelsWidth);
-            this.percentageY = PixelsToPercentage(pixelsY, pixelsHeight);
+            percentageX = PixelsToPercentage(pixelsX, pixelsWidth);
+            percentageY = PixelsToPercentage(pixelsY, pixelsHeight);
         }
 
         /// <summary>
@@ -80,10 +79,10 @@ namespace Tie_Fighter.GameObjects
         /// <param name="centerImage">Center the object.</param>
         public virtual void Draw(Graphics graphics, int pixelsWidth, int pixelsHeight, bool centerImage = false)
         {
-            int x = PercentageToPixels(this.percentageX, pixelsWidth);
-            int y = PercentageToPixels(this.percentageY, pixelsHeight);
-            int width = PercentageToPixels(this.percentageWidth, pixelsWidth);
-            int height = PercentageToPixels(this.percentageHeight, pixelsHeight);
+            int x = PercentageToPixels(percentageX, pixelsWidth);
+            int y = PercentageToPixels(percentageY, pixelsHeight);
+            int width = PercentageToPixels(percentageWidth, pixelsWidth);
+            int height = PercentageToPixels(percentageHeight, pixelsHeight);
 
             if (centerImage)
             {
@@ -121,9 +120,10 @@ namespace Tie_Fighter.GameObjects
         /// </summary>
         public void StopMediaPlayer()
         {
-            if (this.usedMediaPlayer != null)
-                this.usedMediaPlayer.EndPlay();
-
+            if (usedMediaPlayer != null)
+            {
+                usedMediaPlayer.EndPlay();
+            }
         }
         /// <summary>
         /// Dispose the bitmap image to prevent a Stack overflow.
@@ -140,8 +140,16 @@ namespace Tie_Fighter.GameObjects
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed) return;
-            if (disposing) bitmap.Dispose();
+            if (disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                bitmap.Dispose();
+            }
+
             disposed = true;
         }
     }

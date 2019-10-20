@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tie_Server.GameObjects
+﻿namespace Tie_Server.GameObjects
 {
     /// <summary>
     /// General Target object.
     /// </summary>
-    class Target: GameObject
+    internal class Target : GameObject
     {
         /// <summary>
         /// A Target (Tie Fighter for example) must have a unique ID (it's allowed to do previous id++!), a time to pass (which really shouldn't be higher than 10, an x-position, y-position and width and height.

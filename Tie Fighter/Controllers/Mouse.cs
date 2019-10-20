@@ -8,7 +8,7 @@ namespace Tie_Fighter.Controllers
     /// <typeparam name="MouseEvent"></typeparam>
     public class Mouse<MouseEvent> : GeneralController<MouseEvent, int> where MouseEvent : MouseEventArgs
     {
-        bool fired;
+        private bool fired;
 
         /// <summary>
         /// Define that x and y in actionInput are integers.
@@ -31,7 +31,8 @@ namespace Tie_Fighter.Controllers
             {
                 base.actionInput.Fire();
                 fired = true;
-            }else
+            }
+            else
             {
                 if (eventData.Button != MouseButtons.Left)
                 {

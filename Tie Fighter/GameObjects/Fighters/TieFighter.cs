@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tie_Fighter.Others;
-
-namespace Tie_Fighter.GameObjects.Fighters
+﻿namespace Tie_Fighter.GameObjects.Fighters
 {
     /// <summary>
     /// Tie Fighter class extends the Fighter class. Very specific methods for the TieFighter / TieBomber / TieInterceptor or whatever should be put in a dedicated class.

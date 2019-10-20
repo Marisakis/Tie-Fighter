@@ -8,7 +8,7 @@ namespace Tie_Fighter.Controllers
     /// <typeparam name="KeyboardEvent"></typeparam>
     public class Keyboard<KeyboardEvent> : GeneralController<KeyboardEvent, int> where KeyboardEvent : KeyEventArgs
     {
-        private int _minSensitivity = 3;
+        private readonly int _minSensitivity = 3;
         private int _sensitivity = 5;
         private const int _maxSensitivity = 50;
 
@@ -100,7 +100,9 @@ namespace Tie_Fighter.Controllers
         public void SensUp()
         {
             if (_sensitivity * 2 < _maxSensitivity)
+            {
                 _sensitivity *= 2;
+            }
         }
         /// <summary>
         /// Decrease sensitivity.
@@ -108,7 +110,9 @@ namespace Tie_Fighter.Controllers
         public void SensDown()
         {
             if (_sensitivity / 2 > _minSensitivity)
+            {
                 _sensitivity /= 2;
+            }
         }
     }
 }

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Tie_Server.GameObjects
+﻿namespace Tie_Server.GameObjects
 {
     /// <summary>
     /// Explosion object. An explosion has dimensions and is on a specific location. 
     /// </summary>
-    class Explosion: GameObject
+    internal class Explosion : GameObject
     {
         /// <summary>
         /// Explosion has a unique ID so a client can determine whether an explosion should be removed.

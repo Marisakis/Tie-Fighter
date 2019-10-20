@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tie_Server;
 
 namespace UnitTests
@@ -24,13 +23,15 @@ namespace UnitTests
         public void TestFileWrite()
         {
             //Arrange
-            List<HighScore> scores = new List<HighScore>();
-            scores.Add(new HighScore("test1", 100));
-            scores.Add(new HighScore("test2", 50));
+            List<HighScore> scores = new List<HighScore>
+            {
+                new HighScore("test1", 100),
+                new HighScore("test2", 50)
+            };
 
             //Act
             Game.writeHighscoresToFile(scores);
-            
+
             //Assert
         }
 

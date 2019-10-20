@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tie_Server
 {
@@ -10,7 +6,7 @@ namespace Tie_Server
     /// The HighScore class keeps track of a player name and score, and can compare it.
     /// </summary>
     [Serializable]
-    public struct HighScore: IComparable<HighScore>
+    public struct HighScore : IComparable<HighScore>
     {
         public string name { get; }
         public int score { get; }
@@ -33,16 +29,16 @@ namespace Tie_Server
         /// <returns></returns>
         public int CompareTo(HighScore h)
         {
-            return h.score - this.score;
+            return h.score - score;
         }
 
         /// <summary>
         /// ToString method prints the highscore.
         /// </summary>
         /// <returns></returns>
-        public override String ToString()
+        public override string ToString()
         {
-            return this.name + ": " + this.score;
+            return name + ": " + score;
         }
     }
 }

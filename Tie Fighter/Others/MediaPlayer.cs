@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Tie_Fighter.Others
 {
@@ -12,7 +7,7 @@ namespace Tie_Fighter.Others
     /// </summary>
     public class MediaPlayer
     {
-        WMPLib.WindowsMediaPlayerClass player;
+        private readonly WMPLib.WindowsMediaPlayerClass player;
         public bool done = false;
         public MediaPlayer()
         {
@@ -38,7 +33,7 @@ namespace Tie_Fighter.Others
                 }
                 player.controls.play();
             }
-            catch (Exception e) { }
+            catch (Exception) { }
         }
 
         /// <summary>
@@ -51,7 +46,8 @@ namespace Tie_Fighter.Others
                 player.stop();
                 player.clear();
                 player.close();
-            } catch (Exception e) { }
+            }
+            catch (Exception) { }
             done = true;
         }
 
@@ -61,7 +57,7 @@ namespace Tie_Fighter.Others
         /// <param name="NewState"></param>
         public void Player_PlayStateChange(int NewState)
         {
-            if ((WMPLib.WMPPlayState)NewState == WMPLib.WMPPlayState.wmppsStopped && done==false)
+            if ((WMPLib.WMPPlayState)NewState == WMPLib.WMPPlayState.wmppsStopped && done == false)
             {
                 player.controls.stop();
                 player.close();

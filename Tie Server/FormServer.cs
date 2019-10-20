@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Tie_Server
@@ -21,7 +14,7 @@ namespace Tie_Server
         public FormServer()
         {
             InitializeComponent();
-            this.Icon = Properties.Resources.ServerIcon;
+            Icon = Properties.Resources.ServerIcon;
         }
         /// <summary>
         /// Upon startbutton retrieve port number, launch the server and hide the GUI.
@@ -30,7 +23,7 @@ namespace Tie_Server
         /// <param name="e"></param>
         private void StartBtn_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Hide();
             Program program = new Program(PortNumberField.Text);
         }
     }

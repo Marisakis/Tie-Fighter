@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Networking;
+﻿using Networking;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Windows.Forms;
 
 namespace Tie_Server
 {
@@ -22,20 +18,20 @@ namespace Tie_Server
         /// The Main method launches the server GUI window.
         /// </summary>
         /// <param name="args"></param>
-       public static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormServer());
         }
 
-        TcpListener listener;
-        private List<Client> clients = new List<Client>();
+        private TcpListener listener;
+        private readonly List<Client> clients = new List<Client>();
         private int clientCounter = 0;
-        private Object _lockObj = new object();
-        private List<Game> games = new List<Game>();
+        private readonly object _lockObj = new object();
+        private readonly List<Game> games = new List<Game>();
         private string port { get; set; }
- 
+
         /// <summary>
         /// Launch the server on port [port]. Thread.Sleep is being used to prevent buffer overflowing and processor maxing.
         /// </summary>
@@ -52,14 +48,20 @@ namespace Tie_Server
                 try
                 {
                     System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
-                    foreach(Game game in games)
-                        if(game.gameStatus == GameStatus.Running)
+                    foreach (Game game in games)
+                    {
+                        if (game.gameStatus == GameStatus.Running)
+                        {
                             game.Tick();
+                        }
+                    }
                 }
                 finally
                 {
                     if (lockWasTaken)
+                    {
                         System.Threading.Monitor.Exit(_lockObj);
+                    }
                 }
                 System.Threading.Thread.Sleep(GameManager.timerPeriod / 5);
             }
@@ -70,7 +72,7 @@ namespace Tie_Server
         /// </summary>
         private void StartAcceptingClientConnections()
         {
-            listener = new TcpListener(IPAddress.Any, Int32.Parse(this.port));
+            listener = new TcpListener(IPAddress.Any, int.Parse(port));
             listener.Start();
             listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
         }
@@ -85,27 +87,33 @@ namespace Tie_Server
             try
             {
                 System.Threading.Monitor.Enter(_lockObj, ref lockWasTaken);
-                var newTcpClient = listener.EndAcceptTcpClient(ar);
+                TcpClient newTcpClient = listener.EndAcceptTcpClient(ar);
                 clients.Add(new Client(newTcpClient, this));
                 listener.BeginAcceptTcpClient(new AsyncCallback(OnConnect), this);
             }
             finally
             {
-                if (lockWasTaken) System.Threading.Monitor.Exit(_lockObj);
+                if (lockWasTaken)
+                {
+                    System.Threading.Monitor.Exit(_lockObj);
+                }
             }
         }
         /// <summary>
         /// Reply to a highscore request with the specific information.
         /// </summary>
         /// <param name="sender"></param>
-        public static void handleHighscoreRequest ( Client sender)
+        public static void handleHighscoreRequest(Client sender)
         {
             List<HighScore> highscores = Game.GetHighScoresFromFile();
             dynamic reply = new JObject();
             reply.type = "highscores";
             JArray array = new JArray();
             foreach (HighScore h in highscores)
+            {
                 array.Add(JsonConvert.SerializeObject(h));
+            }
+
             reply.data = array;
             sender.Write(reply);
         }
@@ -116,11 +124,13 @@ namespace Tie_Server
         /// <param name="sender"></param>
         /// <param name="name"></param>
         public void AssignPlayerToGame(Client sender, string name)
-        { 
-            Player newPlayer = new Player(name);
-            newPlayer.id = clientCounter++;
-            newPlayer.client = sender;
-            GetActiveLobby().AddPlayer(newPlayer); 
+        {
+            Player newPlayer = new Player(name)
+            {
+                id = clientCounter++,
+                client = sender
+            };
+            GetActiveLobby().AddPlayer(newPlayer);
         }
 
         /// <summary>
@@ -129,10 +139,12 @@ namespace Tie_Server
         /// <returns></returns>
         private Game GetActiveLobby()
         {
-            foreach(Game game in games)
+            foreach (Game game in games)
             {
                 if (game.gameStatus == GameStatus.Lobby)
+                {
                     return game;
+                }
             }
             Game newGame = new Game(this);
             games.Add(newGame);
