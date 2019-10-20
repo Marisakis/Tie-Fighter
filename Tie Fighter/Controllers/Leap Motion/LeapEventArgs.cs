@@ -11,15 +11,23 @@ namespace Tie_Fighter.Controllers.Leap_Motion
     /// </summary>
     public class LeapEventArgs : EventArgs
     {
+        /// <summary>
+        /// Can get / set x position of the hand tracking.
+        /// </summary>
         public float x
         {
             get; set;
         }
+        /// <summary>
+        /// Can get / set y position of the hand tracking.
+        /// </summary>
         public float y
         {
             get; set;
         }
-
+        /// <summary>
+        /// Defines whether a user has tapped (true) or not (false).
+        /// </summary>
         public bool tapped
         {
             get; set;

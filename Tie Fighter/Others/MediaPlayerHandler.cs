@@ -14,11 +14,20 @@ namespace Tie_Fighter.Others
         private List<MediaPlayer> _mediaPlayers;
         private int counter = 0;
 
+        /// <summary>
+        /// Default constructor in use.
+        /// </summary>
         public MediaPlayerHandler()
         {
             this._mediaPlayers = new List<MediaPlayer>();
         }
 
+        /// <summary>
+        /// Play a file from source [url] with specific TimeToPlay. Grabs an available MediaPlayer, if there are none available, create a new one.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="timeToPlay"></param>
+        /// <returns></returns>
         public MediaPlayer PlayFile(string url, double? timeToPlay)
         {
             MediaPlayer availableMediaPlayer = GetAvailablePlayer();
@@ -41,11 +50,19 @@ namespace Tie_Fighter.Others
             return availableMediaPlayer;
         }
 
+        /// <summary>
+        /// Play a video from URL [url].
+        /// </summary>
+        /// <param name="url"></param>
         public void PlayVideo(string url)
         {
             System.Diagnostics.Process.Start(url);
         }
 
+        /// <summary>
+        /// Get an available MediaPlayer to output a sound from a URL.
+        /// </summary>
+        /// <returns></returns>
         public MediaPlayer GetAvailablePlayer()
         {
             foreach (MediaPlayer mediaPlayer in _mediaPlayers)

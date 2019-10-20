@@ -13,7 +13,6 @@ namespace Tie_Fighter
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           // Application.Run(new FormGamePictureBox());
             Application.Run(new FormLogin());
         }
     }

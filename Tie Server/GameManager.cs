@@ -9,7 +9,9 @@ using Tie_Server.GameObjects;
 
 namespace Tie_Server
 {
-
+    /// <summary>
+    /// The GameManager handles notifying clients with GameObject elements and handles the game which is running. Decides where new Fighters spawn, etc.
+    /// </summary>
     public class GameManager
     {
         public const int timerPeriod = 50; //Time in millisecond between each internal update
@@ -21,6 +23,9 @@ namespace Tie_Server
         private Random randomSeederForTieFighters = new Random();
         Object _lockObj = new object();
 
+        /// <summary>
+        /// Initialization and create an update timer in the default constructor.
+        /// </summary>
         public GameManager()
         {
             tieFighters = new List<Target>();
@@ -34,6 +39,10 @@ namespace Tie_Server
 
         }
 
+        /// <summary>
+        /// Receive all Game data.
+        /// </summary>
+        /// <returns></returns>
         public dynamic GetGameData()
         {
             lock (this)
@@ -50,6 +59,11 @@ namespace Tie_Server
             }
         }
 
+        /// <summary>
+        /// Update tie fighters, explosions and overall game. Also check for crosshair hits and _could_ create a new Tie Fighter (randomized).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             lock (this)
@@ -62,6 +76,11 @@ namespace Tie_Server
             }
         }
 
+        /// <summary>
+        /// Spawn a random tie fighter.
+        /// </summary>
+        /// <param name="maxOdd"></param>
+        /// <returns></returns>
         public bool SpawnRandomTieFighter(int maxOdd)  // between 0 and maxOdd.
         {
             Random random = new Random();
@@ -69,11 +88,20 @@ namespace Tie_Server
             return (outcome == 1);
         }
 
+        /// <summary>
+        /// Get a random TieFighter height.
+        /// </summary>
+        /// <returns></returns>
         public int GetRandomHeightTieFighter()
         {
             return randomSeederForTieFighters.Next(10, 90);
         }
 
+        /// <summary>
+        /// Update the crosshair position of a player.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="crosshair"></param>
         internal void UpdatePlayerCrosshair(Client client, dynamic crosshair)
         {
             int x = crosshair.x;

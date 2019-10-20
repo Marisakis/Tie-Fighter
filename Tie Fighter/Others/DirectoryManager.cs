@@ -37,7 +37,10 @@ namespace Tie_Fighter.Others
         {
             return $"{CrosshairDir}/crosshair{number}.png";
         }
-
+        
+        /// <summary>
+        /// Build directory paths.
+        /// </summary>
         public DirectoryManager()
         {
             string documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);

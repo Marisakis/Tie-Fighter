@@ -12,7 +12,11 @@
         {
             this.actionInput = actionInput;
         }
-
+        
+        /// <summary>
+        /// Action should be implemented by an input controller, in this example keyboard, mouse or the Leap Motion.
+        /// </summary>
+        /// <param name="eventData"></param>
         public abstract void Action(Event eventData);
     }
 }

@@ -14,6 +14,10 @@ namespace Tie_Fighter.Controllers
            
         }
 
+        /// <summary>
+        /// Handles basic Leap Motion Actions. Such as moving, or tapping, which both lead to a player action (moving and firing, respectively).
+        /// </summary>
+        /// <param name="eventData"></param>
         public override void Action(LeapMotionEvent eventData)
         {
             base.actionInput.MoveTo((int)eventData.x, (int)eventData.y);

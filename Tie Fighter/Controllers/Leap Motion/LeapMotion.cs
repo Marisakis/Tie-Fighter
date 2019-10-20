@@ -20,16 +20,32 @@ namespace Tie_Fighter.Controllers.Leap_Motion
         private FormGame _formGame;
         private LeapEventArgs _leapEventArgs = new LeapEventArgs();
 
-        public LeapMotion(FormGame formGame) // FormGame in constructor could become an interface later.
+        /// <summary>
+        /// FormGame is needed to check whether an invoke is required. Is also used to transmit the event to the client.
+        /// </summary>
+        /// <param name="formGame"></param>
+
+        public LeapMotion(FormGame formGame)
         {
             this._formGame = formGame;
             this._controller = new Controller();
             this._listener = new LeapEventListener(this);
             this._controller.AddListener(_listener);
         }
+
+        /// <summary>
+        /// The event delegate defines what the action is. For example, it can be an initialisation of the Leap, but also a connect, or a data frame.
+        /// </summary>
+        /// <param name="EventName"></param>
         delegate void LeapEventDelegate(string EventName);
+
+        /// <summary>
+        /// Retrieve an event (such as a hand wave) by calling gesture detection methods. If an invoke is required, BeginInvoke is called.
+        /// </summary>
+        /// <param name="EventName"></param>
         public void LeapEventNotification(string EventName)
         {
+            //Will be true if the current thread is not the UI thread.
             if (!_formGame.InvokeRequired)
             {
 
@@ -48,20 +64,26 @@ namespace Tie_Fighter.Controllers.Leap_Motion
                         break;
                 }
             }
+            //Invoke the function if on the UI thread.
             else
             {
                 _formGame.BeginInvoke(new LeapEventDelegate(LeapEventNotification), new object[] { EventName });
             }
         }
 
+        /// <summary>
+        /// Enable tap and screentap gestures for tracking. Can also enable a few other gestures, but those are not used for the TieFighter game.
+        /// </summary>
         public void ConnectHandler()
         {
-           // this._controller.EnableGesture(Gesture.GestureType.TYPE_CIRCLE);
             this._controller.EnableGesture(Gesture.GestureType.TYPE_KEY_TAP);
-            //this._controller.EnableGesture(Gesture.GestureType.TYPE_SWIPE);
             this._controller.EnableGesture(Gesture.GestureType.TYPE_SCREEN_TAP);
         }
 
+        /// <summary>
+        /// Detect gestures using the Leap Motion API DLL's. Also notify the FormGame of the action by passing the LeapEventArgs as a parameter.
+        /// </summary>
+        /// <param name="frame"></param>
         public void DetectGesture(Frame frame)
         {
             GestureList gestures = frame.Gestures();
@@ -92,6 +114,10 @@ namespace Tie_Fighter.Controllers.Leap_Motion
             }
         }
 
+        /// <summary>
+        /// Detect the hand position of a user.
+        /// </summary>
+        /// <param name="frame"></param>
         public void DetectHandPosition(Frame frame)
         {
             HandList hands = frame.Hands;
@@ -113,6 +139,10 @@ namespace Tie_Fighter.Controllers.Leap_Motion
             }
         }
 
+        /// <summary>
+        /// Detect the finger positions of a user.
+        /// </summary>
+        /// <param name="frame"></param>
         public void DetectFingers(Frame frame)
         {
             FingerList fingers = frame.Fingers;
@@ -136,6 +166,10 @@ namespace Tie_Fighter.Controllers.Leap_Motion
             }
         }
 
+        /// <summary>
+        /// Detect the coordinates of a user. FormGame_LeapEvent(args) is called to update to player crosshair position.
+        /// </summary>
+        /// <param name="frame"></param>
         public void DetectCoordinates(Frame frame)
         {
             int appWidth = this._formGame.Width;
@@ -147,8 +181,8 @@ namespace Tie_Fighter.Controllers.Leap_Motion
             float appX = normalizedPoint.x * appWidth;
             float appY = (1 - normalizedPoint.y) * appHeight;
             Console.WriteLine("X: "+appX+" Y: "+appY);
-            _leapEventArgs.x = appX; //(int)appX;
-            _leapEventArgs.y = appY; //(int)appY;
+            _leapEventArgs.x = appX;
+            _leapEventArgs.y = appY; 
             _formGame.FormGame_LeapEvent(this._leapEventArgs);
         }
 
