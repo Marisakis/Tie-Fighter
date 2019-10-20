@@ -59,13 +59,15 @@ namespace Tie_Fighter
             }
             else
             {
-                Console.WriteLine("attempting to restart lobby");
+                //Console.WriteLine("attempting to restart lobby");
 
+                this.Focus();
+                this.chatBox.ResetText();
                 this.Show();
-                this.name = name;
+                this.name = name;                this.client.SetDataReceiver(this);
+
                 this.client = client;
-                this.client.SetDataReceiver(this);
-                Console.WriteLine("showing lobby");
+                //Console.WriteLine("showing lobby");
 
             }
 

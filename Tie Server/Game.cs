@@ -87,6 +87,8 @@ namespace Tie_Server
         private void Finish()
         {
             Console.WriteLine("Ending game");
+            this.gameStatus = GameStatus.Finished;
+
             List<HighScore> scores = GetHighScoresFromFile();
             scores.Add(GetHighestScore());
             scores.Sort();
